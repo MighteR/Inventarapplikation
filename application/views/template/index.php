@@ -5,14 +5,14 @@
 <meta name="encoding" content="UTF-8" />
 <meta http-equiv="cache-control" content="no-cache" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
-<link href="css/skins/black.css" rel="stylesheet" type="text/css" />
-<link href="css/dcmegamenu.css" rel="stylesheet" type="text/css" />
-<link href="css/css.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
-<script type='text/javascript' src='js/jquery.hoverIntent.minified.js'></script>
-<script type='text/javascript' src='js/jquery.dcmegamenu.1.3.3.js'></script>
+<link href="<?php echo base_url(); ?>/application/views/template/css/skins/black.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo base_url(); ?>/application/views/template/css/dcmegamenu.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo base_url(); ?>/application/views/template/css/css.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<?php echo base_url(); ?>/application/views/template/js/jquery-1.8.2.min.js"></script>
+<script type='text/javascript' src='<?php echo base_url(); ?>/application/views/template/js/jquery.hoverIntent.minified.js'></script>
+<script type='text/javascript' src='<?php echo base_url(); ?>/application/views/template/js/jquery.dcmegamenu.1.3.3.js'></script>
 <script type="text/javascript">
-$(document).ready(function($){
+$(document).ready(function(){
 	$('#menu-content').dcMegaMenu({
 		rowItems: '3',
 		speed: 'fast',
@@ -151,45 +151,6 @@ $(document).ready(function($){
     <div id="content">
         <div id="main_content">
             <?php echo $content ?>
-            
-<div id="content_title">
-	<span>{title}</span>
-</div>
-<div class="first">
-	<div class="text_left">
-		{title_transport_number}:
-	</div>
-	<div class="text_right">
-		<input class="formular" id="search_open_approval_transport_number" name="search_open_approval_transport_number" size="50" type="text" />
-	</div>
-</div>
-<div class="second">
-	
-		<div class="text_left">
-			{title_group}:
-		</div>
-		<div class="text_right">
-			<select class="formular" id="search_open_approval_group">
-				<option value="all">{title_group_all}</option>
-
-			</select>
-		</div>
-
-</div>
-<div class="first">
-	<div class="text_left">
-		&nbsp;
-	</div>
-	<div class="text_right">
-		<input id="search_open_approval" name="search_open_approval" type="button" value="{title_search}" />
-		<input id="reset_open_approval_search" name="reset_open_approval_search" type="button" value="{title_reset}" />
-	</div>
-</div>            
-            
-            
-            
-        </div>
-        <div style="clear:both;"></div>
     </div>
     <div id="footer">
         <div id="footer_left">Version <?php echo $version; ?></div>

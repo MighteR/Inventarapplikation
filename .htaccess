@@ -6,8 +6,8 @@ RewriteEngine On
 
 RewriteBase /
 
-RewriteRule ^css/(.*)$ application/views/template/css/$1
-RewriteRule ^js/(.*)$ application/views/template/js/$1
+#RewriteRule ^css/(.*)$ application/views/template/css/$1
+#RewriteRule ^js/(.*)$ application/views/template/js/$1
 
 # Do not enable rewriting for files or directories that exist
 RewriteCond %{REQUEST_FILENAME} !-f
