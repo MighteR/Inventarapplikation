@@ -8,6 +8,7 @@ $lang['title_password_confirmation'] = 'Password Confirmation';
 $lang['title_reset'] = 'Reset';
 $lang['title_submit'] = 'Submit';
 $lang['title_username'] = 'Username';
+$lang['title_userlist'] = 'Userlist';
 
 
 

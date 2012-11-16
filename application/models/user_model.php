@@ -30,7 +30,7 @@ class User_model extends CI_Model {
         $query = "SELECT id, username
                             FROM users
                             WHERE username LIKE ".$this->db->escape('%'.$username.'%');
-        
+
         if(!empty($limit)){
             $query .= " LIMIT ".$limit['begin'].",".$limit['limit'];
         }

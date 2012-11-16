@@ -44,9 +44,7 @@ function predefine_user_search(username){
 function search_user(page){
     var search_username = $('#search_user_username').val();
 
-    if(typeof page != 'undefined'){
-        page = '/' + page;
-    }else{
+    if(typeof page === 'undefined'){
         page = '';
     }
 
@@ -68,7 +66,7 @@ function search_user(page){
             complete: function(html){
                 $('#loader').dialog('close');
             },
-            url: '<?php echo current_url();?>/indexlist',
+            url: '<?php echo current_url();?>/indexlist' + page,
             type: 'POST',
             data: {
                 'username': search_username,

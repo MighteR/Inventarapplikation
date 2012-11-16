@@ -30,28 +30,23 @@ class User extends MY_Controller {
             $data['url'] = 'afdf';
             $this->template->write_view('content','template/messages/info',$data);
         }else{
-            $this->lang->load('form_validation', $this->session->userdata('language'));            
-            
             $this->form_validation->set_error_delimiters('<div class="notice">', '</div>');
             
             $data['title']          = $this->lang->line('title_create_user');
-            $data['title_username'] = form_label($this->lang->line('title_username'),'username');
+
             $data['field_username'] = array('class' => 'formular',
                                             'name' => 'username',
                                             'id' => 'username',
                                             'value' => $this->form_validation->set_value('username'));
             
-            $data['title_password'] = form_label($this->lang->line('title_password'),'password');
             $data['field_password'] = array('class' => 'formular',
                                             'name' => 'password',
                                             'id' => 'password');
             
-            $data['title_password_confirmation'] = form_label($this->lang->line('title_password_confirmation'),'password_confirmation');
             $data['field_password_confirmation'] = array('class' => 'formular',
                                                          'name' => 'password_confirmation',
                                                          'id' => 'password_confirmation');
             
-            $data['title_admin']    = form_label($this->lang->line('title_admin'),'admin');
             $data['field_admin']    = array('class' => 'formular',
                                             'name' => 'admin',
                                             'id' => 'admin',
@@ -197,6 +192,9 @@ class User extends MY_Controller {
         
         if(true){
             $this->load->helper('form');
+            
+            $data['title'] = $this->lang->line('title_userlist');
+            $data['title_username'] = $this->lang->line('title_username');
 
             $data['field_search_user'] = array('name' => 'search_user',
                              'id' => 'search_user',
@@ -231,8 +229,8 @@ class User extends MY_Controller {
                 $this->load->library('pages');
                 
                 $query = $this->user_model->get_users_by_username($p_username);
-                
-                $this->pages->check_page($query->num_rows(),$page);
+
+                $this->pages->check_page($query->num_rows(),$page,true,$p_page_output);
 
                 $query = $this->user_model->get_users_by_username($p_username,$this->pages->get_limit());
 
@@ -246,7 +244,7 @@ class User extends MY_Controller {
                 }else{
                     $data['entry'] = false;
                     
-                    $data['title_no_entries'] = $this->lang->line('title_no_entries');
+                    $data['error_no_entries'] = $this->lang->line('error_no_entries');
                 }
 
                 $content = $this->load->view('user/index_list',$data,true);
