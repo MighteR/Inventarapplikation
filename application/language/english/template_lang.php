@@ -1,6 +1,6 @@
 <?php
 
-$lang['title'] = 'English';
+$lang['title'] = 'Inventory Application';
 
 //Menu Section
 $lang['menu_home'] = 'Home';
