@@ -1,114 +1,30 @@
 <div>
     <div class="black">  
     <ul id="menu-content" class="mega-menu">
-            <li><a href="test.html">Home</a></li>
-            <li><a href="test.html">Products</a>
-                    <ul>
-                            <li><a href="#">Mobile Phones &#038; Accessories</a>
-                                    <ul>
-                                            <li><a href="#">Product 1</a></li>
-                                            <li><a href="#">Product 2</a></li>
-                                            <li><a href="#">Product 3</a></li>
-                                    </ul>
-                            </li>
-                            <li><a href="#">Desktop</a>
-                                <ul>
-                                            <li><a href="#">Product 4</a></li>
-                                            <li><a href="#">Product 5</a></li>
-                                            <li><a href="#">Product 6</a></li>
-                                            <li><a href="#">Product 7</a></li>
-                                            <li><a href="#">Product 8</a></li>
-                                            <li><a href="#">Product 9</a></li>
-                                    </ul>
-                            </li>
-                            <li><a href="#">Laptop</a>
-                                <ul>
-                                            <li><a href="#">Product 10</a></li>
-                                            <li><a href="#">Product 11</a></li>
-                                            <li><a href="#">Product 12</a></li>
-                                            <li><a href="#">Product 13</a></li>
-                                    </ul>
-                            </li>
-                            <li><a href="#">Accessories</a>
-                                <ul>
-                                            <li><a href="#">Product 14</a></li>
-                                            <li><a href="#">Product 15</a></li>
-                                    </ul>
-                            </li>
-                            <li><a href="#">Software</a>
-                              <ul>
-                                    <li><a href="#">Product 16</a></li>
-                                            <li><a href="#">Product 17</a></li>
-                                            <li><a href="#">Product 18</a></li>
-                                            <li><a href="#">Product 19</a></li>
-                              </ul>
-                            </li>
-                    </ul>
-            </li>
-            <li><a href="#">Sale</a>
-                    <ul>
-                            <li><a href="#">Special Offers</a>
+        
+        <!--Home!-->
+        <li><a href="test1.html"><?php echo $menu_home; ?></a></li>
+        
+        <!--Inventory!-->
+        <li><a href="test2.html"><?php echo $menu_inventory; ?></a></li>
+        
+        <!--Report!-->
+        <li><a href="test3.html"><?php echo $menu_report; ?></a>
             <ul>
-                    <li><a href="#">Offer 1</a></li>
-                    <li><a href="#">Offer 2</a></li>
-                    <li><a href="#">Offer 3</a></li>
+                <li><a href="#"><?php echo $menu_report_generate; ?></a></li>
+                <li><a href="#"><?php echo $menu_report_price; ?></a></li>
             </ul>
-            </li>
-            <li><a href="#">Reduced Price</a>
+        </li>
+        
+        <!--Help!-->
+        <li><a href="test.html"><?php echo $menu_help; ?></a>
             <ul>
-                    <li><a href="#">Offer 4</a></li>
-                    <li><a href="#">Offer 5</a></li>
-                    <li><a href="#">Offer 6</a></li>
-                    <li><a href="#">Offer 7</a></li>
+                <li><a href="#"><?php echo $menu_help_about; ?></a></li>
+                <li><a href="#"><?php echo $menu_help_online; ?></a></li>
             </ul>
-    </li>
-            <li><a href="#">Clearance Items</a>
-            <ul>
-                    <li><a href="#">Offer 9</a></li>
-
-            </ul>
-    </li>
-            <li class="menu-item-129"><a href="#">Ex-Stock</a>
-            <ul>
-                    <li><a href="#">Offer 10</a></li>
-                    <li><a href="#">Offer 11</a></li>
-                    <li><a href="#">Offer 12</a></li>
-                    <li><a href="#">Offer 13</a></li>
-            </ul>
-    </li>
-    </ul>
-    </li>
-    <li><a href="#">About Us</a>
-    <ul>
-            <li><a href="#">About Page 1</a></li>
-            <li><a href="#">About Page 2</a></li>
-
-    </ul>
-    </li>
-    <li><a href="#">Services</a>
-    <ul>
-            <li><a href="#">Service 1</a>
-            <ul>
-                    <li><a href="#">Service Detail A</a></li>
-                    <li><a href="#">Service Detail B</a></li>
-            </ul>
-    </li>
-    <li><a href="#">Service 2</a>
-            <ul>
-                    <li><a href="#">Service Detail C</a></li>
-            </ul>
-    </li>
-            <li><a href="#">Service 3</a>
-            <ul>
-                    <li><a href="#">Service Detail D</a></li>
-                    <li><a href="#">Service Detail E</a></li>
-                    <li><a href="#">Service Detail F</a></li>
-            </ul>
-    </li>
-            <li><a href="#">Service 4</a></li>
-    </ul>
-    </li>
-    <li><a href="#">Contact us</a></li>
-    </ul>
+        </li>   
+        
+        <!--Admin!-->
+        <li><a href="test.html"><?php echo $menu_admin; ?></a></li>
     </div>
 </div>
