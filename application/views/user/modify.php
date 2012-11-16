@@ -3,7 +3,7 @@
 <script type="text/javascript">
 //<![CDATA[
 $(document).ready(function(){
-    $('input:button, input:submit, input:reset').button();
+    $('input:submit, input:reset').button();
 });
 //]]>
 </script>

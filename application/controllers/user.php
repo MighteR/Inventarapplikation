@@ -17,8 +17,12 @@ class User extends MY_Controller {
 	$this->form_validation->set_rules('password_confirmation', 'lang:title_password_confirmation', 'required|matches[password]');
 
         if($this->form_validation->run()){
+            $model_data['username'] = $this->input->post('username');
+            $model_data['password'] = $this->input->post('password');
+            $model_data['admin'] = $this->input->post('admin');
+            
             $this->load->model('user_model');
-            $this->user_model->insert();
+            $this->user_model->create($model_data);
             
             $data['title'] = 'asdfasfasdfasf';
             $data['info'] = 'sdfasdfasf';
@@ -107,8 +111,16 @@ class User extends MY_Controller {
                 $this->form_validation->set_rules('password_confirmation','lang:title_password_confirmation', 'matches[password]');
 
                 if($this->form_validation->run()){
+                    $model_data['username'] = $this->input->post('username');
+        
+                    if($this->input->post('password')){
+                        $model_data['password'] = md5($this->input->post('password'));
+                    }
+                    $model_data['admin'] = $this->input->post('admin');
+                    //$data['modifier'] = '';
+                    
                     $this->load->model('user_model');
-                    $this->user_model->update($id);
+                    $this->user_model->update($id,$model_data);
                     
                     $data['title'] = 'asdfasfasdfasf';
                     $data['info'] = 'sdfasdfasf';
@@ -183,25 +195,60 @@ class User extends MY_Controller {
        $this->template->render();
     }
     
-    public function index($action = '',$page = ''){
+    public function index(){
         $this->session->set_userdata('url',  uri_string());
         
         if(true){
-            if($action == 'list'){
+            $this->load->helper('form');
 
-            }else{
-                $this->load->helper('form');
-                
-                $data['field_search_user'] = array('name' => 'search_user',
-                                 'id' => 'search_user',
-                                 'value' => $this->lang->line('title_submit'));
+            $data['field_search_user'] = array('name' => 'search_user',
+                             'id' => 'search_user',
+                             'content' => $this->lang->line('title_submit'));
 
-                $data['reset_user_search'] = array('name' => 'reset_user_search',
-                                 'id' => 'reset_user_search',
-                                 'value' => $this->lang->line('title_submit'));
+            $data['reset_user_search'] = array('name' => 'reset_user_search',
+                             'id' => 'reset_user_search',
+                             'content' => $this->lang->line('title_reset'));
+
+            $data['field_create_user'] = array('name' => 'create',
+                             'id' => 'create',
+                             'content' => $this->lang->line('title_create_user'));
+
+            $this->template->write_view('content','user/index',$data);         
+        }else{
+            //no authorization
+            $data['title'] = 'error';
+            $data['error'] = 'sdfasdfasf';
+            $data['title_back'] = 'bbbb';
+            $this->template->write_view('content','template/messages/error',$data);
+        }
+        $this->template->render();
+    }
+    
+    public function indexList($page = 1){
+        if(true){
+            if(!empty($_POST)){
+                $p_username = $this->input->post('username');
+                $p_page_output = $this->input->post('page_output');
                 
-                $this->template->write_view('content','user/index',$data);         
+                $this->load->model('user_model');
+                $this->load->library('pages');
+                
+                $query = $this->user_model->get_users_by_username($p_username);
+                
+                $this->pages->check_page($query->num_rows(),$page);
+
+                $query = $this->user_model->get_users_by_username($p_username,$this->pages->get_limit());
+
+                $data['pages'] = $this->pages->get_links('users','search_user');
+
+                if($query->num_rows() > 0){
+                    $data['entry'] = true;
+                }
+
+                $content = $this->load->view('user/index_list',$data,true);
+                echo $content;
             }
+            exit();
         }else{
             //no authorization
             $data['title'] = 'error';

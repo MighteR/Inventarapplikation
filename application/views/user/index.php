@@ -1,11 +1,13 @@
+<link href="<?php echo base_url(); ?>application/views/template/css/smoothness/jquery-ui-1.9.1.custom.min.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<?php echo base_url(); ?>application/views/template/js/jquery-ui-1.9.1.custom.min.js"></script>
 <script type="text/javascript">
 //<![CDATA[ 
 $(document).ready(function(){
-    $('input:button').button();
+    $('button').button();
     //predefine_user_search('');
 
-    $('#add').click(function(){
-            window.location.href = '<?php echo base_url(); ?>add';
+    $('#create').click(function(){
+            window.location.href = '<?php echo current_url(); ?>/create';
     });
 	
     $(document).keypress(function(e){ 
@@ -39,44 +41,43 @@ function predefine_user_search(username){
 
     search_user();
 }
-function search_user(div,url){
-	var search_username = $('#search_user_username').val();
+function search_user(page){
+    var search_username = $('#search_user_username').val();
 
-	$('#loader').dialog({
-		closeOnEscape: false,
-		dialogClass: 'loader',
-		height: 50,
-		resizable: false,
-		width: 50
-	});
+    if(typeof page != 'undefined'){
+        page = '/' + page;
+    }else{
+        page = '';
+    }
 
-	if(typeof div === 'undefined'){
-		div = 'users';
-	}
-	if(typeof url === 'undefined'){
-		url = '{module_path}list';
-	}
-	
-	if($('#' + div + '_output').val() == 'undefined'){
-		output = 0;
-	}else{
-		output = $('#' + div + '_output').val();
-	}
+    $('#loader').dialog({
+            closeOnEscape: false,
+            dialogClass: 'loader',
+            height: 50,
+            resizable: false,
+            width: 50
+    });
 
-	$.ajax({
-		complete: function(html){
-			$('#loader').dialog('close');
-		},
-		url: '<?php echo base_url();?>list',
-		type: 'POST',
-		data: {
-			'username': search_username,
-			'page_output': output
-		},
-		success: function(html){
-			$('#users').html(html);
-		}
-	});
+    if($('#users_output').val() == 'undefined'){
+        output = 0;
+    }else{
+        output = $('#users_output').val();
+    }
+
+    $.ajax({
+            complete: function(html){
+                $('#loader').dialog('close');
+            },
+            url: '<?php echo current_url();?>/indexlist',
+            type: 'POST',
+            data: {
+                'username': search_username,
+                'page_output': output
+            },
+            success: function(html){
+                $('#users').html(html);
+            }
+    });
 }
 //]]> 
 </script>
@@ -101,6 +102,6 @@ function search_user(div,url){
 	</div>
 </div>
 <div class="text_title" style="text-align:center">
-	<div><input id="add" type="button" name="add" value="{title_add_user}"></div>
+	<div><?php echo form_button($field_create_user); ?></div>
 </div>
 <div id="users"></div>

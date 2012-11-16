@@ -1,5 +1,6 @@
-<?php
+<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
 class Pages{
+    var $CI;
     var $begin;
     var $limit = 10;
     var $links;
@@ -7,10 +8,12 @@ class Pages{
     var $page;
     var $pages;
     function __construct($output = FALSE, $limit = NULL ){
-            if($limit != NULL || $limit > 0){
-                    $this->limit = $limit;
-            }
-            $this->output = $output;
+        $this->CI =& get_instance();
+        
+        if($limit != NULL || $limit > 0){
+            $this->limit = $limit;
+        }
+        $this->output = $output;
     }
     function check_page($rows){
             $this->pages = ceil($rows/$this->limit);
@@ -23,13 +26,13 @@ class Pages{
             }
             $this->begin = ($this->page-1)*$this->limit;
     }
-    function get_links($div, $url, $function = 'limit', $parameter = ''){
+    function get_links($div, $function = 'limit', $url = ''){
             if($this->pages > 0){
                     if($this->page != 1){
                             $back = $this->page-1;
                             if(!empty($div)){
-                                    $this->links[] = '<a onClick="'.$function.'(\''.$div.'\',\''.$url.'/page/1\''.$parameter.')" style="cursor:pointer;"><<</a>';
-                                    $this->links[] = '<a onClick="'.$function.'(\''.$div.'\',\''.$url.'/page/'.$back.'\''.$parameter.')" style="cursor:pointer;"><</a>';
+                                    $this->links[] = '<a onClick="'.$function.'(\''.$div.'\',\''.$url.'/page/1\')" style="cursor:pointer;"><<</a>';
+                                    $this->links[] = '<a onClick="'.$function.'(\''.$div.'\',\''.$url.'/page/'.$back.'\')" style="cursor:pointer;"><</a>';
                             }else{
                                     $this->links[] = '<a href="{path}'.$url.'page/1/" style="cursor:pointer;"><<</a>';
                                     $this->links[] = '<a href="{path}'.$url.'/page/'.$back.'/" style="cursor:pointer;"><</a>';
@@ -40,7 +43,7 @@ class Pages{
                                     $this->links[] = '<span class="actual_page">'.$i.'</span>';
                             }elseif($this->page - $this->limit <= $i AND $i <= $this->page + $this->limit){
                                     if(!empty($div)){
-                                            $this->links[] = '<a onClick="'.$function.'(\''.$div.'\',\''.$url.'/page/'.$i.'\''.$parameter.')" style="cursor:pointer;">'.$i.'</a>';
+                                            $this->links[] = '<a onClick="'.$function.'(\''.$div.'\',\''.$url.'/page/'.$i.'\')" style="cursor:pointer;">'.$i.'</a>';
                                     }else{
                                             $this->links[] = '<a href="{path}'.$url.'/page/'.$i.'" style="cursor:pointer;">'.$i.'</a>';
                                     }
@@ -49,27 +52,27 @@ class Pages{
                     if($this->page != $this->pages){
                             $next = $this->page+1;
                             if(!empty($div)){
-                                    $this->links[] = '<a onClick="'.$function.'(\''.$div.'\',\''.$url.'/page/'.$next.'\''.$parameter.')" style="cursor:pointer;">></a>';
-                                    $this->links[] = '<a onClick="'.$function.'(\''.$div.'\',\''.$url.'/page/'.$this->pages.'\''.$parameter.')" style="cursor:pointer;">>></a>';
+                                    $this->links[] = '<a onClick="'.$function.'(\''.$div.'\',\''.$url.'/page/'.$next.'\')" style="cursor:pointer;">></a>';
+                                    $this->links[] = '<a onClick="'.$function.'(\''.$div.'\',\''.$url.'/page/'.$this->pages.'\')" style="cursor:pointer;">>></a>';
                             }else{
                                     $this->links[] = '<a href="{path}'.$url.'/page/'.$next.'" style="cursor:pointer;">></a>';
                                     $this->links[] = '<a href="{path}'.$url.'/page/'.$this->pages.'" style="cursor:pointer;">>></a>';
                             }
                     }
                     $this->links[] = '<a onClick="if(document.getElementById(\''.$div.'_page\').value.match(/^\d+$/) > 0){
-                                                            '.$function.'(\''.$div.'\',\''.$url.'/page/\' + document.getElementById(\''.$div.'_page\').value '.$parameter.')
+                                                            '.$function.'(\''.$div.'\',\''.$url.'/page/\' + document.getElementById(\''.$div.'_page\').value)
                                                     }else{
-                                                            alert(\''._error_no_number.'\');
-                                                    }" style="cursor:pointer;">'._title_goto.'</a>&nbsp;<input class="formular" id="'.$div.'_page" size="3" value='.$this->page.' onKeyUp="if(event.keyCode == 13){
+                                                            alert(\''.$this->CI->lang->line('error_no_number').'\');
+                                                    }" style="cursor:pointer;">'.$this->CI->lang->line('title_goto').'</a>&nbsp;<input class="formular" id="'.$div.'_page" size="3" value='.$this->page.' onKeyUp="if(event.keyCode == 13){
                                                     if(document.getElementById(\''.$div.'_page\').value.match(/^\d+$/) > 0){
-                                                            '.$function.'(\''.$div.'\',\''.$url.'/page/\' + document.getElementById(\''.$div.'_page\').value'.$parameter.')
+                                                            '.$function.'(\''.$div.'\',\''.$url.'/page/\' + document.getElementById(\''.$div.'_page\').value)
                                                     }else{
-                                                            alert(\''._error_no_number.'\');
+                                                            alert(\''.$this->CI->lang->line('error_no_number').'\');
                                                     }
                                                     }"> / '.$this->pages.'';
 
                     if($this->output){
-                            $output = '<select class="formular" id="'.$div.'_output" name="'.$div.'_output" onChange="'.$function.'(\''.$div.'\',\''.$url.'/page/1\''.$parameter.')">';
+                            $output = '<select class="formular" id="'.$div.'_output" name="'.$div.'_output" onChange="'.$function.'(\''.$div.'\',\''.$url.'/page/1\')">';
 
                             if($this->limit == 10){
                                     $selected_10 = ' selected="true"';

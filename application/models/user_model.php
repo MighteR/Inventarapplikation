@@ -16,11 +16,7 @@ class User_model extends CI_Model {
         parent::__construct();
     }
     
-    public function insert() {
-        $data['username'] = $this->input->post('username');
-        $data['password'] = md5($this->input->post('password'));
-        $data['admin'] = $this->input->post('admin');
-        //$data['creator'] = '';
+    public function create($data) {
         $data['creation_timestamp'] = date('Y-m-d H:i:s');
         
         $this->db->insert('users', $data);
@@ -30,14 +26,19 @@ class User_model extends CI_Model {
         return $this->db->get_where('users',array('id' => $id));
     }
     
-    public function update($id){
-        $data['username'] = $this->input->post('username');
+    public function get_users_by_username($username,$limit = array()){
+        $query = "SELECT id, username
+                            FROM users
+                            WHERE username LIKE ".$this->db->escape('%'.$username.'%');
         
-        if($this->input->post('password')){
-            $data['password'] = md5($this->input->post('password'));
+        if(!empty($limit)){
+            $query .= " LIMIT ".$limit['begin'].",".$limit['limit'];
         }
-        $data['admin'] = $this->input->post('admin');
-        //$data['modifier'] = '';
+
+        return $this->db->query($query);
+    }
+    
+    public function update($id,$data){
         $data['modification_timestamp'] = date('Y-m-d H:i:s');
         
         $this->db->update('users', $data, array('id' => $id));
