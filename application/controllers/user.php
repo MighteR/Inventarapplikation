@@ -133,23 +133,20 @@ class User extends MY_Controller {
                     $this->form_validation->set_error_delimiters('<div class="notice">', '</div>');
 
                     $data['title']          = $this->lang->line('title_modify_user');
-                    $data['title_username'] = form_label($this->lang->line('title_username'),'username');
+
                     $data['field_username'] = array('class' => 'formular',
                                                     'name' => 'username',
                                                     'id' => 'username',
                                                     'value' => $this->form_validation->set_value('username',$old_username));
 
-                    $data['title_password'] = form_label($this->lang->line('title_password'),'password');
                     $data['field_password'] = array('class' => 'formular',
                                                     'name' => 'password',
                                                     'id' => 'password');
-
-                    $data['title_password_confirmation'] = form_label($this->lang->line('title_password_confirmation'),'password_confirmation');
+                    
                     $data['field_password_confirmation'] = array('class' => 'formular',
                                                                  'name' => 'password_confirmation',
                                                                  'id' => 'password_confirmation');
 
-                    $data['title_admin']    = form_label($this->lang->line('title_admin'),'admin');
                     $data['field_admin']    = array('class' => 'formular',
                                                     'name' => 'admin',
                                                     'id' => 'admin',
@@ -240,9 +237,16 @@ class User extends MY_Controller {
                 $query = $this->user_model->get_users_by_username($p_username,$this->pages->get_limit());
 
                 $data['pages'] = $this->pages->get_links('users','search_user');
+                $data['title_username'] = $this->lang->line('title_username');
 
                 if($query->num_rows() > 0){
                     $data['entry'] = true;
+                    
+                    $data['users'] = $query->result_object();
+                }else{
+                    $data['entry'] = false;
+                    
+                    $data['title_no_entries'] = $this->lang->line('title_no_entries');
                 }
 
                 $content = $this->load->view('user/index_list',$data,true);

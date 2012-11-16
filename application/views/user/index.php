@@ -82,11 +82,11 @@ function search_user(page){
 //]]> 
 </script>
 <div id="content_title">
-	<span>{title}</span>
+	<span><?php echo $title; ?></span>
 </div>
 <div class="first">
 	<div class="text_left">
-		{title_username}:
+	    <?php echo $title_username; ?>
 	</div>
 	<div class="text_right">
 		<input class="formular" id="search_user_username" name="search_user_username" size="50" type="text" />

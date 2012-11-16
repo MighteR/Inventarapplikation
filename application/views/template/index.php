@@ -40,7 +40,6 @@ $(document).ready(function(){
         <div id="main_content">
             <?php echo $content ?>
     </div>
-    <div style="clear:both" />
     <div id="footer">
         <div id="footer_left">Version <?php echo $version; ?></div>
         <div id="footer_right">
@@ -49,6 +48,7 @@ $(document).ready(function(){
             <?php echo anchor('language/set/german', 'Deutsch')?>
         </div>
     </div>
+    <div style="clear:both" />
 </div>
 </body>
 </html>

@@ -1,40 +1,26 @@
 <div class="first">
-	<div class="text" style="text-align:center;">
-	<?php echo $pages; ?>&nbsp;
-	</div>
+    <div class="text" style="text-align:center;">
+        <?php echo $pages; ?>&nbsp;
+    </div>
 </div>
 <div class="text_title">
-	<div style="float:left;width:25px;">
-		&nbsp;
-	</div>
-	<div style="float:left;width:50%;">
-		{title_username}
-	</div>
-	<div style="float:left;">
-		{title_email}
-	</div>
+    <div style="float:left;">
+        <?php echo $title_username; ?>
+    </div>
 </div>
-<if name=entry entry>
-<list users>
+<?php if ($entry): ?>
+<?php $c = 0;
+foreach($users as $user): ?>
 <label for="group_check_{id}">
-<div class="{class} list">
-<if name=check_{id} check>
-	<div style="float:left;width:25px;">
-		<input id="group_check_{id}" type="checkbox" value="{id}"{checked} />
-	</div>
-</if check_{id}>
-	<div style="float:left;width:50%;">
-		<a href="{module_path}change/{id}">{username}</a>
-	</div>
-	<div style="float:left;">
-		{email}
-	</div>
+<div class="<?php echo ($c % 2) ? 'second' : 'first'; ?> list">
+    <div style="float:left;">
+        <a href="<?php echo base_url().'user/modidy/'.$user->id; ?>"><?php echo $user->username; ?></a>
+    </div>
 </div>
 </label>
-</list users>
-</if entry>
-<else entry>
+<?php endforeach; ?>
+<?php else: ?>
 <div class="first" style="text-align:center;">
-	{error_no_entries}
+    <?php echo $title_no_entries; ?>
 </div>
-</else entry>
+<?php endif; ?>

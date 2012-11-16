@@ -59,6 +59,7 @@ class Pages{
                                     $this->links[] = '<a href="{path}'.$url.'/page/'.$this->pages.'" style="cursor:pointer;">>></a>';
                             }
                     }
+
                     $this->links[] = '<a onClick="if(document.getElementById(\''.$div.'_page\').value.match(/^\d+$/) > 0){
                                                             '.$function.'(\''.$div.'\',\''.$url.'/page/\' + document.getElementById(\''.$div.'_page\').value)
                                                     }else{

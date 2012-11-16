@@ -14,7 +14,7 @@ $(document).ready(function(){
 <?php echo form_error('username'); ?>
 <div class="first">
     <div class="text_left">
-        <?php echo $title_username; ?><span class="important">*</span>:
+        <?php echo form_label($this->lang->line('title_username'),'username'); ?><span class="important">*</span>:
     </div>
     <div class="text_right">
         <?php echo form_input($field_username); ?>
@@ -23,7 +23,7 @@ $(document).ready(function(){
 <?php echo form_error('password'); ?>
 <div class="second">
     <div class="text_left">
-        <?php echo $title_password; ?>:
+        <?php echo form_label($this->lang->line('title_password'),'password'); ?>:
     </div>
     <div class="text_right">
         <?php echo form_password($field_password); ?>
@@ -32,7 +32,7 @@ $(document).ready(function(){
 <?php echo form_error('password_confirmation'); ?>
 <div class="first">
     <div class="text_left">
-        <?php echo $title_password_confirmation; ?>:
+        <?php echo form_label($this->lang->line('title_password_confirmation'),'password_confirmation'); ?>:
     </div>
     <div class="text_right">
         <?php echo form_password($field_password_confirmation); ?>
@@ -40,7 +40,7 @@ $(document).ready(function(){
 </div>
 <div class="second">
     <div class="text_left">
-        <?php echo $title_admin; ?>:
+        <?php echo form_label($this->lang->line('title_admin'),'admin'); ?>:
     </div>
     <div class="text_right">
         <?php echo form_checkbox($field_admin); ?>
