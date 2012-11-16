@@ -26,7 +26,6 @@ class MY_Controller extends CI_Controller {
         $data['menu_help_online'] = $this->lang->line('menu_help_online');
         $data['menu_admin'] = $this->lang->line('menu_admin');
 
-        
         //Write information to template file
         $this->template->write_view('menu','template/menu',$data);
     }

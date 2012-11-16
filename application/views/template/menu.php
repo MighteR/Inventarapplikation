@@ -16,15 +16,15 @@
             </ul>
         </li>
         
+        <!--Admin!-->
+        <li><a href="test.html"><?php echo $menu_admin; ?></a></li>
+        
         <!--Help!-->
         <li><a href="test.html"><?php echo $menu_help; ?></a>
             <ul>
                 <li><a href="#"><?php echo $menu_help_about; ?></a></li>
                 <li><a href="#"><?php echo $menu_help_online; ?></a></li>
             </ul>
-        </li>   
-        
-        <!--Admin!-->
-        <li><a href="test.html"><?php echo $menu_admin; ?></a></li>
+        </li>       
     </div>
 </div>
