@@ -5,7 +5,8 @@ class MY_Controller extends CI_Controller {
     public function __construct() {
         parent::__construct();
         if($this->input->cookie('language')){
-            $this->lang->load('template', $this->input->cookie('language'));
+            $this->config->set_item('language', $this->input->cookie('language'));
+            $this->lang->load('template', $this->input->cookie('language'));            
         }else{
             $this->lang->load('template', 'english');
         }
