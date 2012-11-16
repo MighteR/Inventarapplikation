@@ -59,6 +59,8 @@ $template['active_template'] = 'default';
 $template['default']['template'] = 'template/index';
 $template['default']['regions'] = array(
     'title',
+    'title_loader',
+    'menu',
     'content',
     'version'
 );

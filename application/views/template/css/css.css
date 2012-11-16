@@ -84,7 +84,6 @@ img{
 #menu{
     float: left;
     width: 1094px;
-    height: 50%;
     /*background-color:#033F88;*/
 }
 
@@ -96,7 +95,10 @@ img{
     float:left;
     width: 100%;
     margin: 0px 0px 9px 0px;
+    /*border-left: 1px solid #000000;
+    border-right: 1px solid #000000;*/
 }
+
 #main_content a{
     text-decoration:none; 
 }

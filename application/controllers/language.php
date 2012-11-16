@@ -9,6 +9,7 @@ class Language extends CI_Controller {
                 $this->input->set_cookie('language',$language,time()+60*60*24);
                 $this->session->set_userdata('language',$language);
             }
+
             redirect($this->session->userdata('url'));
         }
     }

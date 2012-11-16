@@ -3,7 +3,7 @@
 <script type="text/javascript">
 //<![CDATA[
 $(document).ready(function(){
-    $('input:submit, input:reset').button();
+    $('input:button, input:submit, input:reset').button();
 });
 //]]>
 </script>
@@ -23,7 +23,7 @@ $(document).ready(function(){
 <?php echo form_error('password'); ?>
 <div class="second">
     <div class="text_left">
-        <?php echo $title_password; ?><span class="important">*</span>:
+        <?php echo $title_password; ?>:
     </div>
     <div class="text_right">
         <?php echo form_password($field_password); ?>
@@ -32,7 +32,7 @@ $(document).ready(function(){
 <?php echo form_error('password_confirmation'); ?>
 <div class="first">
     <div class="text_left">
-        <?php echo $title_password_confirmation; ?><span class="important">*</span>:
+        <?php echo $title_password_confirmation; ?>:
     </div>
     <div class="text_right">
         <?php echo form_password($field_password_confirmation); ?>
