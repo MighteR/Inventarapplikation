@@ -24,7 +24,7 @@ $(document).ready(function(){
 </head>
 <body>
 <div id="loader" style="display:none; text-align:center;">
-    <img src="<?php echo base_url(); ?>application/views/template/images/loadiang.gif" alt="" /><br /><?php echo $title_loader; ?>
+    <img src="<?php echo base_url(); ?>application/views/template/images/loading.gif" alt="" /><br /><?php echo $title_loader; ?>
 </div>
 <div id="gui" style="display:none;"></div>
 <div id="yesno" style="display:none;"></div>
@@ -40,6 +40,7 @@ $(document).ready(function(){
         <div id="main_content">
             <?php echo $content ?>
     </div>
+    <div style="clear:both" />
     <div id="footer">
         <div id="footer_left">Version <?php echo $version; ?></div>
         <div id="footer_right">
