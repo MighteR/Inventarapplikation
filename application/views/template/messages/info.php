@@ -6,7 +6,7 @@
 </div>
 <div class="first">
 	<div class="text">
-		<?php echo $info; ?>
+		<?php echo $message; ?>
 	</div>
 	<div class="text">
 		<a href="<?php echo $url; ?>"><?php echo $title_next; ?></a>

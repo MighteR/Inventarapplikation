@@ -4,46 +4,75 @@
 //<![CDATA[
 $(document).ready(function(){
     $('input:submit, input:reset').button();
+    
+    var changed     = <?php echo $changed; ?>;
+    var sMessage    ='<?php echo $this->lang->line('notice_unsaved_data') ?>';
+
+    $(window).bind('beforeunload', function(e){
+        if (changed) return sMessage;
+    });
+    
+    $(document).keypress(function(e){ 
+        var element = e.target.nodeName.toLowerCase(); 
+        if (e.keyCode == 13 && element != 'textarea'){ 
+            return false; 
+        }
+    });
+
+    $("input[type='text'], select, textarea").change(function(){
+        changed = true;
+    });
+    
+    $('#form').submit(function(){
+        changed = false;
+        $('input:disabled, select:disabled').each(function(i){
+            this.disabled = false;
+        });
+
+        $("input[type='submit']").each(function(i){
+            this.disabled = true;
+        });
+    });
 });
 //]]>
 </script>
-<?php echo form_open(current_url());?>
+<form id="form" action="<?php echo current_url(); ?>" method="post" accept-charset="utf-8">
 <div id="content_title">
-	<span><?php echo $title; ?></span>
+	<span><?php echo lang('title_create_user'); ?></span>
 </div>
 <?php echo form_error('username'); ?>
 <div class="first">
-    <div class="text_left">
-        <?php echo form_label($this->lang->line('title_username'),'username'); ?><span class="important">*</span>:
+    <div class="text_left<?php echo $error_class_username; ?>">
+      <?php echo lang('title_username','username'); ?><span class="important">*</span>:
     </div>
     <div class="text_right">
-        <?php echo form_input($field_username); ?>
+        <input name="username" class="formular<?php echo $error_class_username; ?>" id="username" type="text" value="<?php echo set_value('username'); ?>"/>
     </div>
 </div>
 <?php echo form_error('password'); ?>
 <div class="second">
-    <div class="text_left">
-        <?php echo form_label($this->lang->line('title_password'),'password'); ?><span class="important">*</span>:
+    <div class="text_left<?php echo $error_class_password; ?>">
+        <?php echo lang('title_password','password'); ?><span class="important">*</span>:
     </div>
     <div class="text_right">
-        <?php echo form_password($field_password); ?>
+        <input name="password" class="formular<?php echo $error_class_password; ?>" id="password" type="password" value="<?php echo set_value('password'); ?>"/>
     </div>
 </div>
 <?php echo form_error('password_confirmation'); ?>
 <div class="first">
-    <div class="text_left">
-        <?php echo form_label($this->lang->line('title_password_confirmation'),'password_confirmation'); ?><span class="important">*</span>:
+    <div class="text_left<?php echo $error_class_password_confirmation; ?>">
+        <?php echo lang('title_password_confirmation','password_confirmation'); ?><span class="important">*</span>:
     </div>
     <div class="text_right">
-        <?php echo form_password($field_password_confirmation); ?>
+        <input name="password_confirmation" class="formular<?php echo $error_class_password_confirmation; ?>" id="password_confirmation" type="password" value="<?php echo set_value('password_confirmation'); ?>"/>
     </div>
 </div>
 <div class="second">
     <div class="text_left">
-        <?php echo form_label($this->lang->line('title_admin'),'admin'); ?>:
+        <?php echo lang('title_admin','admin'); ?>:
     </div>
     <div class="text_right">
-        <?php echo form_checkbox($field_admin); ?>
+        <input name="admin" class="formular" id="admin" type="checkbox" value="1" <?php echo set_checkbox('admin','1'); ?>/>
     </div>
 </div>
 <div class="first">
@@ -51,7 +80,8 @@ $(document).ready(function(){
         &nbsp;
     </div>
     <div class="text_right">
-        <?php echo form_submit($field_submit); ?>&nbsp;<?php echo form_reset($field_reset); ?>
+        <input name="submit" type="submit" value="<?php echo lang('title_submit'); ?>"/>
+        <input name="reset" type="reset" value="<?php echo lang('title_reset'); ?>"/>
     </div>
 </div>
-<?php echo form_close();?>
+</form>

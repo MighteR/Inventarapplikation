@@ -16,10 +16,18 @@ class User_model extends CI_Model {
         parent::__construct();
     }
     
-    public function create($data) {
+    public function create($data){
+        $data['creator'] = $this->session->userdata('id');
         $data['creation_timestamp'] = date('Y-m-d H:i:s');
         
         $this->db->insert('users', $data);
+    }
+    
+    public function delete($id){
+        $data['deleter'] = $this->session->userdata('id');
+        $data['deletion_timestamp'] = date('Y-m-d H:i:s');
+
+        $this->db->update('users', $data, array('id' => $id));
     }
     
     public function get_user($id){
@@ -39,8 +47,9 @@ class User_model extends CI_Model {
     }
     
     public function update($id,$data){
+        $data['modifier'] = $this->session->userdata('id');
         $data['modification_timestamp'] = date('Y-m-d H:i:s');
-        
+
         $this->db->update('users', $data, array('id' => $id));
     }
 }

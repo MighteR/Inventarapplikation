@@ -3,7 +3,7 @@
 </div>
 <div class="first">
 	<div class="text">
-		<?php echo $error; ?>
+		<?php echo $message; ?>
 	</div>
 </div>
 <div class="second">

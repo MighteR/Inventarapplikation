@@ -1,9 +1,13 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class MY_Controller extends CI_Controller {
-    
+
     public function __construct() {
         parent::__construct();
+        
+        $this->session->set_userdata('id', 1);
+        
+        
         if($this->input->cookie('language')){
             $this->config->set_item('language', $this->input->cookie('language'));
             $this->lang->load('template', $this->input->cookie('language'));            

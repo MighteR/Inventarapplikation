@@ -63,43 +63,43 @@ function search_user(page){
     }
 
     $.ajax({
-            complete: function(html){
-                $('#loader').dialog('close');
-            },
-            url: '<?php echo current_url();?>/indexlist' + page,
-            type: 'POST',
-            data: {
-                'username': search_username,
-                'page_output': output
-            },
-            success: function(html){
-                $('#users').html(html);
-            }
+        complete: function(html){
+            $('#loader').dialog('close');
+        },
+        url: '<?php echo current_url();?>/indexlist' + page,
+        type: 'POST',
+        data: {
+            'username': search_username,
+            'page_output': output
+        },
+        success: function(html){
+            $('#users').html(html);
+        }
     });
 }
 //]]> 
 </script>
 <div id="content_title">
-	<span><?php echo $title; ?></span>
+    <span><?php echo lang('title_userlist'); ?></span>
 </div>
 <div class="first">
-	<div class="text_left">
-	    <?php echo $title_username; ?>
-	</div>
-	<div class="text_right">
-		<input class="formular" id="search_user_username" name="search_user_username" size="50" type="text" />
-	</div>
+    <div class="text_left">
+        <?php echo lang('title_username','search_user_username'); ?>
+    </div>
+    <div class="text_right">
+        <input class="formular" id="search_user_username" name="search_user_username" size="50" type="text" />
+    </div>
 </div>
 <div class="second">
-	<div class="text_left">
-		&nbsp;
-	</div>
-	<div class="text_right">
-            <?php echo form_button($field_search_user); ?>
-            <?php echo form_button($reset_user_search); ?>
-	</div>
+    <div class="text_left">
+        &nbsp;
+    </div>
+    <div class="text_right">
+        <button name="create" type="button" id="search_user" ><?php echo lang('title_submit'); ?></button>
+        <button name="create" type="button" id="reset_search_user" ><?php echo lang('title_reset'); ?></button>
+    </div>
 </div>
 <div class="text_title" style="text-align:center">
-	<div><?php echo form_button($field_create_user); ?></div>
+    <div><button name="create" type="button" id="create" ><?php echo lang('title_create_user'); ?></button></div>
 </div>
 <div id="users"></div>
