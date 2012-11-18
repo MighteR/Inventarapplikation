@@ -214,8 +214,29 @@ class User extends MY_Controller {
     public function login(){
         $this->session->set_userdata('url',  uri_string());
         
-        $this->template->write_view('content','user/login');
+        $this->load->library('form_validation');
+        $this->load->helper('form');
         
+        $this->form_validation->set_rules('username', 'lang:title_username', 'required|trim');
+        $this->form_validation->set_rules('password', 'lang:title_password', 'required');
+ 
+        if($this->form_validation->run()){
+        }else{
+            $this->form_validation->set_error_delimiters('<div class="notice">', '</div>');
+            
+            $data['error_class_username'] = '';
+            $data['error_class_password'] = '';
+             if(form_error('username')){
+                  $data['error_class_username'] = '_error';
+              }
+
+              if(form_error('password')){
+                  $data['error_class_password'] = '_error';
+              }
+
+                $this->template->write_view('content','user/login',$data);
+        }
+      
         $this->template->render();
     }
 }

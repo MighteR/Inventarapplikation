@@ -19,7 +19,7 @@
         <!--Admin!-->
         <li><a href="test.html"><?php echo lang('menu_admin'); ?></a>
             <ul>
-                <li><a href="#"><?php echo lang('menu_admin_user'); ?></a></li>
+                <li><a href="<?php echo base_url(); ?>user"><?php echo lang('menu_admin_user'); ?></a></li>
             </ul>        
         </li>
         
