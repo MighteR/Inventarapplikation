@@ -218,7 +218,8 @@ class User extends MY_Controller {
             $this->load->library('form_validation');
             $this->load->helper('form');
 
-            $this->form_validation->set_rules('username', 'lang:title_username', 'required|trim|callback_login_check');
+            $this->form_validation->set_rules('login', '', 'callback_login_check');
+            $this->form_validation->set_rules('username', 'lang:title_username', 'required|trim');
             $this->form_validation->set_rules('password', 'lang:title_password', 'required');
 
             if($this->form_validation->run()){
@@ -230,11 +231,11 @@ class User extends MY_Controller {
                 $data['error_class_username'] = '';
                 $data['error_class_password'] = '';
 
-                 if(form_error('username')){
+                 if(form_error('username') OR form_error('login')){
                       $data['error_class_username'] = '_error';
                   }
 
-                  if(form_error('password')){
+                  if(form_error('password') OR form_error('login')){
                       $data['error_class_password'] = '_error';
                   }
 
@@ -258,10 +259,11 @@ class User extends MY_Controller {
     }
     
     //Form checks
-    public function login_check($username){
+    public function login_check(){
+        $username = $this->input->post('username');
         $password = $this->input->post('password');
 
-        if($password){
+        if($username AND $password){
             $this->load->model('user_model');
 
             $user = $this->user_model->get_user_by_login($username,$password);

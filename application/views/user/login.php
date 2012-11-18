@@ -17,6 +17,7 @@ $(document).ready(function(){
       <br /><?php echo lang('text_login_information'); ?>.<br /><br />
     </div>
 </div>
+<?php echo form_error('login'); ?>
 <?php echo form_error('username'); ?>
 <div class="second">
     <div class="text_left<?php echo $error_class_username; ?>">
