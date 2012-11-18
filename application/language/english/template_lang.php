@@ -9,6 +9,11 @@ $lang['title_next'] = 'Next';
 $lang['title_no'] = 'No';
 $lang['title_yes'] = 'Yes';
 
+//User Login
+$lang['title_login'] = 'User Login';
+$lang['text_login_information'] = 'Pleas type in your username and password';
+
+
 //Menu Section
 $lang['menu_home'] = 'Home';
 $lang['menu_inventory'] = 'Inventory';
