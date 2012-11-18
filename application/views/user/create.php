@@ -55,7 +55,7 @@ $(document).ready(function(){
         <?php echo lang('title_password','password'); ?><span class="important">*</span>:
     </div>
     <div class="text_right">
-        <input name="password" class="formular<?php echo $error_class_password; ?>" id="password" type="password" value="<?php echo set_value('password'); ?>"/>
+        <input name="password" class="formular<?php echo $error_class_password; ?>" id="password" type="password" value=""/>
     </div>
 </div>
 <?php echo form_error('password_confirmation'); ?>
@@ -64,7 +64,7 @@ $(document).ready(function(){
         <?php echo lang('title_password_confirmation','password_confirmation'); ?><span class="important">*</span>:
     </div>
     <div class="text_right">
-        <input name="password_confirmation" class="formular<?php echo $error_class_password_confirmation; ?>" id="password_confirmation" type="password" value="<?php echo set_value('password_confirmation'); ?>"/>
+        <input name="password_confirmation" class="formular<?php echo $error_class_password_confirmation; ?>" id="password_confirmation" type="password" value=""/>
     </div>
 </div>
 <div class="second">

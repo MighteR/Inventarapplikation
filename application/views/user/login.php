@@ -32,7 +32,7 @@ $(document).ready(function(){
         <?php echo lang('title_password','password'); ?><span class="important">*</span>:
     </div>
     <div class="text_right">
-        <input name="password" class="formular<?php echo $error_class_password; ?>" id="password" type="password" value="<?php echo set_value('password'); ?>"/>
+        <input name="password" class="formular<?php echo $error_class_password; ?>" id="password" type="password" value="" />
     </div>
 </div>
 <div class="second">

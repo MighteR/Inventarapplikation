@@ -32,7 +32,7 @@ class User extends MY_Controller {
                 $this->user_model->create($model_data);
 
                 $this->load->library('messages');
-                $this->messages->get_message('info',$this->lang->line('info_user_created'),base_url().'user');
+                $this->messages->get_message('info',$this->lang->line('info_user_created'),'user');
             }else{
                 $this->form_validation->set_error_delimiters('<div class="notice">', '</div>');
 
@@ -79,7 +79,7 @@ class User extends MY_Controller {
 
             $this->load->model('user_model');
             
-            $user_query = $this->user_model->get_user($id);
+            $user_query = $this->user_model->get_user_by_id($id);
             
             if($user_query->num_rows() == 1){
                 $this->load->model('lock_model');
@@ -127,7 +127,7 @@ class User extends MY_Controller {
                         $this->user_model->update($id,$model_data);
 
                         $this->load->library('messages');
-                        $this->messages->get_message('info',$this->lang->line('info_user_modified'),base_url().'user');
+                        $this->messages->get_message('info',$this->lang->line('info_user_modified'),'user');
                     }else{
                         $this->form_validation->set_error_delimiters('<div class="notice">', '</div>');
 
@@ -212,32 +212,73 @@ class User extends MY_Controller {
     }
     
     public function login(){
-        $this->session->set_userdata('url',  uri_string());
-        
-        $this->load->library('form_validation');
-        $this->load->helper('form');
-        
-        $this->form_validation->set_rules('username', 'lang:title_username', 'required|trim');
-        $this->form_validation->set_rules('password', 'lang:title_password', 'required');
- 
-        if($this->form_validation->run()){
+            if(!$this->session->userdata('id')){
+            $this->session->set_userdata('url',  uri_string());
+
+            $this->load->library('form_validation');
+            $this->load->helper('form');
+
+            $this->form_validation->set_rules('username', 'lang:title_username', 'required|trim|callback_login_check');
+            $this->form_validation->set_rules('password', 'lang:title_password', 'required');
+
+            if($this->form_validation->run()){
+                $this->load->library('messages');
+                $this->messages->get_message('info',$this->lang->line('info_user_logged_in'),$this->session->userdata('login_url'));
+            }else{
+                $this->form_validation->set_error_delimiters('<div class="notice">', '</div>');
+
+                $data['error_class_username'] = '';
+                $data['error_class_password'] = '';
+
+                 if(form_error('username')){
+                      $data['error_class_username'] = '_error';
+                  }
+
+                  if(form_error('password')){
+                      $data['error_class_password'] = '_error';
+                  }
+
+                    $this->template->write_view('content','user/login',$data);
+            }
         }else{
-            $this->form_validation->set_error_delimiters('<div class="notice">', '</div>');
-            
-            $data['error_class_username'] = '';
-            $data['error_class_password'] = '';
-             if(form_error('username')){
-                  $data['error_class_username'] = '_error';
-              }
-
-              if(form_error('password')){
-                  $data['error_class_password'] = '_error';
-              }
-
-                $this->template->write_view('content','user/login',$data);
+            $this->load->library('messages');
+            $this->messages->get_message('info',$this->lang->line('info_user_already_logged_in'),$this->session->userdata('url'));
         }
       
         $this->template->render();
+    }
+    
+    public function logout(){
+        $this->session->sess_destroy();
+
+        $this->load->library('messages');
+        $this->messages->get_message('info',$this->lang->line('info_user_logged_out'));
+        
+        $this->template->render();
+    }
+    
+    //Form checks
+    public function login_check($username){
+        $password = $this->input->post('password');
+
+        if($password){
+            $this->load->model('user_model');
+
+            $user = $this->user_model->get_user_by_login($username,$password);
+
+            if($user){
+                $this->session->set_userdata('id',$user->id);
+                $this->session->set_userdata('username',$user->username);
+                $this->session->set_userdata('admin',$user->admin);
+
+                return TRUE;
+            }else{
+                $this->form_validation->set_message('login_check',$this->lang->line('error_login'));
+                return FALSE;
+            }
+        }else{
+            return TRUE;
+        }
     }
 }
 

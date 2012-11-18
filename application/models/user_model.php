@@ -30,20 +30,37 @@ class User_model extends CI_Model {
         $this->db->update('users', $data, array('id' => $id));
     }
     
-    public function get_user($id){
+    public function get_user_by_id($id){
         return $this->db->get_where('users',array('id' => $id));
     }
     
     public function get_users_by_username($username,$limit = array()){
         $query = "SELECT id, username
-                            FROM users
-                            WHERE username LIKE ".$this->db->escape('%'.$username.'%');
+                    FROM users
+                    WHERE username LIKE ".$this->db->escape('%'.$username.'%')."
+                          AND deleter IS NULL";
 
         if(!empty($limit)){
             $query .= " LIMIT ".$limit['begin'].",".$limit['limit'];
         }
 
         return $this->db->query($query);
+    }
+    
+    public function get_user_by_login($username, $password){
+        $query = "SELECT id, username, admin
+                            FROM users
+                            WHERE username =  ".$this->db->escape($username)."
+                                  AND password = MD5(".$this->db->escape($password).")
+                                  AND deleter IS NULL";
+        
+        $query = $this->db->query($query);
+        
+        if($query->num_rows() == 1){
+            return $query->row();
+        }else{
+            return FALSE;
+        }
     }
     
     public function update($id,$data){

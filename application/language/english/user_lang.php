@@ -11,9 +11,13 @@ $lang['title_submit'] = 'Submit';
 $lang['title_username'] = 'Username';
 $lang['title_userlist'] = 'Userlist';
 
+$lang['error_login'] = 'The username and/or the password is wrong';
 $lang['error_user_locked_by'] = 'The user is locked by ';
 
 $lang['info_user_created'] = 'The user is successfully created';
+$lang['info_user_already_logged_in'] = 'You are already logged in';
+$lang['info_user_logged_in'] = 'You are successfully logged in';
+$lang['info_user_logged_out'] = 'You are successfully logged out';
 $lang['info_user_modified'] = 'The user is successfully modified';
 
 $lang['question_delete_user'] = 'You are going to delete this user, are you sure?';

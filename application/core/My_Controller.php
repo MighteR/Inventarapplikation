@@ -5,8 +5,14 @@ class MY_Controller extends CI_Controller {
     public function __construct() {
         parent::__construct();
         
-        $this->session->set_userdata('id', 1);
+        $url_exception[] = 'user/login';
+        $url_exception[] = 'user/logout';
         
+        if(!$this->session->userdata('id') AND !in_array(uri_string(),$url_exception)){
+            $this->session->set_userdata('login_url', uri_string());
+            
+            redirect('/user/login', 'refresh');
+        }
         
         if($this->input->cookie('language')){
             $this->config->set_item('language', $this->input->cookie('language'));

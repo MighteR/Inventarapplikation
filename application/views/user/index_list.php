@@ -22,10 +22,10 @@ $(document).ready(function(){
                         type: 'POST',
                         data: { 'id' : id },
                         success: function(data){
-                            alert('t');
-                            $('#user_' + id).fadeOut(450, function(){
+                            search_user();
+                            /*$('#user_' + id).fadeOut(450, function(){
                                 $('#user_' + id).remove();
-                            });
+                            });*/
                         }
                     });
                     $('#yesno').dialog('destroy');
