@@ -19,6 +19,7 @@ $lang['menu_help'] = 'Help';
 $lang['menu_help_about'] = 'About';
 $lang['menu_help_online'] = 'Online Help';
 $lang['menu_admin'] = 'Administration';
+$lang['menu_admin_user'] = 'User Administration';
 
 $lang['error_id_does_not_exist'] = 'This id doesn\'t exist!';
 $lang['error_no_access'] = 'You don\'t have access!';
