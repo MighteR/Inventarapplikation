@@ -11,18 +11,17 @@ class User extends MY_Controller {
         
         if(true){        
             $this->load->library('form_validation');
-            $this->load->helper(array('form','language'));
+            $this->load->helper('form');
             
-            if(empty($_POST)){
-                 $data['changed'] = 'false';
-             }else{
-                 $data['changed'] = 'true';
+            $data['changed'] = 'false';
+            
+            if(!empty($_POST)){
+                $data['changed'] = 'true';
              }
 
             $this->form_validation->set_rules('username', 'lang:title_username', 'required|trim');
             $this->form_validation->set_rules('password', 'lang:title_password', 'required');
             $this->form_validation->set_rules('password_confirmation', 'lang:title_password_confirmation', 'required|matches[password]');
-            $this->form_validation->set_rules('admin', '', '');
 
             if($this->form_validation->run()){
                 $model_data['username'] = $this->input->post('username');
@@ -83,18 +82,16 @@ class User extends MY_Controller {
             $user_query = $this->user_model->get_user($id);
             
             if($user_query->num_rows() == 1){
-                $this->load->helper('language');
                 $this->load->model('lock_model');
                 $this->lock_model->set_info('user',$id);
                 
-                if(empty($_POST) AND $this->lock_model->check()){
+                if($this->lock_model->check() AND empty($_POST)){
                     $this->load->library('messages');
                     $this->messages->get_message('error',$this->lang->line('error_user_locked_by').$this->lock_model->get_info());
                 }else{
-                    $data['old_username']   = '';
-                    $data['old_admin']      = '';
-
                     if(empty($_POST)){
+                        $data['changed'] = 'false';
+                        
                         $this->lock_model->create();
                         
                         $data_user = $user_query->row_array();
@@ -102,9 +99,11 @@ class User extends MY_Controller {
                         $data['old_username']   = $data_user['username'];
                         $data['old_admin']      = ($data_user['admin'] == 1) ? TRUE : FALSE;
                         
-                        $data['changed'] = 'false';
                     }else{
                         $data['changed'] = 'true';
+                        
+                        $data['old_username']   = '';
+                        $data['old_admin']      = '';
                     }
 
                     $this->load->library('form_validation');
@@ -113,7 +112,7 @@ class User extends MY_Controller {
                     $this->form_validation->set_rules('username', 'lang:title_username', 'required|trim');
                     $this->form_validation->set_rules('password', 'lang:title_password','matches[password_confirmation]');
                     $this->form_validation->set_rules('password_confirmation','lang:title_password_confirmation', 'matches[password]');
-                    $this->form_validation->set_rules('admin', '', '');
+                    //$this->form_validation->set_rules('admin', '', '');
 
 
                     if($this->form_validation->run()){
@@ -130,8 +129,6 @@ class User extends MY_Controller {
                         $this->load->library('messages');
                         $this->messages->get_message('info',$this->lang->line('info_user_modified'),base_url().'user');
                     }else{
-                        $this->lang->load('form_validation', $this->session->userdata('language'));            
-
                         $this->form_validation->set_error_delimiters('<div class="notice">', '</div>');
 
                         $data['id'] = $id;
@@ -170,7 +167,7 @@ class User extends MY_Controller {
         $this->session->set_userdata('url',  uri_string());
         
         if(true){
-            $this->load->helper(array('form','language'));
+            $this->load->helper('form');
             
             $this->template->write_view('content','user/index');
         }else{
@@ -188,7 +185,6 @@ class User extends MY_Controller {
 
                 $this->load->model('user_model');
                 $this->load->library('pages');
-                $this->load->helper('language');
                 
                 $query = $this->user_model->get_users_by_username($p_username);
 
@@ -212,6 +208,12 @@ class User extends MY_Controller {
             $this->load->library('messages');
             $this->messages->get_message('error',$this->lang->line('error_no_access'));
         }
+        $this->template->render();
+    }
+    
+    public function login(){
+        $this->template->write_view('content','user/login');
+        
         $this->template->render();
     }
 }
