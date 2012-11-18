@@ -212,6 +212,8 @@ class User extends MY_Controller {
     }
     
     public function login(){
+        $this->session->set_userdata('url',  uri_string());
+        
         $this->template->write_view('content','user/login');
         
         $this->template->render();
