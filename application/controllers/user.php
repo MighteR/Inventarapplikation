@@ -22,7 +22,8 @@ class User extends MY_Controller {
             $this->form_validation->set_rules('username', 'lang:title_username', 'required|trim');
             $this->form_validation->set_rules('password', 'lang:title_password', 'required');
             $this->form_validation->set_rules('password_confirmation', 'lang:title_password_confirmation', 'required|matches[password]');
-
+            $this->form_validation->set_rules('admin');
+            
             if($this->form_validation->run()){
                 $model_data['username'] = $this->input->post('username');
                 $model_data['password'] = $this->input->post('password');
@@ -103,7 +104,7 @@ class User extends MY_Controller {
                         $data['changed'] = 'true';
                         
                         $data['old_username']   = '';
-                        $data['old_admin']      = '';
+                        $data['old_admin']      = ($this->input->post('admin') == 1) ? TRUE : FALSE;
                     }
 
                     $this->load->library('form_validation');
@@ -112,8 +113,7 @@ class User extends MY_Controller {
                     $this->form_validation->set_rules('username', 'lang:title_username', 'required|trim');
                     $this->form_validation->set_rules('password', 'lang:title_password','matches[password_confirmation]');
                     $this->form_validation->set_rules('password_confirmation','lang:title_password_confirmation', 'matches[password]');
-                    //$this->form_validation->set_rules('admin', '', '');
-
+                    $this->form_validation->set_rules('admin');
 
                     if($this->form_validation->run()){
                         $model_data['username'] = $this->input->post('username');
@@ -122,7 +122,6 @@ class User extends MY_Controller {
                             $model_data['password'] = md5($this->input->post('password'));
                         }
                         $model_data['admin'] = $this->input->post('admin');
-                        //$data['modifier'] = '';
 
                         $this->user_model->update($id,$model_data);
 
@@ -212,7 +211,7 @@ class User extends MY_Controller {
     }
     
     public function login(){
-            if(!$this->session->userdata('id')){
+        if(!$this->session->userdata('id')){
             $this->session->set_userdata('url',  uri_string());
 
             $this->load->library('form_validation');
