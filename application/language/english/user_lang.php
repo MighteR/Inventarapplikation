@@ -7,7 +7,7 @@ $lang['title_modify_user'] = 'Change an existing user';
 $lang['title_password'] = 'Password';
 $lang['title_password_confirmation'] = 'Password Confirmation';
 $lang['title_username'] = 'Username';
-$lang['title_userlist'] = 'Userlist';
+$lang['title_user_list'] = 'Userlist';
 
 $lang['error_login'] = 'The username and/or the password is wrong';
 $lang['error_user_locked_by'] = 'The user is locked by ';

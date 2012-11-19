@@ -42,7 +42,7 @@ function predefine_category_search(name){
     search_user();
 }
 function search_user(page){
-    var search_username = $('#search_category_name').val();
+    var search_name = $('#search_name').val();
 
     if(typeof page === 'undefined'){
         page = '';
@@ -87,7 +87,7 @@ function search_user(page){
         <?php echo lang('title_category_name','search_category_name'); ?>
     </div>
     <div class="text_right">
-        <input class="formular" id="search_category_name" name="search_category_name" size="50" type="text" />
+        <input class="formular" id="search_name" name="search_name" size="50" type="text" />
     </div>
 </div>
 <div class="second">

@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class User_model extends CI_Model {
+class Category_model extends CI_Model {
     var $id = '';
     /*var $username = '';
     var $password = '';
@@ -37,7 +37,7 @@ class User_model extends CI_Model {
     public function get_categories_by_name($name,$limit = array()){
         $query = "SELECT id, name
                     FROM categories
-                    WHERE username LIKE ".$this->db->escape('%'.$name.'%')."
+                    WHERE name LIKE ".$this->db->escape('%'.$name.'%')."
                           AND deleter IS NULL";
 
         if(!empty($limit)){

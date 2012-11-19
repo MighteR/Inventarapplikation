@@ -80,7 +80,7 @@ function search_user(page){
 //]]> 
 </script>
 <div id="content_title">
-    <span><?php echo lang('title_userlist'); ?></span>
+    <span><?php echo lang('title_user_list'); ?></span>
 </div>
 <div class="first">
     <div class="text_left">

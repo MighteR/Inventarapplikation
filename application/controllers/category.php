@@ -45,13 +45,13 @@ class Category extends MY_Controller {
                 $this->load->model('category_model');
                 $this->load->library('pages');
                 
-                $query = $this->user_model->get_categories_by_name($p_name);
+                $query = $this->category_model->get_categories_by_name($p_name);
 
                 if($query->num_rows() > 0){
                     $this->pages->check_page($query->num_rows(),$page,true,$p_page_output);
 
-                    $query = $this->user_model->get_categories_by_name($p_name,$this->pages->get_limit());
-                    $data['users'] = $query->result_object();
+                    $query = $this->category_model->get_categories_by_name($p_name,$this->pages->get_limit());
+                    $data['categories'] = $query->result_object();
 
                     $data['entry'] = true;
                 }else{
