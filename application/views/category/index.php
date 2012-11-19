@@ -27,22 +27,22 @@ $(document).ready(function(){
         }
     });
 	
-    $('#search_user').click(function(){
+    $('#search_category').click(function(){
         search_user();
     });
 
-    $('#reset_user_search').click(function(){
-        predefine_user_search('');
+    $('#reset_category_search').click(function(){
+        predefine_category_search('');
     });
 });
 	
-function predefine_user_search(username){
-    $('#search_user_username').val(username);
+function predefine_category_search(name){
+    $('#search_category_name').val(name);
 
     search_user();
 }
 function search_user(page){
-    var search_username = $('#search_user_username').val();
+    var search_username = $('#search_category_name').val();
 
     if(typeof page === 'undefined'){
         page = '';
@@ -59,7 +59,7 @@ function search_user(page){
     if($('#users_output').val() == 'undefined'){
         output = 0;
     }else{
-        output = $('#users_output').val();
+        output = $('#categories_output').val();
     }
 
     $.ajax({
@@ -69,25 +69,25 @@ function search_user(page){
         url: '<?php echo current_url(); ?>/indexList' + page,
         type: 'POST',
         data: {
-            'username': search_username,
+            'name': search_name,
             'page_output': output
         },
         success: function(html){
-            $('#users').html(html);
+            $('#categories').html(html);
         }
     });
 }
 //]]> 
 </script>
 <div id="content_title">
-    <span><?php echo lang('title_userlist'); ?></span>
+    <span><?php echo lang('title_categorylist'); ?></span>
 </div>
 <div class="first">
     <div class="text_left">
-        <?php echo lang('title_username','search_user_username'); ?>
+        <?php echo lang('title_ame','search_category_name'); ?>
     </div>
     <div class="text_right">
-        <input class="formular" id="search_user_username" name="search_user_username" size="50" type="text" />
+        <input class="formular" id="search_category_name" name="search_category_name" size="50" type="text" />
     </div>
 </div>
 <div class="second">
@@ -95,11 +95,11 @@ function search_user(page){
         &nbsp;
     </div>
     <div class="text_right">
-        <button name="create" type="button" id="search_user" ><?php echo lang('title_submit'); ?></button>
-        <button name="create" type="button" id="reset_search_user" ><?php echo lang('title_reset'); ?></button>
+        <button name="create" type="button" id="search_category" ><?php echo lang('title_submit'); ?></button>
+        <button name="create" type="button" id="reset_search_category" ><?php echo lang('title_reset'); ?></button>
     </div>
 </div>
 <div class="text_title" style="text-align:center">
-    <div><button name="create" type="button" id="create" ><?php echo lang('title_create_user'); ?></button></div>
+    <div><button name="create" type="button" id="create" ><?php echo lang('title_create_category'); ?></button></div>
 </div>
-<div id="users"></div>
+<div id="categories"></div>

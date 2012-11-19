@@ -6,10 +6,11 @@ class User extends MY_Controller {
         
         $this->lang->load('user', $this->session->userdata('language'));
     }
+    
     public function create(){
         $this->session->set_userdata('url',  uri_string());
         
-        if(true){        
+        if($this->session->userdata('admin')){     
             $this->load->library('form_validation');
             $this->load->helper('form');
             
@@ -63,8 +64,7 @@ class User extends MY_Controller {
     }
     
     public function delete(){
-        //if admin rights
-        if(true){
+        if($this->session->userdata('admin')){
             if($this->input->is_ajax_request() AND !empty($_POST)){
                 $this->load->model('user_model');
                 
@@ -74,8 +74,7 @@ class User extends MY_Controller {
     }
     
     public function modify($id){
-        //if admin rights
-        if(true){
+        if($this->session->userdata('admin')){
             $this->session->set_userdata('url',  uri_string());
 
             $this->load->model('user_model');
@@ -165,7 +164,7 @@ class User extends MY_Controller {
     public function index(){
         $this->session->set_userdata('url',  uri_string());
         
-        if(true){
+        if($this->session->userdata('admin')){
             $this->load->helper('form');
             
             $this->template->write_view('content','user/index');
@@ -173,11 +172,12 @@ class User extends MY_Controller {
             $this->load->library('messages');
             $this->messages->get_message('error',$this->lang->line('error_no_access'));
         }
+        
         $this->template->render();
     }
     
     public function indexList($page = 1){
-        if(true){
+        if($this->session->userdata('admin')){
             if($this->input->is_ajax_request() AND !empty($_POST)){
                 $p_username = $this->input->post('username');
                 $p_page_output = $this->input->post('page_output');
@@ -196,8 +196,7 @@ class User extends MY_Controller {
                     $data['entry'] = true;
                 }else{
                     $data['entry'] = false;
-                }
-                
+                }                
 
                 $content = $this->load->view('user/index_list',$data,true);
                 echo $content;
@@ -207,6 +206,7 @@ class User extends MY_Controller {
             $this->load->library('messages');
             $this->messages->get_message('error',$this->lang->line('error_no_access'));
         }
+        
         $this->template->render();
     }
     
@@ -249,11 +249,15 @@ class User extends MY_Controller {
     }
     
     public function logout(){
-        $this->session->sess_destroy();
-
         $this->load->library('messages');
-        $this->messages->get_message('info',$this->lang->line('info_user_logged_out'));
         
+        if($this->session->userdata('id')){
+            $this->session->sess_destroy();
+
+            $this->messages->get_message('info',$this->lang->line('info_user_logged_out'),'user/login');
+        }else{
+            $this->messages->get_message('info',$this->lang->line('info_user_not_logged_in'),'user/login');
+        }
         $this->template->render();
     }
     

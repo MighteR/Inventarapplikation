@@ -1,5 +1,5 @@
-<link href="<?php echo base_url(); ?>application/views/template/css/smoothness/jquery-ui-1.9.1.custom.min.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="<?php echo base_url(); ?>application/views/template/js/jquery-ui-1.9.1.custom.min.js"></script>
+<link href="<?php echo base_url('application/views/template/css/smoothness/jquery-ui-1.9.1.custom.min.css'); ?>" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<?php echo base_url('application/views/template/js/jquery-ui-1.9.1.custom.min.js'); ?>"></script>
 <script type="text/javascript">
 //<![CDATA[
 $(document).ready(function(){
@@ -7,7 +7,7 @@ $(document).ready(function(){
     
     $(window).bind('unload', function(e){
         $.ajax({
-            url: '<?php echo base_url(); ?>lock/delete',
+            url: '<?php echo base_url('lock/delete'); ?>',
             type: 'POST',
             async: false,
             data: {

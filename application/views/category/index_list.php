@@ -5,20 +5,20 @@ $(document).ready(function(){
         var id = $(this).attr('id').split('_');
         id = id[2];
         
-        var username = $('#username_' + id).text();
+        var name = $('#category_' + id).text();
 
-        $('#yesno').text('<?php echo lang('question_delete_user'); ?>');
+        $('#yesno').text('<?php echo lang('question_delete_category'); ?>');
         
         $('#yesno').dialog({
             closeOnEscape: false,
             height: 120,
             modal: true,
             resizable: false,
-            title: '<?php echo lang('title_delete_user'); ?>: ' + username,
+            title: '<?php echo lang('title_delete_category'); ?>: ' + name,
             buttons: {
                 '<?php echo lang('title_yes'); ?>': function(){
                     $.ajax({
-                        url: '<?php echo base_url('user/delete'); ?>',
+                        url: '<?php echo base_url('category/delete'); ?>',
                         type: 'POST',
                         data: { 'id' : id },
                         success: function(data){
@@ -41,12 +41,12 @@ $(document).ready(function(){
 </script>
 <div class="first">
     <div class="text" style="text-align:center;">
-        <?php echo $this->pages->get_links('users','search_user'); ?>&nbsp;
+        <?php echo $this->pages->get_links('categories','search_category'); ?>&nbsp;
     </div>
 </div>
 <div class="text_title">
     <div style="float:left; width: 95%;">
-        <?php echo lang('title_username'); ?>
+        <?php echo lang('title_category'); ?>
     </div>
     <div style="float:left;">
         &nbsp;
@@ -54,13 +54,13 @@ $(document).ready(function(){
 </div>
 <?php if ($entry): ?>
 <?php $c = 0;
-foreach($users as $user): ?>
-<div id="user_<?php echo $user->id; ?>" class="<?php echo ($c++ % 2) ? 'second' : 'first'; ?> list">
+foreach($categories as $category): ?>
+<div id="category_<?php echo $category->id; ?>" class="<?php echo ($c++ % 2) ? 'second' : 'first'; ?> list">
     <div style="float:left; width:95%;">
-        <a href="<?php echo base_url('user/modify/'.$user->id); ?>"><span id="username_<?php echo $user->id; ?>"><?php echo $user->username; ?></span></a>
+        <a href="<?php echo base_url('category/modify/'.$category->id); ?>"><span id="name_<?php echo $category->id; ?>"><?php echo $category->name; ?></span></a>
     </div>
     <div style="float:left;">
-        <img alt="delete" id="delete_user_<?php echo $user->id; ?>" name="delete" src="<?php echo base_url('application/views/template/images/trash.png'); ?>" style="cursor:pointer;" />
+        <img alt="delete" id="delete_category_<?php echo $category->id; ?>" name="delete" src="<?php echo base_url('application/views/template/images/trash.png'); ?>" style="cursor:pointer;" />
     </div>
 </div>
 <?php endforeach; ?>

@@ -17,6 +17,7 @@ $lang['info_user_created'] = 'Der Benutzer wurde erfolgreich angelegt';
 $lang['info_user_already_logged_in'] = 'Sie sind bereits angemeldet';
 $lang['info_user_logged_in'] = 'Sie haben sich erfolgreich angemeldet';
 $lang['info_user_logged_out'] = 'Sie haben sich erfolgreich abgemeldet';
+$lang['info_user_not_logged_in'] = 'Sie sind nicht eingeloggt';
 $lang['info_user_modified'] = 'Der Benutzer wurde erfolgreich verändert';
 
 $lang['question_delete_user'] = 'Sie möchten den Benutzer löschen, sind sie sicher?';

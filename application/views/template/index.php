@@ -6,12 +6,12 @@
 <meta charset="utf-8" />
 <meta http-equiv="cache-control" content="no-cache" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
-<link href="<?php echo base_url(); ?>application/views/template/css/skins/black.css" rel="stylesheet" type="text/css" />
-<link href="<?php echo base_url(); ?>application/views/template/css/dcmegamenu.css" rel="stylesheet" type="text/css" />
-<link href="<?php echo base_url(); ?>application/views/template/css/css.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="<?php echo base_url(); ?>application/views/template/js/jquery-1.8.2.min.js"></script>
-<script type='text/javascript' src="<?php echo base_url(); ?>application/views/template/js/jquery.hoverIntent.minified.js"></script>
-<script type='text/javascript' src="<?php echo base_url(); ?>application/views/template/js/jquery.dcmegamenu.1.3.3.js"></script>
+<link href="<?php echo base_url('application/views/template/css/skins/black.css'); ?>" rel="stylesheet" type="text/css" />
+<link href="<?php echo base_url('application/views/template/css/dcmegamenu.css'); ?>" rel="stylesheet" type="text/css" />
+<link href="<?php echo base_url('application/views/template/css/css.css'); ?>" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<?php echo base_url('application/views/template/js/jquery-1.8.2.min.js'); ?>"></script>
+<script type='text/javascript' src="<?php echo base_url('application/views/template/js/jquery.hoverIntent.minified.js'); ?>"></script>
+<script type='text/javascript' src="<?php echo base_url('application/views/template/js/jquery.dcmegamenu.1.3.3.js'); ?>"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	$('#menu-content').dcMegaMenu({
@@ -24,7 +24,7 @@ $(document).ready(function(){
 </head>
 <body>
 <div id="loader" style="display:none; text-align:center;">
-    <img src="<?php echo base_url(); ?>application/views/template/images/loading.gif" alt="" /><br /><?php echo $title_loader; ?>
+    <img src="<?php echo base_url('application/views/template/images/loading.gif'); ?>" alt="" /><br /><?php echo $title_loader; ?>
 </div>
 <div id="gui" style="display:none;"></div>
 <div id="yesno" style="display:none;"></div>
