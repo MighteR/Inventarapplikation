@@ -80,11 +80,11 @@ function search_user(page){
 //]]> 
 </script>
 <div id="content_title">
-    <span><?php echo lang('title_categorylist'); ?></span>
+    <span><?php echo lang('title_category_list'); ?></span>
 </div>
 <div class="first">
     <div class="text_left">
-        <?php echo lang('title_ame','search_category_name'); ?>
+        <?php echo lang('title_category_name','search_category_name'); ?>
     </div>
     <div class="text_right">
         <input class="formular" id="search_category_name" name="search_category_name" size="50" type="text" />

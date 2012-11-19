@@ -9,6 +9,10 @@ $lang['title_next'] = 'Next';
 $lang['title_no'] = 'No';
 $lang['title_yes'] = 'Yes';
 
+//Buttons
+$lang['title_reset'] = 'Reset';
+$lang['title_submit'] = 'Submit';
+
 //User Login
 $lang['title_login'] = 'User Login';
 $lang['text_login_information'] = 'Pleas type in your username and password';
