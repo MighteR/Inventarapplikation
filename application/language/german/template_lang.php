@@ -9,6 +9,9 @@ $lang['title_next'] = 'Weiter';
 $lang['title_no'] = 'Nein';
 $lang['title_yes'] = 'Ja';
 
+//Loader
+$lang['title_loader'] = 'Laden';
+
 //Buttons
 $lang['title_reset'] = 'Reset';
 $lang['title_submit'] = 'Absenden';
