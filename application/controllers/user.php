@@ -183,20 +183,23 @@ class User extends MY_Controller {
                 $p_page_output = $this->input->post('page_output');
 
                 $this->load->model('user_model');
-                $this->load->library('pages');
                 
                 $query = $this->user_model->get_users_by_username($p_username);
+                
+                $data['entry'] = false;
+                $data['pages'] = '';
+                $data['users'] = '';
 
                 if($query->num_rows() > 0){
+                    $this->load->library('pages');
                     $this->pages->check_page($query->num_rows(),$page,true,$p_page_output);
-
+                    $data['pages'] = $this->pages->get_links('users','search_user');
+                    
                     $query = $this->user_model->get_users_by_username($p_username,$this->pages->get_limit());
                     $data['users'] = $query->result_object();
 
                     $data['entry'] = true;
-                }else{
-                    $data['entry'] = false;
-                }                
+                }            
 
                 $content = $this->load->view('user/index_list',$data,true);
                 echo $content;

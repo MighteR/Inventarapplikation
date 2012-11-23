@@ -7,7 +7,7 @@ $(document).ready(function(){
     //predefine_user_search('');
 
     $('#create').click(function(){
-            window.location.href = '<?php echo current_url('create'); ?>';
+            window.location.href = '<?php echo current_url(); ?>/create';
     });
 	
     $(document).keypress(function(e){ 
@@ -31,7 +31,7 @@ $(document).ready(function(){
         search_user();
     });
 
-    $('#reset_user_search').click(function(){
+    $('#reset_search_user').click(function(){
         predefine_user_search('');
     });
 });
@@ -95,8 +95,8 @@ function search_user(page){
         &nbsp;
     </div>
     <div class="text_right">
-        <button name="create" type="button" id="search_user" ><?php echo lang('title_submit'); ?></button>
-        <button name="create" type="button" id="reset_search_user" ><?php echo lang('title_reset'); ?></button>
+        <button name="submit" type="button" id="search_user" ><?php echo lang('title_submit'); ?></button>
+        <button name="reset" type="button" id="reset_search_user" ><?php echo lang('title_reset'); ?></button>
     </div>
 </div>
 <div class="text_title" style="text-align:center">

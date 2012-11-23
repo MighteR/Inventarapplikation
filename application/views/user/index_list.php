@@ -41,7 +41,7 @@ $(document).ready(function(){
 </script>
 <div class="first">
     <div class="text" style="text-align:center;">
-        <?php echo $this->pages->get_links('users','search_user'); ?>&nbsp;
+        <?php echo $pages ?>&nbsp;
     </div>
 </div>
 <div class="text_title">

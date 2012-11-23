@@ -23,7 +23,7 @@ class MY_Controller extends CI_Controller {
         
         $this->template->write('title',$this->lang->line('title'));
         //Loader title ändern
-        $this->template->write('title_loader',$this->lang->line('title'));
+        $this->template->write('title_loader',$this->lang->line('title_loader'));
         $this->template->write('version','0.1');
                         
         //Write information to template file
