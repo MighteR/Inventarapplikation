@@ -3,9 +3,9 @@
 $(document).ready(function(){
     $("img[name='delete']").click(function(){
         var id = $(this).attr('id').split('_');
-        id = id[2];
-        
-        var name = $('#package_tpye_' + id).text();
+        id = id[3];
+
+        var name = $('#package_type_' + id).text();
 
         $('#yesno').text('<?php echo lang('question_delete_package_type'); ?>');
         
@@ -57,7 +57,7 @@ $(document).ready(function(){
 foreach($package_types as $package_type): ?>
 <div id="package_type_<?php echo $package_type->id; ?>" class="<?php echo ($c++ % 2) ? 'second' : 'first'; ?> list">
     <div style="float:left; width:95%;">
-        <a href="<?php echo base_url('package_type/modify/'.$package_type->id); ?>"><span id="name_<?php echo $package_type->id; ?>"><?php echo $package_type->name; ?></span></a>
+        <a href="<?php echo base_url('package_type/modify/'.$package_type->id); ?>"><span id="package_type_<?php echo $package_type->id; ?>"><?php echo $package_type->name; ?></span></a>
     </div>
     <div style="float:left;">
         <img alt="delete" id="delete_package_type_<?php echo $package_type->id; ?>" name="delete" src="<?php echo base_url('application/views/template/images/trash.png'); ?>" style="cursor:pointer;" />
