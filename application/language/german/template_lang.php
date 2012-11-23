@@ -28,6 +28,7 @@ $lang['menu_help_about'] = 'Über';
 $lang['menu_help_online'] = 'Online Hilfe';
 $lang['menu_admin'] = 'Administration';
 $lang['menu_admin_user'] = 'Benutzerverwaltung';
+$lang['menu_admin_category'] = 'Kategorieverwaltung';
 
 $lang['error_id_does_not_exist'] = 'Diese ID existiert nicht!';
 $lang['error_no_access'] = 'Sie haben keine Berechtigung!';
