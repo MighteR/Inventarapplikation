@@ -10,6 +10,44 @@ class Package_type extends MY_Controller {
     public function create(){
         $this->session->set_userdata('url',  uri_string());
         
+        if($this->session->userdata('admin')){
+            $this->load->library('form_validation');
+            $this->load->helper('form');
+            
+            $data['changed'] = 'false';
+            
+            if(!empty($_POST)){
+                $data['changed'] = 'true';
+            }
+            
+            $this->form_validation->set_rules('package_type', 'lang:title_package_type', 'required|trim');
+            
+            if($this->form_validation->run()){
+                $model_data['name'] = $this->input->post('package_type');
+                
+                $this->load->model('package_type_model');
+                $this->package_type_model->create($model_data);
+                
+                $this->load->library('messages');
+                $this->messages->get_message('info',$model_data['name'].' '.$this->lang->line('info_package_type_created'),'package_type');
+                
+            }else{
+            $this->form_validation->set_error_delimiters('<div class="notice">', '</div>');
+            
+            $this->form_validation->set_error_delimiters('<div class="notice">', '</div>');
+            $data['error_class_package_type'] = '';
+            
+            if(form_error('package_type')){
+                $data['error_class_package_type'] = '_error';
+            }
+            $this->template->write_view('content','package_type/create',$data);
+            }
+        }else{
+            $this->load->library('messages');
+            $this->messages->get_message('error',$this->lang->line('error_no_access'));
+        }
+        $this->template->render();
+        
     }
     
     public function modify($id){

@@ -28,7 +28,7 @@
         <!--Help!-->
         <li><a href="test.html"><?php echo lang('menu_help'); ?></a>
             <ul>
-                <li><a href="#"><?php echo lang('menu_help_about'); ?></a></li>
+                <li><a href="<?php echo base_url('help'); ?>"><?php echo lang('menu_help_about'); ?></a></li>
                 <li><a href="#"><?php echo lang('menu_help_online'); ?></a></li>
             </ul>
         </li>       
