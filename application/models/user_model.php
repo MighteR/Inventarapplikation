@@ -31,7 +31,11 @@ class User_model extends CI_Model {
     }
     
     public function get_user_by_id($id){
-        return $this->db->get_where('users',array('id' => $id));
+        $query = "SELECT * FROM users
+                    WHERE   id = ".$this->db->escape($id)." AND
+                            deleter IS NULL";
+        
+        return $this->db->query($query);
     }
     
     public function get_users_by_username($username,$limit = array()){

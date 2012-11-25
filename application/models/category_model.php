@@ -30,18 +30,29 @@ class Category_model extends CI_Model {
         $this->db->update('categories', $data, array('id' => $id));
     }
     
-    public function get_all_categories($parent = FALSE){
-        $query = "SELECT id, name FROM categories";
-        
+    public function get_all_categories($parent = FALSE, $exclude = NULL){
+        $query = "SELECT id, name
+                    FROM categories
+                    WHERE deleter IS NULL";
+
+
         if($parent){
-            $query .= " WHERE id IN (SELECT parent_category FROM categories)";
+            $query .= " AND categories.id IN (SELECT parent_category FROM categories)";
         }
         
+        if($exclude != NULL){
+            $query .= " AND categories.id != ".$this->db->escape($exclude);
+        }
+
         return $this->db->query($query);
     }
     
     public function get_category_by_id($id){
-        return $this->db->get_where('categories',array('id' => $id));
+        $query = "SELECT * FROM categories
+                    WHERE   id = ".$this->db->escape($id)." AND
+                            deleter IS NULL";
+
+        return $this->db->query($query);
     }
     
     public function get_category_list($name,$parent = NULL, $limit = array()){

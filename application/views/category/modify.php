@@ -5,6 +5,18 @@
 $(document).ready(function(){
     $('input:submit, input:reset').button();
     
+    $(window).bind('unload', function(e){
+        $.ajax({
+            url: '<?php echo base_url('lock/delete'); ?>',
+            type: 'POST',
+            async: false,
+            data: {
+                'type' : 'category',
+                'id'   : '<?php echo $id; ?>'
+            }
+        });
+    });
+    
     var changed     = <?php echo $changed; ?>;
     var sMessage    ='<?php echo $this->lang->line('notice_unsaved_data') ?>';
 
@@ -46,7 +58,7 @@ $(document).ready(function(){
       <?php echo lang('title_category','name'); ?><span class="important">*</span>:
     </div>
     <div class="text_right">
-        <input name="name" class="formular<?php echo $error_class_name; ?>" id="name" type="text" value="<?php echo set_value('name'); ?>"/>
+        <input name="name" class="formular<?php echo $error_class_name; ?>" id="name" type="text" value="<?php echo set_value('name', $old_name); ?>"/>
     </div>
 </div>
 <?php if($categories_exists): ?>
@@ -56,9 +68,9 @@ $(document).ready(function(){
     </div>
     <div class="text_right">
         <select class="formular" id="parent_category" name="parent_category">
-            <option value="NULL" <?php echo set_select('parent_category', 'NULL'); ?>><?php echo lang('title_root_category'); ?></option>
+            <option value="NULL" <?php echo set_select('parent_category', 'NULL', ($old_parent_category == NULL) ? TRUE : FALSE); ?>><?php echo lang('title_root_category'); ?></option>
 <?php foreach ($categories as $category): ?>
-            <option value="<?php echo $category->id; ?>" <?php echo set_select('parent_category', $category->id); ?>><?php echo $category->name; ?></option>
+            <option value="<?php echo $category->id; ?>" <?php echo set_select('parent_category', $category->id, ($old_parent_category == $category->id) ? TRUE : FALSE); ?>><?php echo $category->name; ?></option>
 <?php endforeach; ?>
         </select>
     </div>
@@ -71,7 +83,7 @@ $(document).ready(function(){
         <?php echo lang('title_report','report'); ?>:
     </div>
     <div class="text_right">
-        <input name="report" class="formular" id="report" type="checkbox" value="1" <?php echo set_checkbox('report','1'); ?>/>
+        <input name="report" class="formular" id="report" type="checkbox" value="1" <?php echo set_checkbox('report','1', $old_report); ?>/>
     </div>
 </div>
 <?php if($categories_exists): ?>

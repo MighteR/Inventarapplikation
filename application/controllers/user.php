@@ -27,7 +27,7 @@ class User extends MY_Controller {
             
             if($this->form_validation->run()){
                 $model_data['username'] = $this->input->post('username');
-                $model_data['password'] = $this->input->post('password');
+                $model_data['password'] = md5($this->input->post('password'));
                 $model_data['admin']    = $this->input->post('admin');
 
                 $this->load->model('user_model');

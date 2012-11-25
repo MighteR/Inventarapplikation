@@ -22,11 +22,21 @@ class Category extends MY_Controller {
                 $data['changed'] = 'true';
              }
 
-            $this->form_validation->set_rules('name', 'lang:title_name', 'required|trim');
+            $this->form_validation->set_rules('name', 'lang:title_category', 'required|trim');
+            $this->form_validation->set_rules('parent_category');
+            $this->form_validation->set_rules('report');
             
             if($this->form_validation->run()){
-                $model_data['name']             = $this->input->post('name');                
-                $model_data['parent_category']  = ($this->input->post('parent_category') == 'NULL') ? NULL : $this->input->post('parent_category');
+                $model_data['name'] = $this->input->post('name');
+                
+                if(!$this->input->post('parent_category') OR
+                        $this->input->post('parent_category') == 'NULL'){
+                    $model_data['parent_category'] = NULL;
+                }else{
+                    $model_data['parent_category'] = $this->input->post('parent_category');
+                }
+                //$model_data['parent_category']  = (!$this->input->post('parent_category') OR $this->input->post('parent_category') == 'NULL') ? NULL : $this->input->post('parent_category');
+                $model_data['generate_report']  = $this->input->post('report');
 
                 $this->category_model->create($model_data);
 
@@ -61,8 +71,97 @@ class Category extends MY_Controller {
     }
     
     public function modify($id){
-        $this->session->set_userdata('url',  uri_string());
-        
+        if($this->session->userdata('admin')){
+            $this->session->set_userdata('url',  uri_string());
+
+            $this->load->model('category_model');
+            
+            $category_query = $this->category_model->get_category_by_id($id);
+            
+            if($category_query->num_rows() == 1){
+
+                $this->load->model('lock_model');
+                $this->lock_model->set_info('category',$id);
+                
+                if($this->lock_model->check() AND empty($_POST)){
+                    $this->load->library('messages');
+                    $this->messages->get_message('error',$this->lang->line('error_category_locked_by').$this->lock_model->get_info());
+                }else{
+                    if(empty($_POST)){
+                        $data['changed'] = 'false';
+                        
+                        $this->lock_model->create();
+                        
+                        $data_category = $category_query->row_array();
+
+                        $data['old_name']               = $data_category['name'];
+                        $data['old_parent_category']    = $data_category['parent_category'];
+                        $data['old_report']             = ($data_category['generate_report'] == 1) ? TRUE : FALSE;
+                    }else{
+                        $data['changed'] = 'true';
+                        
+                        $data['old_name']   = '';
+                        $data['old_parent_category']    = $this->input->post('parent_category');
+                        $data['old_report']             = ($this->input->post('generate_report') == 1) ? TRUE : FALSE;
+                    }
+
+                    $this->load->library('form_validation');
+                    $this->load->helper('form');
+
+                    $this->form_validation->set_rules('name', 'lang:title_category', 'required|trim');
+                    $this->form_validation->set_rules('parent_category');
+                    $this->form_validation->set_rules('report');
+
+                    if($this->form_validation->run()){
+                        $model_data['name'] = $this->input->post('name');
+
+                        if(!$this->input->post('parent_category') OR
+                                $this->input->post('parent_category') == 'NULL'){
+                            $model_data['parent_category'] = NULL;
+                        }else{
+                            $model_data['parent_category'] = NULL;
+                        }
+                        //$model_data['parent_category']  = (!$this->input->post('parent_category') OR $this->input->post('parent_category') == 'NULL') ? NULL : $this->input->post('parent_category');
+                        $model_data['generate_report']  = $this->input->post('report');
+
+                        $this->user_model->update($id,$model_data);
+
+                        $this->load->library('messages');
+                        $this->messages->get_message('info',$this->lang->line('info_user_modified'),'user');
+                    }else{
+                        $query = $this->category_model->get_all_categories(FALSE, $id);
+
+                        $data['categories_exists'] = false;
+
+                        if($query->num_rows() > 0){
+                            $data['categories_exists'] = true;
+
+                            $data['categories'] = $query->result_object();
+                        }
+
+                        $this->form_validation->set_error_delimiters('<div class="notice">', '</div>');
+
+                        $data['id'] = $id;
+
+                        $data['error_class_name'] = '';
+
+                        if(form_error('name')){
+                            $data['error_class_name'] = '_error';
+                        }
+
+                        $this->template->write_view('content','category/modify',$data);
+                    }
+                }    
+            }else{
+                $this->load->library('messages');
+                $this->messages->get_message('error',$this->lang->line('error_id_does_not_exist'));
+            }
+        }else{
+            $this->load->library('messages');
+            $this->messages->get_message('error',$this->lang->line('error_no_access'));
+        }
+
+       $this->template->render();
     }
     
     public function delete(){
