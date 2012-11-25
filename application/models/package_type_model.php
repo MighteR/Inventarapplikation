@@ -22,7 +22,11 @@ class Package_type_model extends CI_Model {
     }
     
     public function get_package_type_by_id($id){
-        return $this->db->get_where('package_types',array('id' => $id));
+        $query = "SELECT * FROM package_types
+                    WHERE   id = ".$this->db->escape($id)." AND
+                            deleter IS NULL";
+        
+        return $this->db->query($query);
     }
     
     public function get_package_type_by_name($name,$limit = array()){
