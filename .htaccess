@@ -6,8 +6,6 @@ RewriteEngine On
 
 RewriteBase /
 
-#RewriteRule ^css/(.*)$ application/views/template/css/$1
-#RewriteRule ^js/(.*)$ application/views/template/js/$1
 
 # Do not enable rewriting for files or directories that exist
 RewriteCond %{REQUEST_FILENAME} !-f
@@ -15,4 +13,4 @@ RewriteCond %{REQUEST_FILENAME} !-d
 
 # For reuests that are not actual files or directories,
 # Rewrite to index.php/URL
-RewriteRule ^(.*)$ index.php?$1 [PT,L]
+RewriteRule ^(.*)$ index.php?$1 [L]
