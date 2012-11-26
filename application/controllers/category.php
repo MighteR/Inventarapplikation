@@ -165,7 +165,13 @@ class Category extends MY_Controller {
     }
     
     public function delete(){
-        
+        if($this->session->userdata('admin')){
+            if($this->input->is_ajax_request() AND !empty($_POST)){
+                $this->load->model('category_model');
+                
+                $this->category_model->delete($this->input->post('id'));
+            }
+        }
     }
     
     public function index(){

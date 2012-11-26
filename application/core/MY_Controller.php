@@ -30,5 +30,5 @@ class MY_Controller extends CI_Controller {
         $this->template->write_view('menu','template/menu');
     }
 }
-/* End of file My_Controller.php */
-/* Location: ./application/core/My_Controller.php */
+/* End of file MY_Controller.php */
+/* Location: ./application/core/MY_Controller.php */
