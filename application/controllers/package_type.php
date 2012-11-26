@@ -56,6 +56,13 @@ class Package_type extends MY_Controller {
     }
     
     public function delete(){
+        if($this->session->userdata('admin')){
+            if($this->input->is_ajax_request() AND !empty($_POST)){
+                $this->load->model('package_type_model');
+                
+                $this->package_type_model->delete($this->input->post('id'));
+            }
+        }
         
     }
     

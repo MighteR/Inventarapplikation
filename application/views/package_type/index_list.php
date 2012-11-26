@@ -22,7 +22,7 @@ $(document).ready(function(){
                         type: 'POST',
                         data: { 'id' : id },
                         success: function(data){
-                            search_user();
+                            search_package_type();
                             /*$('#user_' + id).fadeOut(450, function(){
                                 $('#user_' + id).remove();
                             });*/
