@@ -174,6 +174,64 @@ class Category extends MY_Controller {
         }
     }
     
+    public function quick_search(){
+        if($this->input->is_ajax_request() AND !empty($_POST)){
+            $this->load->model('category_model');
+            $query = $this->category_model->get_all_categories();
+
+            $data = '';
+            if($query->num_rows() > 0){
+                $i = 0;
+                $categories = $query->result_object();
+                foreach($categories as $category){
+                    $data[$i]['id']     = $category->id;
+                    $data[$i]['label']   = $category->name;
+                    $data[$i]['value']   = $category->name;
+                    
+                    $i++;
+                }
+            }
+            
+            echo json_encode($data);
+        }
+    }
+    
+    public function simple_search(){
+        if($this->input->is_ajax_request()){
+            $this->load->helper('form');
+            
+            $this->load->view('category/simple_search');
+        }
+    }
+    
+    public function simple_search_list($page){
+        if($this->input->is_ajax_request() AND !empty($_POST)){
+            $p_name = $this->input->post('name');
+            $p_page_output = $this->input->post('page_output');
+
+            $this->load->model('category_model');
+
+             $query = $this->category_model->get_category_simple_list($p_name);
+
+            $data['entry'] = false;
+            $data['pages'] = '';
+            $data['categories'] = '';
+
+            if($query->num_rows() > 0){
+                $this->load->library('pages');
+                $this->pages->check_page($query->num_rows(),$page,true,$p_page_output);
+                $data['pages'] = $this->pages->get_links('categories','search_category');
+
+                $query = $this->category_model->get_category_simple_list($p_name, $this->pages->get_limit());
+                $data['categories'] = $query->result_object();
+
+                $data['entry'] = true;
+            }         
+
+            $this->load->view('category/index_list',$data);
+        }
+    }
+    
     public function index(){
         $this->session->set_userdata('url',  uri_string());
         
@@ -230,10 +288,8 @@ class Category extends MY_Controller {
                     $data['entry'] = true;
                 }         
 
-                $content = $this->load->view('category/index_list',$data,true);
-                echo $content;
+                return $this->load->view('category/index_list',$data);
             }
-            exit();
         }else{
             $this->load->library('messages');
             $this->messages->get_message('error',$this->lang->line('error_no_access'));
