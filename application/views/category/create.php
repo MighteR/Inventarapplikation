@@ -6,7 +6,7 @@ $(document).ready(function(){
     $('input:submit, input:reset').button();
     
     var changed     = <?php echo $changed; ?>;
-    var sMessage    ='<?php echo $this->lang->line('notice_unsaved_data') ?>';
+    var sMessage    ='<?php echo $this->lang->line('notice_unsaved_data'); ?>';
 
     $(window).bind('beforeunload', function(e){
         if (changed) return sMessage;
@@ -33,6 +33,84 @@ $(document).ready(function(){
             this.disabled = true;
         });
     });
+    
+    var cache = {};
+    
+    $('#parent_category').autocomplete({
+        minLength: 2,
+        select: function(event, ui){
+            //$('#parent_category_id').val(ui.item.id);
+        },
+        source: function(request, response){
+            if(request.term in cache){
+                response(cache[request.term]);
+                return;
+            }
+
+            $.ajax({
+                url: '<?php echo base_url('category/quick_search'); ?>',
+                type: 'POST',
+                data: request,
+                dataType: "json",
+                success: function(data){
+                    var datas = eval(data);
+                    var matcher = new RegExp(request.term, "i");
+
+                    if(datas.length > 0){
+                        for(var i = 0; i < datas.length; i++){
+                            //datas[i].label = datas[i].label.replace(new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + $.ui.autocomplete.escapeRegex(request.term) + ")(?![^<>]*>)(?![^&;]+;)", "gi"), "<strong>$1</strong>");
+                            datas[i].label = datas[i].label.replace(new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + $.ui.autocomplete.escapeRegex(request.term) + ")(?![^<>]*>)(?![^&;]+;)", "gi"), "$1");
+                        }
+                        cache[request.term] = data;
+                    }else{
+                        //$('#parent_category_id').val(0);
+                    }
+                    response(data);
+                }
+            });
+        }
+    })
+    
+    $("img[name='parent_category_shortcut']").click(function(){
+        $('#loader').dialog({
+            closeOnEscape: false,
+            dialogClass: 'loader',
+            height: 50,
+            resizable: false,
+            width: 50
+        });
+
+        $.ajax({
+            url: '<?php echo base_url('category/simple_search'); ?>',
+            type: 'POST',
+            success: function(data){
+                $('#gui').html(data);
+                $('#loader').dialog('close');
+
+                $('#gui').dialog({
+                    buttons: {
+                        '<?php echo lang('title_apply'); ?>': function(){
+                            changed = true;
+
+                            var id = $("input[name='simple_category_id']:checked").val();
+
+                            $('#parent_category').val($('#simple_category_name_' + id).val());
+
+                            $('#gui').dialog('destroy');
+                        },
+                        '<?php echo lang('title_cancel'); ?>': function(){
+                            $('#gui').dialog('destroy');
+                        }
+                    },
+                    closeOnEscape: false,
+                    modal: true,
+                    resizable: false,
+                    title: '<?php echo lang('title_search_category'); ?>',
+                    width: 600
+                });
+            }
+        });
+    });
 });
 //]]>
 </script>
@@ -50,17 +128,15 @@ $(document).ready(function(){
     </div>
 </div>
 <?php if($categories_exists): ?>
+<?php echo form_error('parent_category'); ?>
 <div class="second">
     <div class="text_left">
         <?php echo lang('title_parent_category','parent_category'); ?><span class="important">*</span>:
     </div>
     <div class="text_right">
-        <select class="formular" id="parent_category" name="parent_category">
-            <option value="NULL" <?php echo set_select('parent_category', 'NULL'); ?>><?php echo lang('title_root_category'); ?></option>
-<?php foreach ($categories as $category): ?>
-            <option value="<?php echo $category->id; ?>" <?php echo set_select('parent_category', $category->id); ?>><?php echo $category->name; ?></option>
-<?php endforeach; ?>
-        </select>
+        <input name="parent_category" class="formular<?php echo $error_class_parent_category; ?>" id="parent_category" type="text" value="<?php echo set_value('parent_category'); ?>"/>
+        <!--<input name="parent_category_id" id="parent_category_id" type="text" value="" />/-->
+        <img alt="shortcut" name="parent_category_shortcut" src="<?php echo base_url('application/views/template/images/shortcut.png'); ?>" style="cursor:pointer;" />
     </div>
 </div>
 <div class="first">
@@ -68,10 +144,10 @@ $(document).ready(function(){
 <div class="second">
 <?php endif; ?>
     <div class="text_left">
-        <?php echo lang('title_generate_report','generate_report'); ?>:
+        <?php echo lang('title_general_report','general_report'); ?>:
     </div>
     <div class="text_right">
-        <input name="generate_report" class="formular" id="generate_report" type="checkbox" value="1" <?php echo set_checkbox('generate_report','1'); ?>/>
+        <input name="general_report" class="formular" id="general_report" type="checkbox" value="1" <?php echo set_checkbox('general_report','1'); ?>/>
     </div>
 </div>
 <?php if($categories_exists): ?>

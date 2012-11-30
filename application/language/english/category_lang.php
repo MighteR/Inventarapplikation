@@ -12,7 +12,10 @@ $lang['title_root_category'] = 'Root Category';
 $lang['title_general_report'] = 'General Report';
 $lang['error_category_locked_by'] = 'The category is locked by ';
 $lang['info_category_created'] = 'The category is successfully created';
+$lang['info_category_modified'] = 'The category is successfully modified';
 $lang['title_both'] = 'both';
 $lang['title_included'] = 'included';
 $lang['title_excluded'] = 'excluded';
+$lang['title_search_category'] = 'Search Category';
+$lang['error_category_doesnt_exist'] = 'This category doesn\'t exists.';
 ?>

@@ -12,7 +12,10 @@ $lang['title_root_category'] = 'Hauptkategorie';
 $lang['title_general_report'] = 'Genereller Report';
 $lang['error_category_locked_by'] = 'Die Kategorie ist gesperrt durch ';
 $lang['info_category_created'] = 'Die Kategorie wurde erfolgreich angelegt';
+$lang['info_category_modified'] = 'Die Kategorie wurde erfolgreich verändert';
 $lang['title_both'] = 'beide';
 $lang['title_included'] = 'inkludiert';
 $lang['title_excluded'] = 'exkludiert';
+$lang['title_search_category'] = 'Suche Kategorie';
+$lang['error_category_doesnt_exist'] = 'Diese Kategorie existiert nicht.';
 ?>

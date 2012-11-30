@@ -8,6 +8,8 @@ $lang['title_info'] = 'Info';
 $lang['title_next'] = 'Next';
 $lang['title_no'] = 'No';
 $lang['title_yes'] = 'Yes';
+$lang['title_apply'] = 'Apply';
+$lang['title_cancel'] = 'Cancel';
 
 //Loader
 $lang['title_loader'] = 'Loading';

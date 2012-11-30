@@ -19,6 +19,15 @@ class Category_model extends CI_Model {
     public function create($data){
         $data['creator'] = $this->session->userdata('id');
         $data['creation_timestamp'] = date('Y-m-d H:i:s');
+        
+        if($data['parent_category'] != NULL){
+            $query = $this->get_category_by_name($data['parent_category']);
+            
+            if($query->num_rows() == 1){
+                $parent_category = $query->row();
+                $data['parent_category'] = $parent_category->id;
+            }
+        }
 
         $this->db->insert('categories', $data);
     }
@@ -30,7 +39,7 @@ class Category_model extends CI_Model {
         $this->db->update('categories', $data, array('id' => $id));
     }
     
-    public function get_all_categories($parent = FALSE, $exclude = NULL){
+    public function get_all_categories($parent = FALSE){
         $query = "SELECT id, name
                     FROM categories
                     WHERE deleter IS NULL";
@@ -40,16 +49,24 @@ class Category_model extends CI_Model {
             $query .= " AND categories.id IN (SELECT parent_category FROM categories)";
         }
         
-        if($exclude != NULL){
-            $query .= " AND categories.id != ".$this->db->escape($exclude);
-        }
-
         return $this->db->query($query);
     }
     
     public function get_category_by_id($id){
+        $query = "SELECT categories.*,
+                         parent.name AS 'parent_name'
+                    FROM categories
+                    LEFT JOIN categories parent ON
+                        parent.id = categories.parent_category
+                    WHERE   categories.id = ".$this->db->escape($id)." AND
+                            categories.deleter IS NULL";
+
+        return $this->db->query($query);
+    }
+    
+    public function get_category_by_name($name){
         $query = "SELECT * FROM categories
-                    WHERE   id = ".$this->db->escape($id)." AND
+                    WHERE   name = ".$this->db->escape($name)." AND
                             deleter IS NULL";
 
         return $this->db->query($query);
@@ -82,9 +99,36 @@ class Category_model extends CI_Model {
         return $this->db->query($query);
     }
     
+    public function get_category_simple_list($name, $limit = array()){
+        $query = "SELECT categories.id, categories.name,
+                         parent.id AS 'parent_id', parent.name AS 'parent_name'
+                    FROM categories
+                    LEFT JOIN categories parent ON
+                        parent.id = categories.parent_category AND
+                        parent.deleter IS NULL
+                    WHERE categories.name LIKE ".$this->db->escape('%'.$name.'%')."
+                          AND categories.deleter IS NULL";
+        
+        if(!empty($limit)){
+            $query .= " LIMIT ".$limit['begin'].",".$limit['limit'];
+        }
+        
+        return $this->db->query($query);
+    }
+        
+    
     public function update($id,$data){
         $data['modifier'] = $this->session->userdata('id');
         $data['modification_timestamp'] = date('Y-m-d H:i:s');
+        
+        if($data['parent_category'] != NULL){
+            $query = $this->get_category_by_name($data['parent_category']);
+            
+            if($query->num_rows() == 1){
+                $parent_category = $query->row();
+                $data['parent_category'] = $parent_category->id;
+            }
+        }
 
         $this->db->update('categories', $data, array('id' => $id));
     }

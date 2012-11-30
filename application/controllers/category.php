@@ -22,21 +22,14 @@ class Category extends MY_Controller {
                 $data['changed'] = 'true';
              }
 
-            $this->form_validation->set_rules('name', 'lang:title_category', 'required|trim');
-            $this->form_validation->set_rules('parent_category');
-            $this->form_validation->set_rules('generale_report');
+            $this->form_validation->set_rules('name', 'lang:title_category', 'required|trim|is_unique[categories.name]');
+            $this->form_validation->set_rules('parent_category', 'lang:title_parent_category', 'callback_parent_category_check');
+            $this->form_validation->set_rules('general_report');
             
             if($this->form_validation->run()){
                 $model_data['name'] = $this->input->post('name');
-                
-                if(!$this->input->post('parent_category') OR
-                        $this->input->post('parent_category') == 'NULL'){
-                    $model_data['parent_category'] = NULL;
-                }else{
-                    $model_data['parent_category'] = $this->input->post('parent_category');
-                }
-                //$model_data['parent_category']  = (!$this->input->post('parent_category') OR $this->input->post('parent_category') == 'NULL') ? NULL : $this->input->post('parent_category');
-                $model_data['general_report']  = $this->input->post('generale_report');
+                $model_data['parent_category']  = (!$this->input->post('parent_category')) ? NULL : $this->input->post('parent_category');
+                $model_data['general_report']  = $this->input->post('general_report');
 
                 $this->category_model->create($model_data);
 
@@ -49,15 +42,18 @@ class Category extends MY_Controller {
 
                 if($query->num_rows() > 0){
                     $data['categories_exists'] = true;
-                    
-                    $data['categories'] = $query->result_object();
                 }
                 
                 $this->form_validation->set_error_delimiters('<div class="notice">', '</div>');
 
                 $data['error_class_name'] = '';
+                $data['error_class_parent_category'] = '';
+                
                 if(form_error('name')){
                     $data['error_class_name'] = '_error';
+                }
+                if(form_error('parent_category')){
+                    $data['error_class_parent_category'] = '_error';
                 }
                 
                 $this->template->write_view('content','category/create',$data);
@@ -95,58 +91,45 @@ class Category extends MY_Controller {
                         $data_category = $category_query->row_array();
 
                         $data['old_name']               = $data_category['name'];
-                        $data['old_parent_category']    = $data_category['parent_category'];
-                        $data['old_generale_report']    = ($data_category['generale_report'] == 1) ? TRUE : FALSE;
+                        $data['old_parent_category']    = $data_category['parent_name'];
+                        $data['old_general_report']    = ($data_category['general_report'] == 1) ? TRUE : FALSE;
                     }else{
                         $data['changed'] = 'true';
                         
                         $data['old_name']   = '';
                         $data['old_parent_category']    = $this->input->post('parent_category');
-                        $data['old_generale_report']    = ($this->input->post('generale_report') == 1) ? TRUE : FALSE;
+                        $data['old_general_report']    = ($this->input->post('general_report') == 1) ? TRUE : FALSE;
                     }
 
                     $this->load->library('form_validation');
                     $this->load->helper('form');
 
                     $this->form_validation->set_rules('name', 'lang:title_category', 'required|trim');
-                    $this->form_validation->set_rules('parent_category');
+                    $this->form_validation->set_rules('parent_category', 'lang:title_parent_category', 'callback_parent_category_check');
                     $this->form_validation->set_rules('generale_report');
 
                     if($this->form_validation->run()){
                         $model_data['name'] = $this->input->post('name');
-
-                        if(!$this->input->post('parent_category') OR
-                                $this->input->post('parent_category') == 'NULL'){
-                            $model_data['parent_category'] = NULL;
-                        }else{
-                            $model_data['parent_category'] = NULL;
-                        }
-                        //$model_data['parent_category']  = (!$this->input->post('parent_category') OR $this->input->post('parent_category') == 'NULL') ? NULL : $this->input->post('parent_category');
+                        $model_data['parent_category']  = (!$this->input->post('parent_category')) ? NULL : $this->input->post('parent_category');
                         $model_data['general_report']  = $this->input->post('report');
 
-                        $this->user_model->update($id,$model_data);
+                        $this->category_model->update($id,$model_data);
 
                         $this->load->library('messages');
                         $this->messages->get_message('info',$this->lang->line('info_category_modified'),'category');
                     }else{
-                        $query = $this->category_model->get_all_categories(FALSE, $id);
-
-                        $data['categories_exists'] = false;
-
-                        if($query->num_rows() > 0){
-                            $data['categories_exists'] = true;
-
-                            $data['categories'] = $query->result_object();
-                        }
-
                         $this->form_validation->set_error_delimiters('<div class="notice">', '</div>');
 
                         $data['id'] = $id;
 
                         $data['error_class_name'] = '';
+                        $data['error_class_parent_category'] = '';
 
                         if(form_error('name')){
                             $data['error_class_name'] = '_error';
+                        }
+                        if(form_error('parent_category')){
+                            $data['error_class_parent_category'] = '_error';
                         }
 
                         $this->template->write_view('content','category/modify',$data);
@@ -204,7 +187,7 @@ class Category extends MY_Controller {
         }
     }
     
-    public function simple_search_list($page){
+    public function simple_search_list($page = 1){
         if($this->input->is_ajax_request() AND !empty($_POST)){
             $p_name = $this->input->post('name');
             $p_page_output = $this->input->post('page_output');
@@ -228,7 +211,7 @@ class Category extends MY_Controller {
                 $data['entry'] = true;
             }         
 
-            $this->load->view('category/index_list',$data);
+            $this->load->view('category/simple_search_list',$data);
         }
     }
     
@@ -296,6 +279,24 @@ class Category extends MY_Controller {
         }
         
         $this->template->render();
+    }
+    
+    //Form checks
+    public function parent_category_check($str){
+        if(!empty($str)){
+            $this->load->model('category_model');
+            
+            $query = $this->category_model->get_category_by_name($str);
+            
+            if($query->num_rows() == 0){
+                $this->form_validation->set_message('parent_category_check', $this->lang->line('error_category_doesnt_exist'));
+                return FALSE;
+            }else{
+                return TRUE;
+            }
+        }else{
+            return TRUE;
+        }
     }
 }
 
