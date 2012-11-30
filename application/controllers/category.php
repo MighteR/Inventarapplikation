@@ -24,7 +24,7 @@ class Category extends MY_Controller {
 
             $this->form_validation->set_rules('name', 'lang:title_category', 'required|trim');
             $this->form_validation->set_rules('parent_category');
-            $this->form_validation->set_rules('report');
+            $this->form_validation->set_rules('generale_report');
             
             if($this->form_validation->run()){
                 $model_data['name'] = $this->input->post('name');
@@ -36,7 +36,7 @@ class Category extends MY_Controller {
                     $model_data['parent_category'] = $this->input->post('parent_category');
                 }
                 //$model_data['parent_category']  = (!$this->input->post('parent_category') OR $this->input->post('parent_category') == 'NULL') ? NULL : $this->input->post('parent_category');
-                $model_data['generate_report']  = $this->input->post('report');
+                $model_data['general_report']  = $this->input->post('generale_report');
 
                 $this->category_model->create($model_data);
 
@@ -96,13 +96,13 @@ class Category extends MY_Controller {
 
                         $data['old_name']               = $data_category['name'];
                         $data['old_parent_category']    = $data_category['parent_category'];
-                        $data['old_report']             = ($data_category['generate_report'] == 1) ? TRUE : FALSE;
+                        $data['old_generale_report']    = ($data_category['generale_report'] == 1) ? TRUE : FALSE;
                     }else{
                         $data['changed'] = 'true';
                         
                         $data['old_name']   = '';
                         $data['old_parent_category']    = $this->input->post('parent_category');
-                        $data['old_report']             = ($this->input->post('generate_report') == 1) ? TRUE : FALSE;
+                        $data['old_generale_report']    = ($this->input->post('generale_report') == 1) ? TRUE : FALSE;
                     }
 
                     $this->load->library('form_validation');
@@ -110,7 +110,7 @@ class Category extends MY_Controller {
 
                     $this->form_validation->set_rules('name', 'lang:title_category', 'required|trim');
                     $this->form_validation->set_rules('parent_category');
-                    $this->form_validation->set_rules('report');
+                    $this->form_validation->set_rules('generale_report');
 
                     if($this->form_validation->run()){
                         $model_data['name'] = $this->input->post('name');
@@ -122,12 +122,12 @@ class Category extends MY_Controller {
                             $model_data['parent_category'] = NULL;
                         }
                         //$model_data['parent_category']  = (!$this->input->post('parent_category') OR $this->input->post('parent_category') == 'NULL') ? NULL : $this->input->post('parent_category');
-                        $model_data['generate_report']  = $this->input->post('report');
+                        $model_data['general_report']  = $this->input->post('report');
 
                         $this->user_model->update($id,$model_data);
 
                         $this->load->library('messages');
-                        $this->messages->get_message('info',$this->lang->line('info_user_modified'),'user');
+                        $this->messages->get_message('info',$this->lang->line('info_category_modified'),'category');
                     }else{
                         $query = $this->category_model->get_all_categories(FALSE, $id);
 
@@ -204,6 +204,7 @@ class Category extends MY_Controller {
             if($this->input->is_ajax_request() AND !empty($_POST)){
                 $p_name = $this->input->post('name');
                 $p_category_with_child = $this->input->post('category_with_child');
+                $p_general_report = $this->input->post('general_report');
                 $p_page_output = $this->input->post('page_output');
 
                 $this->load->model('category_model');
@@ -212,7 +213,7 @@ class Category extends MY_Controller {
                     $p_category_with_child = NULL;
                 }
                 
-                $query = $this->category_model->get_category_list($p_name, $p_category_with_child);
+                $query = $this->category_model->get_category_list($p_name, $p_general_report, $p_category_with_child);
                 
                 $data['entry'] = false;
                 $data['pages'] = '';
@@ -223,7 +224,7 @@ class Category extends MY_Controller {
                     $this->pages->check_page($query->num_rows(),$page,true,$p_page_output);
                     $data['pages'] = $this->pages->get_links('categories','search_category');
 
-                    $query = $this->category_model->get_category_list($p_name, $p_category_with_child, $this->pages->get_limit());
+                    $query = $this->category_model->get_category_list($p_name, $p_general_report, $p_category_with_child, $this->pages->get_limit());
                     $data['categories'] = $query->result_object();
 
                     $data['entry'] = true;

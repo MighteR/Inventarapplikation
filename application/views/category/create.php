@@ -68,10 +68,10 @@ $(document).ready(function(){
 <div class="second">
 <?php endif; ?>
     <div class="text_left">
-        <?php echo lang('title_report','report'); ?>:
+        <?php echo lang('title_generate_report','generate_report'); ?>:
     </div>
     <div class="text_right">
-        <input name="report" class="formular" id="report" type="checkbox" value="1" <?php echo set_checkbox('report','1'); ?>/>
+        <input name="generate_report" class="formular" id="generate_report" type="checkbox" value="1" <?php echo set_checkbox('generate_report','1'); ?>/>
     </div>
 </div>
 <?php if($categories_exists): ?>

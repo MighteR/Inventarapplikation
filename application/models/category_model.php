@@ -55,7 +55,7 @@ class Category_model extends CI_Model {
         return $this->db->query($query);
     }
     
-    public function get_category_list($name,$parent = NULL, $limit = array()){
+    public function get_category_list($name, $general_report, $parent = NULL, $limit = array()){
         $query = "SELECT categories.id, categories.name,
                          parent.id AS 'parent_id', parent.name AS 'parent_name'
                     FROM categories
@@ -64,7 +64,13 @@ class Category_model extends CI_Model {
                         parent.deleter IS NULL
                     WHERE categories.name LIKE ".$this->db->escape('%'.$name.'%')."
                           AND categories.deleter IS NULL";
-        
+
+        if($general_report == '1'){
+            $query .= " AND categories.general_report = 1";
+        }elseif($general_report == '0'){
+            $query .= " AND categories.general_report = 0";
+        }
+
         if($parent != NULL){
             $query .= " AND categories.parent_category = ".$this->db->escape($parent);
         }

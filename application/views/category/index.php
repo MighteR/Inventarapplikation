@@ -45,6 +45,7 @@ function predefine_category_search(name,category_with_child){
 function search_category(page){
     var search_name = $('#search_name').val();
     var search_category_with_child = $('#search_category_with_child').val();
+    var search_general_report = $("input:radio[name='search_general_report']:checked").val();
 
     if(typeof page === 'undefined'){
         page = '';
@@ -73,6 +74,7 @@ function search_category(page){
         data: {
             'name': search_name,
             'category_with_child': search_category_with_child,
+            'general_report': search_general_report,
             'page_output': output
         },
         success: function(html){
@@ -110,6 +112,16 @@ endif; ?>
     </div>
 </div>
 <div class="first">
+    <div class="text_left">
+        <?php echo lang('title_general_report'); ?>
+    </div>
+    <div class="text_right">
+        <input name="search_general_report" id="search_general_report_all" type="radio" value="all" checked="checked" /><?php echo lang('title_both', 'search_general_report_all'); ?>
+        <input name="search_general_report" id="search_general_report_1" class="" type="radio" value="1" /><?php echo lang('title_included', 'search_general_report_1'); ?>&nbsp;
+        <input name="search_general_report" id="search_general_report_0" class="" type="radio" value="0" /><?php echo lang('title_excluded', 'search_general_report_0'); ?>&nbsp;
+    </div>
+</div>
+<div class="second">
     <div class="text_left">
         &nbsp;
     </div>
