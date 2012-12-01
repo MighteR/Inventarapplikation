@@ -6,4 +6,17 @@ class Product_model extends CI_Model {
     public function __construct() {
         parent::__construct();
     }
+    
+    public function get_product_by_name($name,$limit = array()){
+        $query = "SELECT id, name
+                    FROM products
+                    WHERE name LIKE ".$this->db->escape('%'.$name.'%')."
+                          AND deleter IS NULL";
+
+        if(!empty($limit)){
+            $query .= " LIMIT ".$limit['begin'].",".$limit['limit'];
+        }
+
+        return $this->db->query($query);
+    }
 }

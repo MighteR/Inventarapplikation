@@ -1,5 +1,43 @@
 <script type="text/javascript">
-    
+//<![CDATA[ 
+$(document).ready(function(){
+    $("img[name='delete']").click(function(){
+        var id = $(this).attr('id').split('_');
+        id = id[3];
+
+        var name = $('#product_' + id).text();
+
+        $('#yesno').text('<?php echo lang('question_delete_product'); ?>');
+        
+        $('#yesno').dialog({
+            closeOnEscape: false,
+            height: 120,
+            modal: true,
+            resizable: false,
+            title: '<?php echo lang('title_delete_product'); ?>: ' + name,
+            buttons: {
+                '<?php echo lang('title_yes'); ?>': function(){
+                    $.ajax({
+                        url: '<?php echo base_url('product/delete'); ?>',
+                        type: 'POST',
+                        data: { 'id' : id },
+                        success: function(data){
+                            search_package_type();
+                            /*$('#user_' + id).fadeOut(450, function(){
+                                $('#user_' + id).remove();
+                            });*/
+                        }
+                    });
+                    $('#yesno').dialog('destroy');
+                },
+                '<?php echo lang('title_no'); ?>': function(){
+                    $('#yesno').dialog('destroy');
+                }
+            }
+        });
+    });
+});
+//]]>    
     
 </script>
 <div class="first">
