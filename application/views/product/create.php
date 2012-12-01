@@ -1,5 +1,7 @@
 <link href="<?php echo base_url('application/views/template/css/smoothness/jquery-ui-1.9.1.custom.min.css'); ?>" rel="stylesheet" type="text/css" />
+<link href="<?php echo base_url('application/views/template/css/select2.css'); ?>" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="<?php echo base_url('application/views/template/js/jquery-ui-1.9.1.custom.min.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('application/views/template/js/select2.min.js'); ?>"></script>
 <script type="text/javascript">
 //<![CDATA[
 $(document).ready(function(){
@@ -34,9 +36,87 @@ $(document).ready(function(){
         });
     });
     
-    $( "#package_type" ).combobox();
-    $( "#toggle" ).click(function(){
-        $( "#package_type" ).toggle();
+    $('#package_type').select2({
+        initSelection : function (element, callback) {
+            callback(<?php echo $old_package_type; ?>);
+        },
+        formatSelection: function(selection){ 
+            return selection.text; 
+        },
+        placeholder: '<?php echo lang('title_search_package_type'); ?>',
+        formatNoMatches: function(term){
+            return '<?php echo lang('title_no_matches_found'); ?>';
+        },
+        formatSearching: function(term){
+            return '<?php echo lang('title_searching'); ?>';
+        },
+        formatLoadMore: function(page){
+            return '<?php echo lang('title_loading_more_results'); ?>';
+        },
+        allowClear: true,
+        quietMillis: 100,
+        ajax: {
+            url: '<?php echo base_url('package_type/simple_search_list'); ?>',
+            type: 'POST',
+            dataType: 'json',
+            quietMillis: 100,
+            data: function (term, page) {
+                return {
+                    name: term,
+                    page: page
+                };
+            },
+            results: function (data, page) {
+                var more = (page * 10) < data.total;
+
+                return {
+                    results: data.results,
+                    more: more
+                };
+            }
+        }
+    });
+    
+    $('#categories').select2({
+        initSelection : function (element, callback) {
+            callback(<?php echo $old_categories; ?>);
+        },
+        formatSelection: function(selection){ 
+            return selection.text; 
+        },
+        placeholder: '<?php echo lang('title_search_categories'); ?>',
+        formatNoMatches: function(term){
+            return '<?php echo lang('title_no_matches_found'); ?>';
+        },
+        formatSearching: function(term){
+            return '<?php echo lang('title_searching'); ?>';
+        },
+        formatLoadMore: function(page){
+            return '<?php echo lang('title_loading_more_results'); ?>';
+        },
+        multiple: true,
+        allowClear: true,
+        quietMillis: 100,
+        ajax: {
+            url: '<?php echo base_url('category/simple_search_list'); ?>',
+            type: 'POST',
+            dataType: 'json',
+            quietMillis: 100,
+            data: function (term, page) {
+                return {
+                    name: term,
+                    page: page
+                };
+            },
+            results: function (data, page) {
+                var more = (page * 10) < data.total;
+
+                return {
+                    results: data.results,
+                    more: more
+                };
+            }
+        }
     });
 });
 //]]>
@@ -54,18 +134,22 @@ $(document).ready(function(){
         <input name="name" class="formular<?php echo $error_class_name; ?>" id="name" type="text" value="<?php echo set_value('name'); ?>"/>
     </div>
 </div>
+<?php echo form_error('package_type'); ?>
 <div class="second">
     <div class="text_left">
        <?php echo lang('title_package_type'); ?>:
     </div>
     <div class="text_right">
-        <select class="formular" id="package_type" name="package_type">
-            <option value="create" <?php echo set_select('package_type', 'create'); ?>><?php echo lang('title_create_package'); ?></option>
-<?php foreach ($categories as $category): ?>
-            <option value="<?php echo $category->id; ?>" <?php echo set_select('parent_category', $category->id); ?>><?php echo $category->name; ?></option>
-<?php endforeach; ?>
-        </select>
-        <button id="toggle">Show underlying select</button>
+        <input name="package_type" id="package_type" style="width:300px;" type="hidden" value="<?php echo set_value('package_type'); ?>"/>
+    </div>
+</div>
+<?php echo form_error('category'); ?>
+<div class="second">
+    <div class="text_left">
+       <?php echo lang('title_category'); ?>:
+    </div>
+    <div class="text_right">
+        <input name="categories" id="categories" style="width:300px;" type="hidden" value="<?php echo set_value('categories'); ?>"/>
     </div>
 </div>
         

@@ -18,4 +18,5 @@ $lang['title_included'] = 'included';
 $lang['title_excluded'] = 'excluded';
 $lang['title_search_category'] = 'Search Category';
 $lang['error_category_doesnt_exist'] = 'This category doesn\'t exists.';
+$lang['title_search_category'] = 'Search for a category';
 ?>

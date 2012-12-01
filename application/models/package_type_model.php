@@ -29,12 +29,43 @@ class Package_type_model extends CI_Model {
         return $this->db->query($query);
     }
     
-    public function get_package_type_by_name($name,$limit = array()){
+    public function get_package_type_by_name($name, $exact_match = TRUE){
+        if($exact_match){
+            $query = "SELECT * FROM package_types
+                        WHERE   name = ".$this->db->escape($name)." AND
+                                deleter IS NULL";
+        }else{
+            $query = "SELECT * FROM package_types
+                        WHERE   name LIKE ".$this->db->escape("%".$name."%")." AND
+                                deleter IS NULL";
+        }
+
+        return $this->db->query($query);
+    }
+    
+    public function get_package_type_list($name,$limit = array()){
         $query = "SELECT id, name
                     FROM package_types
                     WHERE name LIKE ".$this->db->escape('%'.$name.'%')."
                           AND deleter IS NULL";
 
+        if(!empty($limit)){
+            $query .= " LIMIT ".$limit['begin'].",".$limit['limit'];
+        }
+
+        return $this->db->query($query);
+    }
+    
+    public function get_package_type_simple_list($name, $except = NULL, $limit = array()){
+        $query = "SELECT id, name
+                    FROM package_types
+                    WHERE name LIKE ".$this->db->escape('%'.$name.'%')."
+                          AND deleter IS NULL";
+
+        if($except != NULL){
+            $query .= " AND id != ".$this->db->escape($except);
+        }
+        
         if(!empty($limit)){
             $query .= " LIMIT ".$limit['begin'].",".$limit['limit'];
         }

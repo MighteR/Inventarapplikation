@@ -10,9 +10,12 @@ $lang['title_no'] = 'Nein';
 $lang['title_yes'] = 'Ja';
 $lang['title_apply'] = 'Übernehmen';
 $lang['title_cancel'] = 'Abbrechen';
+$lang['title_no_matches_found'] = 'Keine übereinstimmung gefunden';
+$lang['title_loading_more_results'] = 'Lade mehr Resultate';
 
 //Loader
 $lang['title_loader'] = 'Laden';
+$lang['title_searching'] = 'Suchen...';
 
 //Buttons
 $lang['title_reset'] = 'Reset';

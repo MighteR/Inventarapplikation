@@ -10,9 +10,12 @@ $lang['title_no'] = 'No';
 $lang['title_yes'] = 'Yes';
 $lang['title_apply'] = 'Apply';
 $lang['title_cancel'] = 'Cancel';
+$lang['title_no_matches_found'] = 'No matches found';
+$lang['title_loading_more_results'] = 'Loading more results';
 
 //Loader
 $lang['title_loader'] = 'Loading';
+$lang['title_searching'] = 'Searching...';
 
 //Buttons
 $lang['title_reset'] = 'Reset';

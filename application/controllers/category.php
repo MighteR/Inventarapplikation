@@ -9,7 +9,7 @@ class Category extends MY_Controller {
     
     public function create(){
         $this->session->set_userdata('url',  uri_string());
-        
+
         if($this->session->userdata('admin')){     
             $this->load->library('form_validation');
             $this->load->helper('form');
@@ -17,10 +17,22 @@ class Category extends MY_Controller {
             $this->load->model('category_model');
             
             $data['changed'] = 'false';
+            $data['old_parent_category'] = json_encode(array());
             
             if(!empty($_POST)){
                 $data['changed'] = 'true';
-             }
+
+                $query = $this->category_model->get_category_by_id($this->input->post('parent_category'));
+                
+                if($query->num_rows() == 1){
+                    $category = $query->row();
+                    
+                    $list_array = array();
+                    $list_array['id'] = $category->id;
+                    $list_array['text'] = $category->name;
+                    $data['old_parent_category'] = json_encode($list_array);
+                }
+            }
 
             $this->form_validation->set_rules('name', 'lang:title_category', 'required|trim|is_unique[categories.name]');
             $this->form_validation->set_rules('parent_category', 'lang:title_parent_category', 'callback_parent_category_check');
@@ -56,6 +68,11 @@ class Category extends MY_Controller {
                     $data['error_class_parent_category'] = '_error';
                 }
                 
+                /*$ar = array();
+                $ar[0]['id'] = '18';
+                $ar[0]['text'] = 'Root';
+                $data['old_parent_category'] = json_encode($ar);*/
+
                 $this->template->write_view('content','category/create',$data);
             }
         }else{
@@ -85,20 +102,30 @@ class Category extends MY_Controller {
                 }else{
                     if(empty($_POST)){
                         $data['changed'] = 'false';
+                        $data['old_parent_category'] = json_encode(array());
                         
                         $this->lock_model->create();
                         
-                        $data_category = $category_query->row_array();
+                        $category = $category_query->row();
 
-                        $data['old_name']               = $data_category['name'];
-                        $data['old_parent_category']    = $data_category['parent_name'];
-                        $data['old_general_report']    = ($data_category['general_report'] == 1) ? TRUE : FALSE;
+                        $data['old_name']   = $category->name;
+                        
+                        $list_array = array();
+                        
+                        if($category->parent_id != NULL){
+                            $list_array['id']   =   $category->parent_id;
+                            $list_array['text'] =   $category->parent_name;
+                        }
+                        
+                        $data['old_parent_category'] = json_encode($list_array);                        
+
+                        $data['old_general_report']    = ($category->general_report == 1) ? TRUE : FALSE;
                     }else{
                         $data['changed'] = 'true';
                         
                         $data['old_name']   = '';
                         $data['old_parent_category']    = $this->input->post('parent_category');
-                        $data['old_general_report']    = ($this->input->post('general_report') == 1) ? TRUE : FALSE;
+                        $data['old_general_report']     = ($this->input->post('general_report') == 1) ? TRUE : FALSE;
                     }
 
                     $this->load->library('form_validation');
@@ -157,61 +184,40 @@ class Category extends MY_Controller {
         }
     }
     
-    public function quick_search(){
+    public function simple_search_list(){
         if($this->input->is_ajax_request() AND !empty($_POST)){
-            $this->load->model('category_model');
-            $query = $this->category_model->get_all_categories();
-
-            $data = '';
-            if($query->num_rows() > 0){
-                $i = 0;
-                $categories = $query->result_object();
-                foreach($categories as $category){
-                    $data[$i]['id']     = $category->id;
-                    $data[$i]['label']   = $category->name;
-                    $data[$i]['value']   = $category->name;
-                    
-                    $i++;
-                }
-            }
-            
-            echo json_encode($data);
-        }
-    }
-    
-    public function simple_search(){
-        if($this->input->is_ajax_request()){
-            $this->load->helper('form');
-            
-            $this->load->view('category/simple_search');
-        }
-    }
-    
-    public function simple_search_list($page = 1){
-        if($this->input->is_ajax_request() AND !empty($_POST)){
-            $p_name = $this->input->post('name');
-            $p_page_output = $this->input->post('page_output');
+            $p_category = $this->input->post('id');
+            $p_name     = $this->input->post('name');
+            $p_page     = $this->input->post('page');
 
             $this->load->model('category_model');
 
-             $query = $this->category_model->get_category_simple_list($p_name);
+            $query = $this->category_model->get_category_simple_list($p_name, $p_category);
 
-            $data['entry'] = false;
-            $data['pages'] = '';
-            $data['categories'] = '';
-
+            $data_return['total']   = $query->num_rows();
+            $data_return['results'] = array();
+            
             if($query->num_rows() > 0){
                 $this->load->library('pages');
-                $this->pages->check_page($query->num_rows(),$page,true,$p_page_output);
-                $data['pages'] = $this->pages->get_links('categories','search_category');
+                $this->pages->check_page($query->num_rows(),$p_page);
 
-                $query = $this->category_model->get_category_simple_list($p_name, $this->pages->get_limit());
-                $data['categories'] = $query->result_object();
+                $query = $this->category_model->get_category_simple_list($p_name, $p_category, $this->pages->get_limit());
 
-                $data['entry'] = true;
-            }         
-
-            $this->load->view('category/simple_search_list',$data);
+                $categories = $query->result_object();
+                $data = array();
+                
+                $i = 0;
+                foreach ($categories as $categorie){
+                    $row_array['id']    = $categorie->id;
+                    $row_array['text']  =  $categorie->name;
+                    array_push($data,$row_array);
+                }
+                
+                $data_return['results'] = $data;
+            }
+            
+            echo json_encode($data_return);
+            return;
         }
     }
     
@@ -286,7 +292,7 @@ class Category extends MY_Controller {
         if(!empty($str)){
             $this->load->model('category_model');
             
-            $query = $this->category_model->get_category_by_name($str);
+            $query = $this->category_model->get_category_by_id($str);
             
             if($query->num_rows() == 0){
                 $this->form_validation->set_message('parent_category_check', $this->lang->line('error_category_doesnt_exist'));

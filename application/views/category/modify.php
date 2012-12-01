@@ -1,5 +1,7 @@
 <link href="<?php echo base_url('application/views/template/css/smoothness/jquery-ui-1.9.1.custom.min.css'); ?>" rel="stylesheet" type="text/css" />
+<link href="<?php echo base_url('application/views/template/css/select2.css'); ?>" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="<?php echo base_url('application/views/template/js/jquery-ui-1.9.1.custom.min.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('application/views/template/js/select2.min.js'); ?>"></script>
 <script type="text/javascript">
 //<![CDATA[
 $(document).ready(function(){
@@ -46,82 +48,45 @@ $(document).ready(function(){
         });
     });
     
-   var cache = {};
-    
-    $('#parent_category').autocomplete({
-        minLength: 2,
-        select: function(event, ui){
-            //$('#parent_category_id').val(ui.item.id);
+    $('#parent_category').select2({
+        initSelection : function (element, callback) {
+            callback(<?php echo $old_parent_category; ?>);
         },
-        source: function(request, response){
-            if(request.term in cache){
-                response(cache[request.term]);
-                return;
-            }
-
-            $.ajax({
-                url: '<?php echo base_url('category/quick_search'); ?>',
-                type: 'POST',
-                data: request,
-                dataType: "json",
-                success: function(data){
-                    var datas = eval(data);
-                    var matcher = new RegExp(request.term, "i");
-
-                    if(datas.length > 0){
-                        for(var i = 0; i < datas.length; i++){
-                            //datas[i].label = datas[i].label.replace(new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + $.ui.autocomplete.escapeRegex(request.term) + ")(?![^<>]*>)(?![^&;]+;)", "gi"), "<strong>$1</strong>");
-                            datas[i].label = datas[i].label.replace(new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + $.ui.autocomplete.escapeRegex(request.term) + ")(?![^<>]*>)(?![^&;]+;)", "gi"), "$1");
-                        }
-                        cache[request.term] = data;
-                    }else{
-                        //$('#parent_category_id').val(0);
-                    }
-                    response(data);
-                }
-            });
-        }
-    })
-    
-    $("img[name='parent_category_shortcut']").click(function(){
-        $('#loader').dialog({
-            closeOnEscape: false,
-            dialogClass: 'loader',
-            height: 50,
-            resizable: false,
-            width: 50
-        });
-
-        $.ajax({
-            url: '<?php echo base_url('category/simple_search'); ?>',
+        formatSelection: function(selection){ 
+            return selection.text; 
+        },
+        placeholder: '<?php echo lang('title_search_category'); ?>',
+        formatNoMatches: function(term){
+            return '<?php echo lang('title_no_matches_found'); ?>';
+        },
+        formatSearching: function(term){
+            return '<?php echo lang('title_searching'); ?>';
+        },
+        formatLoadMore: function(page){
+            return '<?php echo lang('title_loading_more_results'); ?>';
+        },
+        allowClear: true,
+        quietMillis: 100,
+        ajax: {
+            url: '<?php echo base_url('category/simple_search_list'); ?>',
             type: 'POST',
-            success: function(data){
-                $('#gui').html(data);
-                $('#loader').dialog('close');
+            dataType: 'json',
+            quietMillis: 100,
+            data: function (term, page) {
+                return {
+                    name: term,
+                    page: page
+                };
+            },
+            results: function (data, page) {
+                var more = (page * 10) < data.total;
 
-                $('#gui').dialog({
-                    buttons: {
-                        '<?php echo lang('title_apply'); ?>': function(){
-                            changed = true;
-
-                            var id = $("input[name='simple_category_id']:checked").val();
-
-                            $('#parent_category').val($('#simple_category_name_' + id).val());
-
-                            $('#gui').dialog('destroy');
-                        },
-                        '<?php echo lang('title_cancel'); ?>': function(){
-                            $('#gui').dialog('destroy');
-                        }
-                    },
-                    closeOnEscape: false,
-                    modal: true,
-                    resizable: false,
-                    title: '<?php echo lang('title_search_category'); ?>',
-                    width: 600
-                });
+                return {
+                    results: data.results,
+                    more: more
+                };
             }
-        });
+        }
     });
 });
 //]]>
@@ -145,9 +110,7 @@ $(document).ready(function(){
         <?php echo lang('title_parent_category','parent_category'); ?><span class="important">*</span>:
     </div>
     <div class="text_right">
-        <input name="parent_category" class="formular<?php echo $error_class_parent_category; ?>" id="parent_category" type="text" value="<?php echo set_value('parent_category',$old_parent_category); ?>"/>
-        <!--<input name="parent_category_id" id="parent_category_id" type="text" value="" />/-->
-        <img alt="shortcut" name="parent_category_shortcut" src="<?php echo base_url('application/views/template/images/shortcut.png'); ?>" style="cursor:pointer;" />
+        <input name="parent_category" id="parent_category" style="width:300px;" type="hidden" value="<?php echo set_value('parent_category', $old_parent_category); ?>"/>
     </div>
 </div>
 <div class="first">

@@ -66,6 +66,43 @@ class Package_type extends MY_Controller {
         
     }
     
+    public function simple_search_list(){
+        if($this->input->is_ajax_request() AND !empty($_POST)){
+            $p_package_type = $this->input->post('id');
+            $p_name         = $this->input->post('name');
+            $p_page         = $this->input->post('page');
+
+            $this->load->model('package_type_model');
+
+            $query = $this->package_type_model->get_package_type_simple_list($p_name, $p_package_type);
+
+            $data_return['total']   = $query->num_rows();
+            $data_return['results'] = array();
+            
+            if($query->num_rows() > 0){
+                $this->load->library('pages');
+                $this->pages->check_page($query->num_rows(),$p_page);
+
+                $query = $this->package_type_model->get_package_type_simple_list($p_name, $p_package_type, $this->pages->get_limit());
+
+                $package_types = $query->result_object();
+                $data = array();
+                
+                $i = 0;
+                foreach ($package_types as $package_type){
+                    $row_array['id']    = $package_type->id;
+                    $row_array['text']  = $package_type->name;
+                    array_push($data,$row_array);
+                }
+                
+                $data_return['results'] = $data;
+            }
+            
+            echo json_encode($data_return);
+            return;
+        }
+    }
+    
     public function index(){
         $this->session->set_userdata('url',  uri_string());
         
@@ -90,12 +127,12 @@ class Package_type extends MY_Controller {
                 $this->load->model('package_type_model');
                 $this->load->library('pages');
                 
-                $query = $this->package_type_model->get_package_type_by_name($p_name);
+                $query = $this->package_type_model->get_package_type_list($p_name);
 
                 if($query->num_rows() > 0){
                     $this->pages->check_page($query->num_rows(),$page,true,$p_page_output);
 
-                    $query = $this->package_type_model->get_package_type_by_name($p_name,$this->pages->get_limit());
+                    $query = $this->package_type_model->get_package_type_list($p_name,$this->pages->get_limit());
                     $data['package_types'] = $query->result_object();
 
                     $data['entry'] = true;

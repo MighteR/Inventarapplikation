@@ -7,5 +7,4 @@ $lang['title_delete_package_type'] = 'Delete Package Type';
 $lang['title_create_package_type'] = 'Create Package Type';
 $lang['title_package_type'] = 'Package Type';
 $lang['info_package_type_created'] = 'Package Type has been created successfully';
-
 ?>
