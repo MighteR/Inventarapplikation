@@ -88,6 +88,10 @@ $(document).ready(function(){
             }
         }
     });
+    
+    $('#reset').click(function(){
+       $("#parent_category").select2("data", <?php echo $old_parent_category; ?>);
+    });
 });
 //]]>
 </script>
@@ -127,7 +131,7 @@ $(document).ready(function(){
     </div>
     <div class="text_right">
         <input name="submit" type="submit" value="<?php echo lang('title_submit'); ?>"/>
-        <input name="reset" type="reset" value="<?php echo lang('title_reset'); ?>"/>
+        <input name="reset" id="reset" type="reset" value="<?php echo lang('title_reset'); ?>"/>
     </div>
 </div>
 </form>
