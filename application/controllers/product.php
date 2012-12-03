@@ -10,6 +10,7 @@ class Product extends MY_Controller {
         $this->session->set_userdata('url',  uri_string());
         
         if($this->session->userdata('admin')){
+            $this->load->library('form_validation');
             $this->load->helper('form');
             
             $this->load->model('package_type_model');
@@ -50,11 +51,18 @@ class Product extends MY_Controller {
                 }
             }
             
-            $data['error_class_name'] = '';
-            $data['error_class_package_type'] = '';
-            $data['changed'] = 'false';
+            $this->form_validation->set_rules('name', 'lang:title_product', 'required|trim|is_unique[products.name]');
+            $this->form_validation->set_rules('package_type', 'lang:title_package_type', 'required|trim|callback_package_type_check');
+            $this->form_validation->set_rules('categories', 'lang:title_categories', 'required|trim|callback_categories_check');
             
-            $this->template->write_view('content','product/create', $data);
+            if($this->form_validation->run()){
+                
+            }else{
+                $data['error_class_name'] = '';
+                $data['error_class_package_type'] = '';
+
+                $this->template->write_view('content','product/create', $data);
+            }
         }else{
             $this->load->library('messages');
             $this->messages->get_message('error',$this->lang->line('error_no_access'));
@@ -118,6 +126,41 @@ class Product extends MY_Controller {
         }
         
         $this->template->render();
+    }
+    
+    //Form checks
+    public function package_type_check($str){
+        if(!empty($str)){
+            $this->load->model('package_type_model');
+            
+            $query = $this->package_type_model->get_package_type_by_id($str);
+            
+            if($query->num_rows() == 0){
+                $this->form_validation->set_message('package_type_check', $this->lang->line('error_package_type_doesnt_exist'));
+                return FALSE;
+            }else{
+                return TRUE;
+            }
+        }else{
+            return TRUE;
+        }
+    }
+    
+    public function categories_check($str){
+        if(!empty($str)){
+            $this->load->model('category_model');
+            
+            $query = $this->category_model->get_categories_by_id_list(explode(',',$str));
+            
+            if($query->num_rows() == count(explode(',', $str))){
+                $this->form_validation->set_message('categories_check', $this->lang->line('error_categories_doesnt_exist'));
+                return FALSE;
+            }else{
+                return TRUE;
+            }
+        }else{
+            return TRUE;
+        }
     }
 }
 ?>

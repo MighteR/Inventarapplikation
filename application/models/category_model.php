@@ -65,7 +65,7 @@ class Category_model extends CI_Model {
         return $this->db->query($query);
     }
     
-    public function get_categories_by_id_list($ids){
+    public function get_categories_by_id_list($ids){        
         for($i = 0; $i < count($ids); $i++){
             $ids[$i] = $this->db->escape($ids[$i]);
         }
@@ -124,18 +124,16 @@ class Category_model extends CI_Model {
     }
     
     public function get_category_simple_list($name, $except = NULL, $limit = array()){
-        $query = "SELECT categories.id, categories.name,
-                         parent.id AS 'parent_id', parent.name AS 'parent_name'
+        $query = "SELECT id, name
                     FROM categories
-                    LEFT JOIN categories parent ON
-                        parent.id = categories.parent_category AND
-                        parent.deleter IS NULL
-                    WHERE categories.name LIKE ".$this->db->escape('%'.$name.'%')."
-                          AND categories.deleter IS NULL";
+                    WHERE name LIKE ".$this->db->escape('%'.$name.'%')."
+                          AND deleter IS NULL";
         
         if($except != NULL){
-            $query .= " AND categories.id != ".$this->db->escape($except);
+            $query .= " AND id != ".$this->db->escape($except);
         }
+        
+        $query .= " ORDER BY name ASC";
         
         if(!empty($limit)){
             $query .= " LIMIT ".$limit['begin'].",".$limit['limit'];

@@ -143,10 +143,10 @@ $(document).ready(function(){
         <input name="package_type" id="package_type" style="width:300px;" type="hidden" value="<?php echo set_value('package_type'); ?>"/>
     </div>
 </div>
-<?php echo form_error('category'); ?>
+<?php echo form_error('categories'); ?>
 <div class="second">
     <div class="text_left">
-       <?php echo lang('title_category'); ?>:
+       <?php echo lang('title_categories'); ?>:
     </div>
     <div class="text_right">
         <input name="categories" id="categories" style="width:300px;" type="hidden" value="<?php echo set_value('categories'); ?>"/>

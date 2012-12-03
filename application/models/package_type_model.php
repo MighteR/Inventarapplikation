@@ -66,10 +66,12 @@ class Package_type_model extends CI_Model {
             $query .= " AND id != ".$this->db->escape($except);
         }
         
+        $query .= " ORDER BY name ASC";
+        
         if(!empty($limit)){
             $query .= " LIMIT ".$limit['begin'].",".$limit['limit'];
         }
-
+        
         return $this->db->query($query);
     }
     
