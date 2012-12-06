@@ -41,6 +41,7 @@ class User extends MY_Controller {
                 $data['error_class_username'] = '';
                 $data['error_class_password'] = '';
                 $data['error_class_password_confirmation'] = '';
+                
                 if(form_error('username')){
                     $data['error_class_username'] = '_error';
                 }
@@ -201,10 +202,8 @@ class User extends MY_Controller {
                     $data['entry'] = true;
                 }            
 
-                $content = $this->load->view('user/index_list',$data,true);
-                echo $content;
+                return $this->load->view('user/index_list',$data);
             }
-            exit();
         }else{
             $this->load->library('messages');
             $this->messages->get_message('error',$this->lang->line('error_no_access'));

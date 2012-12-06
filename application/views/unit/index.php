@@ -27,21 +27,21 @@ $(document).ready(function(){
         }
     });
 	
-    $('#search_package_type').click(function(){
-        search_package_type();
+    $('#search_unit').click(function(){
+        search_unit();
     });
 
-    $('#reset_search_package_type').click(function(){
-        predefine_package_type_search('');
+    $('#reset_search_unit').click(function(){
+        predefine_unit_search('');
     });
 });
 	
-function predefine_package_type_search(name){
+function predefine_unit_search(name){
     $('#search_name').val(name);
 
-    search_package_type();
+    search_unit();
 }
-function search_package_type(page){
+function search_unit(page){
     var search_name = $('#search_name').val();
 
     if(typeof page === 'undefined'){
@@ -56,10 +56,10 @@ function search_package_type(page){
             width: 50
     });
 
-    if($('#package_type_output').val() == 'undefined'){
+    if($('#unit_output').val() == 'undefined'){
         output = 0;
     }else{
-        output = $('#package_type_output').val();
+        output = $('#unit_output').val();
     }
 
     $.ajax({
@@ -73,18 +73,18 @@ function search_package_type(page){
             'page_output': output
         },
         success: function(html){
-            $('#package_type').html(html);
+            $('#units').html(html);
         }
     });
 }
 //]]> 
 </script>
 <div id="content_title">
-    <span><?php echo lang('title_package_type_list'); ?></span>
+    <span><?php echo lang('title_unit_list'); ?></span>
 </div>
 <div class="first">
     <div class="text_left">
-        <?php echo lang('title_package_type_name','search_package_type_name'); ?>
+        <?php echo lang('title_unit_name','search_unit_name'); ?>
     </div>
     <div class="text_right">
         <input class="formular" id="search_name" name="search_name" size="50" type="text" />
@@ -95,11 +95,11 @@ function search_package_type(page){
         &nbsp;
     </div>
     <div class="text_right">
-        <button name="create" type="button" id="search_package_type" ><?php echo lang('title_submit'); ?></button>
-        <button name="create" type="button" id="reset_search_package_type" ><?php echo lang('title_reset'); ?></button>
+        <button name="create" type="button" id="search_unit" ><?php echo lang('title_submit'); ?></button>
+        <button name="create" type="button" id="reset_search_unit" ><?php echo lang('title_reset'); ?></button>
     </div>
 </div>
 <div class="text_title" style="text-align:center">
-    <div><button name="create" type="button" id="create" ><?php echo lang('title_create_package_type'); ?></button></div>
+    <div><button name="create" type="button" id="create" ><?php echo lang('title_create_unit'); ?></button></div>
 </div>
-<div id="package_type"></div>
+<div id="units"></div>

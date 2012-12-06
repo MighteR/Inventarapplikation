@@ -8,7 +8,7 @@ $(document).ready(function(){
     $('input:submit, input:reset').button();
     
     var changed     = <?php echo $changed; ?>;
-    var sMessage    ='<?php echo $this->lang->line('notice_unsaved_data'); ?>';
+    var sMessage    = '<?php echo $this->lang->line('notice_unsaved_data'); ?>';
 
     $(window).bind('beforeunload', function(e){
         if (changed) return sMessage;
@@ -78,7 +78,9 @@ $(document).ready(function(){
     });
     
     $('#reset').click(function(){
-       $("#parent_category").select2("data", <?php echo $old_parent_category; ?>);
+        var old_parent_category = <?php echo $old_parent_category; ?>;
+    
+        if(!jQuery.isEmptyObject(old_parent_category)) $("#categories").select2("data", old_parent_category);
     });
 });
 //]]>
@@ -90,7 +92,7 @@ $(document).ready(function(){
 <?php echo form_error('name'); ?>
 <div class="first">
     <div class="text_left<?php echo $error_class_name; ?>">
-      <?php echo lang('title_category','name'); ?><span class="important">*</span>:
+      <?php echo lang('title_category_name','name'); ?><span class="important">*</span>:
     </div>
     <div class="text_right">
         <input name="name" class="formular<?php echo $error_class_name; ?>" id="name" type="text" value="<?php echo set_value('name'); ?>"/>
@@ -127,7 +129,7 @@ $(document).ready(function(){
     </div>
     <div class="text_right">
         <input name="submit" type="submit" value="<?php echo lang('title_submit'); ?>"/>
-        <input name="reset" id="reest" type="reset" value="<?php echo lang('title_reset'); ?>"/>
+        <input name="reset" id="reset" type="reset" value="<?php echo lang('title_reset'); ?>"/>
     </div>
 </div>
 </form>

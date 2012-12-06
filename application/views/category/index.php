@@ -117,8 +117,8 @@ endif; ?>
     </div>
     <div class="text_right">
         <input name="search_general_report" id="search_general_report_all" type="radio" value="all" checked="checked" /><?php echo lang('title_both', 'search_general_report_all'); ?>
-        <input name="search_general_report" id="search_general_report_1" class="" type="radio" value="1" /><?php echo lang('title_included', 'search_general_report_1'); ?>&nbsp;
-        <input name="search_general_report" id="search_general_report_0" class="" type="radio" value="0" /><?php echo lang('title_excluded', 'search_general_report_0'); ?>&nbsp;
+        <input name="search_general_report" id="search_general_report_1" type="radio" value="1" /><?php echo lang('title_included', 'search_general_report_1'); ?>&nbsp;
+        <input name="search_general_report" id="search_general_report_0" type="radio" value="0" /><?php echo lang('title_excluded', 'search_general_report_0'); ?>&nbsp;
     </div>
 </div>
 <div class="second">

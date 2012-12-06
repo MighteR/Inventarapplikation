@@ -19,7 +19,7 @@ body{
     background-color:#FFFFFF;
     font-family: Arial;
     font-size: 11px;
-    color: #000000;	
+    color: #000000;
 }
 
 label{
@@ -28,7 +28,11 @@ label{
 
 .formular{
     background-color: #FFFFFF;
-    border: 1px solid #000000;
+    border: 1px solid #aaaaaa;
+    line-height: 26px;
+    padding-left: 8px;
+    height: 26px;
+    color: #444444;
     font-size: 11px;
 }
 
@@ -39,10 +43,13 @@ label{
 }
 
 .formular_error{
-    background-color: #FFFFFF;
-    border: 1px solid #000000;
-    font-size: 11px;
     background-color: #FDE0E0;
+    border: 1px solid #aaaaaa;
+    line-height: 26px;
+    padding-left: 8px;
+    height: 26px;
+    color: #444444;
+    font-size: 11px;
 }
 
 img{
@@ -128,10 +135,9 @@ div.text_title{
     padding: 5px 0px 5px 0px;
 }
 
-div.first div,
-div.second div,
-div.text_title div{
-    
+div.text_left,
+div.text_left_error{
+   line-height: 26px;
 }
 
 div.text{
@@ -145,12 +151,14 @@ div.text_error{
 }
 div.text_left{
     /*margin-right: 25px;*/
+    line-height: 26px;
     width: 150px;
     font-weight:bold;
     float:left;
 }
 div.text_left_error{
     /*margin-right: 25px;*/
+    line-height: 26px;
     width: 150px;
     font-weight:bold;
     float:left;

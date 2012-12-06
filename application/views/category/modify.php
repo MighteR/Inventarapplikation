@@ -90,7 +90,9 @@ $(document).ready(function(){
     });
     
     $('#reset').click(function(){
-       $("#parent_category").select2("data", <?php echo $old_parent_category; ?>);
+        var old_parent_category = <?php echo $old_parent_category; ?>;
+    
+        if(!jQuery.isEmptyObject(old_parent_category)) $("#categories").select2("data", old_parent_category);
     });
 });
 //]]>

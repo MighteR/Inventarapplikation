@@ -34,7 +34,7 @@ class Category extends MY_Controller {
                 }
             }
 
-            $this->form_validation->set_rules('name', 'lang:title_category', 'required|trim|is_unique[categories.name]');
+            $this->form_validation->set_rules('name', 'lang:title_category_name', 'required|trim|is_unique[categories.name]');
             $this->form_validation->set_rules('parent_category', 'lang:title_parent_category', 'callback_parent_category_check');
             $this->form_validation->set_rules('general_report');
             
@@ -67,11 +67,6 @@ class Category extends MY_Controller {
                 if(form_error('parent_category')){
                     $data['error_class_parent_category'] = '_error';
                 }
-                
-                /*$ar = array();
-                $ar[0]['id'] = '18';
-                $ar[0]['text'] = 'Root';
-                $data['old_parent_category'] = json_encode($ar);*/
 
                 $this->template->write_view('content','category/create',$data);
             }
@@ -131,7 +126,7 @@ class Category extends MY_Controller {
                     $this->load->library('form_validation');
                     $this->load->helper('form');
 
-                    $this->form_validation->set_rules('name', 'lang:title_category', 'required|trim');
+                    $this->form_validation->set_rules('name', 'lang:title_category_name', 'required|trim');
                     $this->form_validation->set_rules('parent_category', 'lang:title_parent_category', 'callback_parent_category_check');
                     $this->form_validation->set_rules('generale_report');
 
@@ -186,13 +181,13 @@ class Category extends MY_Controller {
     
     public function simple_search_list(){
         if($this->input->is_ajax_request() AND !empty($_POST)){
-            $p_category = $this->input->post('id');
-            $p_name     = $this->input->post('name');
-            $p_page     = $this->input->post('page');
+            $p_category_id  = $this->input->post('id');
+            $p_name         = $this->input->post('name');
+            $p_page         = $this->input->post('page');
 
             $this->load->model('category_model');
 
-            $query = $this->category_model->get_category_simple_list($p_name, $p_category);
+            $query = $this->category_model->get_category_simple_list($p_name, $p_category_id);
 
             $data_return['total']   = $query->num_rows();
             $data_return['results'] = array();
@@ -201,7 +196,7 @@ class Category extends MY_Controller {
                 $this->load->library('pages');
                 $this->pages->check_page($query->num_rows(),$p_page);
 
-                $query = $this->category_model->get_category_simple_list($p_name, $p_category, $this->pages->get_limit());
+                $query = $this->category_model->get_category_simple_list($p_name, $p_category_id, $this->pages->get_limit());
 
                 $categories = $query->result_object();
                 $data = array();

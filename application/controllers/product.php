@@ -13,12 +13,13 @@ class Product extends MY_Controller {
             $this->load->library('form_validation');
             $this->load->helper('form');
             
-            $this->load->model('package_type_model');
+            $this->load->model('unit_model');
             $this->load->model('category_model');
            
             $data['changed'] = 'false';
-            $data['old_categories'] = json_encode(array());
-            $data['old_package_type'] = json_encode(array());
+            $data['old_categories']     = json_encode(array());
+            $data['old_package_type']   = json_encode(array());
+            $data['old_unit']           = json_encode(array());
             
             if(!empty($_POST)){
                 $data['changed'] = 'true';
@@ -39,27 +40,96 @@ class Product extends MY_Controller {
                     $data['old_categories'] = json_encode($category_result);
                 }
 
-                $query = $this->package_type_model->get_package_type_by_id($this->input->post('package_type'));
+                $query = $this->unit_model->get_unit_by_id($this->input->post('unit'));
                 
                 if($query->num_rows() == 1){
-                    $package_type = $query->row();
+                    $unit = $query->row();
                     
                     $list_array = array();
-                    $list_array['id']   = $package_type->id;
-                    $list_array['text'] = $package_type->name;
+                    $list_array['id']   = $unit->id;
+                    $list_array['text'] = $unit->name;
+                    $data['old_unit'] = json_encode($list_array);
+                }
+                
+                $query = $this->unit_model->get_unit_by_id($this->input->post('package_type'));
+                
+                if($query->num_rows() == 1){
+                    $unit = $query->row();
+                    
+                    $list_array = array();
+                    $list_array['id']   = $unit->id;
+                    $list_array['text'] = $unit->name;
                     $data['old_package_type'] = json_encode($list_array);
                 }
             }
             
-            $this->form_validation->set_rules('name', 'lang:title_product', 'required|trim|is_unique[products.name]');
-            $this->form_validation->set_rules('package_type', 'lang:title_package_type', 'required|trim|callback_package_type_check');
+            $this->form_validation->set_rules('name', 'lang:title_product_name', 'required|trim|is_unique[products.name]');
+            $this->form_validation->set_rules('unit', 'lang:title_unit', 'required|trim|callback_unit_check');
             $this->form_validation->set_rules('categories', 'lang:title_categories', 'required|trim|callback_categories_check');
+            $this->form_validation->set_rules('package_type', 'lang:title_unit', 'trim|callback_unit_check');
+            $this->form_validation->set_rules('unit_price', 'lang:title_price_per_unit', 'required|trim|greater_than[0]');
+            $this->form_validation->set_rules('package_price', 'lang:title_price_per_package', 'trim|greater_than[0]');
+            $this->form_validation->set_rules('unit_quantity', 'lang:title_quantity', 'required|trim|greater_than[-1]');
+            $this->form_validation->set_rules('package_quantity', 'lang:title_quantity', 'trim|greater_than[-1]');
             
             if($this->form_validation->run()){
-                
+                $model_data['name']             = $this->input->post('name');
+                $model_data['unit_id']          = $this->input->post('unit');
+                $model_data['unit_price']       = $this->input->post('unit_price');
+                $model_data['unit_quantity']    = $this->input->post('unit_quantity');
+                $model_data['categories']       = $this->input->post('categories');
+                $model_data['package_type']     = $this->input->post('package_type');
+                $model_data['package_price']    = $this->input->post('package_price');
+                $model_data['package_quantity'] = $this->input->post('package_quantity');
+
+                $this->load->model('product_model');
+                $this->product_model->create($model_data);
+                exit();
+                $this->load->library('messages');
+                $this->messages->get_message('info',$this->lang->line('info_product_created'),'product');
             }else{
+                $this->form_validation->set_error_delimiters('<div class="notice">', '</div>');
+
                 $data['error_class_name'] = '';
+                $data['error_class_unit'] = '';
+                $data['error_class_categories'] = '';
                 $data['error_class_package_type'] = '';
+                $data['error_class_unit_price'] = '';
+                $data['error_class_package_price'] = '';
+                $data['error_class_unit_quantity'] = '';
+                $data['error_class_package_quantity'] = '';
+                
+                if(form_error('name')){
+                    $data['error_class_name'] = '_error';
+                }
+                
+                if(form_error('categories')){
+                    $data['error_class_categories'] = '_error';
+                }
+                
+                if(form_error('unit')){
+                    $data['error_class_unit'] = '_error';
+                }
+                
+                if(form_error('package_type')){
+                    $data['error_class_package_type'] = '_error';
+                }
+                
+                if(form_error('unit_price')){
+                    $data['error_class_unit_price'] = '_error';
+                }
+                
+                if(form_error('package_price')){
+                    $data['error_class_package_price'] = '_error';
+                }
+                
+                if(form_error('unit_quantity')){
+                    $data['error_class_unit_quantity'] = '_error';
+                }
+                
+                if(form_error('package_quantity')){
+                    $data['error_class_package_quantity'] = '_error';
+                }
 
                 $this->template->write_view('content','product/create', $data);
             }
@@ -109,17 +179,15 @@ class Product extends MY_Controller {
                     $this->pages->check_page($query->num_rows(),$page,true,$p_page_output);
 
                     $query = $this->product_model->get_product_by_name($p_name,$this->pages->get_limit());
-                    $data['package_types'] = $query->result_object();
+                    $data['units'] = $query->result_object();
 
                     $data['entry'] = true;
                 }else{
                     $data['entry'] = false;
                 }                
 
-                $content = $this->load->view('product/index_list',$data,true);
-                echo $content;
+                return $this->load->view('product/index_list',$data);
             }
-            exit();
         }else{
             $this->load->library('messages');
             $this->messages->get_message('error',$this->lang->line('error_no_access'));
@@ -129,14 +197,14 @@ class Product extends MY_Controller {
     }
     
     //Form checks
-    public function package_type_check($str){
+    public function unit_check($str){
         if(!empty($str)){
-            $this->load->model('package_type_model');
+            $this->load->model('unit_model');
             
-            $query = $this->package_type_model->get_package_type_by_id($str);
+            $query = $this->unit_model->get_unit_by_id($str);
             
             if($query->num_rows() == 0){
-                $this->form_validation->set_message('package_type_check', $this->lang->line('error_package_type_doesnt_exist'));
+                $this->form_validation->set_message('unit_check', $this->lang->line('error_unit_doesnt_exist'));
                 return FALSE;
             }else{
                 return TRUE;
@@ -151,8 +219,8 @@ class Product extends MY_Controller {
             $this->load->model('category_model');
             
             $query = $this->category_model->get_categories_by_id_list(explode(',',$str));
-            
-            if($query->num_rows() == count(explode(',', $str))){
+
+            if($query->num_rows() != count(explode(',', $str))){
                 $this->form_validation->set_message('categories_check', $this->lang->line('error_categories_doesnt_exist'));
                 return FALSE;
             }else{

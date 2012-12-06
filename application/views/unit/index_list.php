@@ -5,24 +5,24 @@ $(document).ready(function(){
         var id = $(this).attr('id').split('_');
         id = id[3];
 
-        var name = $('#package_type_' + id).text();
+        var name = $('#unit_' + id).text();
 
-        $('#yesno').text('<?php echo lang('question_delete_package_type'); ?>');
+        $('#yesno').text('<?php echo lang('question_delete_unit'); ?>');
         
         $('#yesno').dialog({
             closeOnEscape: false,
             height: 120,
             modal: true,
             resizable: false,
-            title: '<?php echo lang('title_delete_package_type'); ?>: ' + name,
+            title: '<?php echo lang('title_delete_unit'); ?>: ' + name,
             buttons: {
                 '<?php echo lang('title_yes'); ?>': function(){
                     $.ajax({
-                        url: '<?php echo base_url('package_type/delete'); ?>',
+                        url: '<?php echo base_url('unit/delete'); ?>',
                         type: 'POST',
                         data: { 'id' : id },
                         success: function(data){
-                            search_package_type();
+                            search_unit();
                             /*$('#user_' + id).fadeOut(450, function(){
                                 $('#user_' + id).remove();
                             });*/
@@ -41,12 +41,12 @@ $(document).ready(function(){
 </script>
 <div class="first">
     <div class="text" style="text-align:center;">
-        <?php echo $this->pages->get_links('package_type','search_package_type'); ?>&nbsp;
+        <?php echo $this->pages->get_links('unit','search_unit'); ?>&nbsp;
     </div>
 </div>
 <div class="text_title">
     <div style="float:left; width: 95%;">
-        <?php echo lang('title_package_type'); ?>
+        <?php echo lang('title_unit'); ?>
     </div>
     <div style="float:left;">
         &nbsp;
@@ -54,13 +54,13 @@ $(document).ready(function(){
 </div>
 <?php if ($entry): ?>
 <?php $c = 0;
-foreach($package_types as $package_type): ?>
-<div id="package_type_<?php echo $package_type->id; ?>" class="<?php echo ($c++ % 2) ? 'second' : 'first'; ?> list">
+foreach($units as $unit): ?>
+<div id="unit_<?php echo $unit->id; ?>" class="<?php echo ($c++ % 2) ? 'second' : 'first'; ?> list">
     <div style="float:left; width:95%;">
-        <a href="<?php echo base_url('package_type/modify/'.$package_type->id); ?>"><span id="package_type_<?php echo $package_type->id; ?>"><?php echo $package_type->name; ?></span></a>
+        <a href="<?php echo base_url('unit/modify/'.$unit->id); ?>"><span id="unit_<?php echo $unit->id; ?>"><?php echo $unit->name; ?></span></a>
     </div>
     <div style="float:left;">
-        <img alt="delete" id="delete_package_type_<?php echo $package_type->id; ?>" name="delete" src="<?php echo base_url('application/views/template/images/trash.png'); ?>" style="cursor:pointer;" />
+        <img alt="delete" id="delete_unit_<?php echo $unit->id; ?>" name="delete" src="<?php echo base_url('application/views/template/images/trash.png'); ?>" style="cursor:pointer;" />
     </div>
 </div>
 <?php endforeach; ?>
