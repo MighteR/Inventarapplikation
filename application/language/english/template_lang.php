@@ -23,7 +23,7 @@ $lang['title_submit'] = 'Submit';
 
 //User Login
 $lang['title_login'] = 'User Login';
-$lang['text_login_information'] = 'Pleas type in your username and password';
+$lang['text_login_information'] = 'Please type in your username and password';
 
 
 //Menu Section
