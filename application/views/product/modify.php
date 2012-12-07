@@ -7,8 +7,20 @@
 $(document).ready(function(){
     $('input:submit, input:reset').button();
     
+    $(window).bind('unload', function(e){
+        $.ajax({
+            url: '<?php echo base_url('lock/delete'); ?>',
+            type: 'POST',
+            async: false,
+            data: {
+                'type' : 'product',
+                'id'   : '<?php echo $id; ?>'
+            }
+        });
+    });
+    
     var changed     = <?php echo $changed; ?>;
-    var sMessage    ='<?php echo $this->lang->line('notice_unsaved_data') ?>';
+    var sMessage    ='<?php echo lang('notice_unsaved_data') ?>';
 
     $(window).bind('beforeunload', function(e){
         if (changed) return sMessage;
@@ -36,48 +48,7 @@ $(document).ready(function(){
         });
     });
     
-    $('#unit').select2({
-        initSelection : function (element, callback) {
-            callback(<?php echo $old_unit; ?>);
-        },
-        formatSelection: function(selection){ 
-            return selection.text; 
-        },
-        placeholder: '<?php echo lang('title_search_unit'); ?>',
-        formatNoMatches: function(term){
-            return '<?php echo lang('title_no_matches_found'); ?>';
-        },
-        formatSearching: function(term){
-            return '<?php echo lang('title_searching'); ?>';
-        },
-        formatLoadMore: function(page){
-            return '<?php echo lang('title_loading_more_results'); ?>';
-        },
-        allowClear: true,
-        quietMillis: 100,
-        ajax: {
-            url: '<?php echo base_url('unit/simple_search_list'); ?>',
-            type: 'POST',
-            dataType: 'json',
-            quietMillis: 100,
-            data: function (term, page) {
-                return {
-                    name: term,
-                    page: page,
-                    unit_type: 'unit'
-                };
-            },
-            results: function (data, page) {
-                var more = (page * 10) < data.total;
 
-                return {
-                    results: data.results,
-                    more: more
-                };
-            }
-        }
-    });
-    
     $('#categories').select2({
         initSelection : function (element, callback) {
             callback(<?php echo $old_categories; ?>);
@@ -120,63 +91,21 @@ $(document).ready(function(){
         }
     });
     
-   $('#package_type').select2({
-        initSelection : function (element, callback) {
-            callback(<?php echo $old_package_type; ?>);
-        },
-        formatSelection: function(selection){ 
-            return selection.text; 
-        },
-        placeholder: '<?php echo lang('title_search_package_type'); ?>',
-        formatNoMatches: function(term){
-            return '<?php echo lang('title_no_matches_found'); ?>';
-        },
-        formatSearching: function(term){
-            return '<?php echo lang('title_searching'); ?>';
-        },
-        formatLoadMore: function(page){
-            return '<?php echo lang('title_loading_more_results'); ?>';
-        },
-        allowClear: true,
-        quietMillis: 100,
-        ajax: {
-            url: '<?php echo base_url('unit/simple_search_list'); ?>',
-            type: 'POST',
-            dataType: 'json',
-            quietMillis: 100,
-            data: function (term, page) {
-                return {
-                    name: term,
-                    page: page,
-                    unit_type: 'package_type'
-                };
-            },
-            results: function (data, page) {
-                var more = (page * 10) < data.total;
+    $('#reset').click(function(){
+        var old_categories      = <?php echo $old_categories; ?>;
 
-                return {
-                    results: data.results,
-                    more: more
-                };
-            }
-        }
+        if(!jQuery.isEmptyObject(old_categories)) $("#categories").select2("data", old_categories);
     });
     
-    $('#reset').click(function(){
-        var old_unit            = <?php echo $old_unit; ?>;
-        var old_categories      = <?php echo $old_categories; ?>;
-        var old_package_type    = <?php echo $old_package_type; ?>;
-
-        if(!jQuery.isEmptyObject(old_unit)) $("#unit").select2("data", old_unit);
-        if(!jQuery.isEmptyObject(old_categories)) $("#categories").select2("data", old_categories);
-        if(!jQuery.isEmptyObject(old_package_type)) $("#package_type").select2("data", old_package_type);
-    });
+    $('#date').attr('disabled',true);
+    $('#date').addClass('disabled');
+    
 });
 //]]>
 </script>
 <form id="form" action="<?php echo current_url(); ?>" method="post" accept-charset="utf-8">
 <div id="content_title">
-	<span><?php echo lang('title_create_product'); ?></span>
+	<span><?php echo lang('title_modify_product'); ?></span>
 </div>
 <?php echo form_error('name'); ?>
 <div class="first">
@@ -188,13 +117,13 @@ $(document).ready(function(){
     </div>
 </div>
 <div class="second">
-    <div style="float:left;width:40%;">
+    <div style="float:left;width:25%;">
         <?php echo form_error('unit'); ?>
         <div class="text_left<?php echo $error_class_unit; ?>">
-           <?php echo lang('title_unit','unit'); ?><span class="important">*</span>:
+           <?php echo lang('title_unit','unit'); ?>:
         </div>
         <div>
-            <input name="unit" id="unit" style="width:300px;" type="hidden" value="<?php echo set_value('unit',$old_unit); ?>"/>
+            <?php echo $old_unit; ?>
         </div>
     </div>
     <div style="float:left;width:30%;">
@@ -206,13 +135,32 @@ $(document).ready(function(){
             <input name="unit_price" class="formular<?php echo $error_class_unit_price; ?>" id="unit_price" type="text" value="<?php echo set_value('unit_price',$old_unit_price); ?>" />
         </div>
     </div>
-    <div style="float:left;width:30%;">
+    <div style="float:left;width:20%;">
         <?php echo form_error('unit_quantity'); ?>
         <div class="text_left<?php echo $error_class_unit_quantity; ?>">
            <?php echo lang('title_quantity','unit_quantity'); ?><span class="important">*</span>:
         </div>
         <div>
             <input name="unit_quantity" class="formular<?php echo $error_class_unit_quantity; ?>" id="unit_quantity" type="text" size="3" value="<?php echo set_value('unit_quantity',$old_unit_quantity); ?>" />
+        </div>
+    </div>
+    <div style="float:left;width:25%;">
+        <div class="text_left">
+           asdfaslkfajsdflk<?php echo lang('title_update'); ?>:
+        </div>
+        <div>
+            <input name="unit_quantity" id="date" class="formular<?php echo $error_class_unit_quantity; ?>" id="unit_quantity" type="text" size="10" value="<?php echo set_value('unit_quantity',$old_unit_quantity); ?>" />
+        </div>
+    </div>
+    <div style="float:left;width:75%">
+        &nbsp;
+    </div>
+    <div style="float:left;width:25%;">
+        <div class="text_left">
+           <?php echo lang('title_last_update'); ?>:
+        </div>
+        <div>
+            <?php echo $last_unit_update; ?>
         </div>
     </div>
 </div>
@@ -232,7 +180,7 @@ $(document).ready(function(){
            <?php echo lang('title_package_type','package_type'); ?>:
         </div>
         <div class="text_right">
-            <input name="package_type" id="package_type" style="width:300px;" type="hidden" value="<?php echo set_value('package_type',$old_package_type); ?>"/>
+            <?php echo $old_package_type; ?>
         </div>
     </div>
     <div style="float:left;width:30%;">
@@ -241,7 +189,7 @@ $(document).ready(function(){
            <?php echo lang('title_price_per_package','package_price'); ?>
         </div>
         <div>
-            <input name="package_price" class="formular<?php echo $error_class_package_price; ?>" id="package_price" type="text" value="<?php echo set_value('package_price',$old_price); ?>" />
+            <input name="package_price" class="formular<?php echo $error_class_package_price; ?>" id="package_price" type="text" value="<?php echo set_value('package_price',$old_package_price); ?>" />
         </div>
     </div>
     <div style="float:left;width:30%;">

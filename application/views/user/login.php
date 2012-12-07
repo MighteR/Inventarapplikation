@@ -13,7 +13,7 @@ $(document).ready(function(){
     <span><?php echo lang('title_login'); ?></span>
 </div>
 <div class="first">
-    <div>
+    <div class="text">
         <?php echo lang('text_login_information'); ?>.
     </div>
 </div>

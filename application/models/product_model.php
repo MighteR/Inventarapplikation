@@ -100,14 +100,22 @@ class Product_model extends CI_Model {
     }
     
     public function get_product_by_id($id){
-        $query = "SELECT products.*,
+        $query = "SELECT DISTINCT products.*,
                          units.id AS 'unit_id',
-                         units.name AS 'unit_name'
+                         units.name AS 'unit_name',
+                         package.id AS 'package_id',
+                         package.name AS 'package_name'
                     FROM products
                     INNER JOIN units ON
-                        units.id = products.unit_id
-                    WHERE   products.id = ".$this->db->escape($id)." AND
-                            products.deleter IS NULL";
+                        units.id = products.unit_id AND
+                        products.id = ".$this->db->escape($id)." AND
+                        products.deleter IS NULL
+                    LEFT JOIN package_type_prices ON
+                        package_type_prices.product_id = ".$this->db->escape($id)." AND
+                        package_type_prices.deleter IS NULL
+                    LEFT JOIN units package ON
+                    package.id = package_type_prices.unit_id AND
+                    package.deleter IS NULL";
 
         return $this->db->query($query);
     }
@@ -119,7 +127,29 @@ class Product_model extends CI_Model {
                         product_categories.product_id = ".$this->db->escape($id)." AND
                         categories.id = product_categories.category_id AND
                         categories.deleter IS NULL";
-echo $query;
+
+        return $this->db->query($query);
+    }
+    
+    public function get_last_product_information($id){
+        $query = "SELECT price, quantity, timestamp
+                    FROM product_prices
+                    WHERE   product_id = ".$this->db->escape($id)." AND
+                            deleter IS NULL
+                    ORDER BY timestamp DESC
+                    LIMIT 1";
+
+        return $this->db->query($query);
+    }
+    
+    public function get_last_package_information($id){
+        $query = "SELECT price, quantity, timestamp
+                    FROM package_type_prices
+                    WHERE   product_id = ".$this->db->escape($id)." AND
+                            deleter IS NULL
+                    ORDER BY timestamp DESC
+                    LIMIT 1";
+
         return $this->db->query($query);
     }
 }

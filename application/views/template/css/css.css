@@ -139,7 +139,13 @@ div.first div.text_left:first-child,
 div.second div.text_left:first-child,
 div.text_title div:first-child,
 div.list div:first-child{
+    line-height: 26px;
     padding-left: 5px;
+}
+
+div.first div,
+div.second div{
+    line-height: 26px;
 }
 
 div.text{
@@ -151,6 +157,7 @@ div.text_error{
     width: 100%;
     float:left;
     color: red;
+    padding-left: 5px;
 }
 div.text_left{
     /*margin-right: 25px;*/
@@ -166,6 +173,7 @@ div.text_left_error{
     font-weight:bold;
     float:left;
     color: red;
+    padding-left: 5px;
 }
 div.text_right{
     float: left;
@@ -211,6 +219,7 @@ div.notice{
     padding: 2px 0px 2px 0px;
     font-weight: bold;
     text-align: center;
+    line-height: 26px;
 }
 span.important{
     color: red;
