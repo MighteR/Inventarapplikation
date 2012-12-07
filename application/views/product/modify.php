@@ -184,7 +184,7 @@ $(document).ready(function(){
       <?php echo lang('title_product_name','name'); ?><span class="important">*</span>:
     </div>
     <div class="text_right">
-        <input name="name" class="formular<?php echo $error_class_name; ?>" id="name" type="text" value="<?php echo set_value('name'); ?>"/>
+        <input name="name" class="formular<?php echo $error_class_name; ?>" id="name" type="text" value="<?php echo set_value('name',$old_name); ?>"/>
     </div>
 </div>
 <div class="second">
@@ -194,7 +194,7 @@ $(document).ready(function(){
            <?php echo lang('title_unit','unit'); ?><span class="important">*</span>:
         </div>
         <div>
-            <input name="unit" id="unit" style="width:300px;" type="hidden" value="<?php echo set_value('unit'); ?>"/>
+            <input name="unit" id="unit" style="width:300px;" type="hidden" value="<?php echo set_value('unit',$old_unit); ?>"/>
         </div>
     </div>
     <div style="float:left;width:30%;">
@@ -203,36 +203,36 @@ $(document).ready(function(){
            <?php echo lang('title_price_per_unit','unit_price'); ?><span class="important">*</span>:
         </div>
         <div>
-            <input name="unit_price" class="formular<?php echo $error_class_unit_price; ?>" id="unit_price" type="text" value="<?php echo set_value('unit_price'); ?>" />
+            <input name="unit_price" class="formular<?php echo $error_class_unit_price; ?>" id="unit_price" type="text" value="<?php echo set_value('unit_price',$old_unit_price); ?>" />
         </div>
     </div>
-    <div style="float:left;width:29%;">
+    <div style="float:left;width:30%;">
         <?php echo form_error('unit_quantity'); ?>
         <div class="text_left<?php echo $error_class_unit_quantity; ?>">
            <?php echo lang('title_quantity','unit_quantity'); ?><span class="important">*</span>:
         </div>
         <div>
-            <input name="unit_quantity" class="formular<?php echo $error_class_unit_quantity; ?>" id="unit_quantity" type="text" size="3" value="<?php echo set_value('unit_quantity'); ?>" />
+            <input name="unit_quantity" class="formular<?php echo $error_class_unit_quantity; ?>" id="unit_quantity" type="text" size="3" value="<?php echo set_value('unit_quantity',$old_unit_quantity); ?>" />
         </div>
     </div>
 </div>
 <?php echo form_error('categories'); ?>
-<div class="second">
+<div class="first">
     <div class="text_left<?php echo $error_class_categories; ?>">
        <?php echo lang('title_categories','categories'); ?><span class="important">*</span>:
     </div>
     <div class="text_right">
-        <input name="categories" id="categories" style="width:300px;" type="hidden" value="<?php echo set_value('categories'); ?>"/>
+        <input name="categories" id="categories" style="width:300px;" type="hidden" value="<?php echo set_value('categories',$old_categories); ?>"/>
     </div>
 </div>
-<div class="first">
+<div class="second">
     <div style="float:left;width:40%;">
     <?php echo form_error('package_type'); ?>
         <div class="text_left<?php echo $error_class_package_type; ?>">
            <?php echo lang('title_package_type','package_type'); ?>:
         </div>
         <div class="text_right">
-            <input name="package_type" id="package_type" style="width:300px;" type="hidden" value="<?php echo set_value('package_type'); ?>"/>
+            <input name="package_type" id="package_type" style="width:300px;" type="hidden" value="<?php echo set_value('package_type',$old_package_type); ?>"/>
         </div>
     </div>
     <div style="float:left;width:30%;">
@@ -241,7 +241,7 @@ $(document).ready(function(){
            <?php echo lang('title_price_per_package','package_price'); ?>
         </div>
         <div>
-            <input name="package_price" class="formular<?php echo $error_class_package_price; ?>" id="package_price" type="text" value="<?php echo set_value('package_price'); ?>" />
+            <input name="package_price" class="formular<?php echo $error_class_package_price; ?>" id="package_price" type="text" value="<?php echo set_value('package_price',$old_price); ?>" />
         </div>
     </div>
     <div style="float:left;width:30%;">
@@ -250,14 +250,10 @@ $(document).ready(function(){
            <?php echo lang('title_quantity','package_quantity'); ?>
         </div>
         <div>
-            <input name="package_quantity" class="formular<?php echo $error_class_package_quantity; ?>" id="package_quantity" type="text" size="3" value="<?php echo set_value('package_quantity'); ?>" />
+            <input name="package_quantity" class="formular<?php echo $error_class_package_quantity; ?>" id="package_quantity" type="text" size="3" value="<?php echo set_value('package_quantity',$old_package_quantity); ?>" />
         </div>
     </div>
-</div>
-    
-    
-    
-    
+</div>    
 <div class="first">
     <div class="text_left">
         &nbsp;

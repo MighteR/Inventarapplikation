@@ -79,15 +79,14 @@ class Category extends MY_Controller {
     }
     
     public function modify($id){
+        $this->session->set_userdata('url',  uri_string());
+        
         if($this->session->userdata('admin')){
-            $this->session->set_userdata('url',  uri_string());
-
             $this->load->model('category_model');
             
             $category_query = $this->category_model->get_category_by_id($id);
             
             if($category_query->num_rows() == 1){
-
                 $this->load->model('lock_model');
                 $this->lock_model->set_info('category',$id);
                 
@@ -106,21 +105,37 @@ class Category extends MY_Controller {
                         $data['old_name']   = $category->name;
                         
                         $list_array = array();
+                        $old_category_id = '';
                         
                         if($category->parent_id != NULL){
                             $list_array['id']   =   $category->parent_id;
                             $list_array['text'] =   $category->parent_name;
+                            
+                            $old_category_id    = $category->parent_id;
                         }
                         
-                        $data['old_parent_category'] = json_encode($list_array);                        
+                        $data['old_parent_category'] = json_encode($list_array);
+                        $data['old_parent_category_list'] = $old_category_id;
 
                         $data['old_general_report']    = ($category->general_report == 1) ? TRUE : FALSE;
                     }else{
                         $data['changed'] = 'true';
                         
-                        $data['old_name']   = '';
-                        $data['old_parent_category']    = $this->input->post('parent_category');
+                        $data['old_name']   = $this->input->post('name');
                         $data['old_general_report']     = ($this->input->post('general_report') == 1) ? TRUE : FALSE;
+                        
+                        $query = $this->category_model->get_category_by_id($this->input->post('parent_category'));
+
+                        $list_array = array();
+                        if($query->num_rows() == 1){
+                            $category = $query->row();
+
+                            $list_array['id'] = $category->id;
+                            $list_array['text'] = $category->name;
+                        }
+                        
+                        $data['old_parent_category']        = json_encode($list_array);
+                        $data['old_parent_category_list']   = $this->input->post('parent_category');
                     }
 
                     $this->load->library('form_validation');

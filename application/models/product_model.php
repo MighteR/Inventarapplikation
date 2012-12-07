@@ -33,6 +33,11 @@ class Product_model extends CI_Model {
         
         $this->insert_product_price($product_price_data);
         
+        $product_categories_data['product_id'] = $product_id;
+        $product_categories_data['categories'] = $data['categories'];
+        
+        $this->insert_product_categories($product_categories_data);
+        
         if(!empty($data['package_type'])){
             $package_type_data = array();
             
@@ -68,6 +73,19 @@ class Product_model extends CI_Model {
         $this->db->insert('package_type_prices', $data);
     }
     
+    public function insert_product_categories($data){
+        $product_categories_data = array();
+        $product_categories_data['product_id'] = $data['product_id'];
+        
+        $categories = explode(',', $data['categories']);
+        
+        for($i = 0; $i < count($categories); $i++){
+           $product_categories_data['category_id'] = $categories[$i];
+
+           $this->db->insert('product_categories', $product_categories_data);
+        }
+    }
+    
     public function get_product_by_name($name,$limit = array()){
         $query = "SELECT id, name
                     FROM products
@@ -78,6 +96,30 @@ class Product_model extends CI_Model {
             $query .= " LIMIT ".$limit['begin'].",".$limit['limit'];
         }
 
+        return $this->db->query($query);
+    }
+    
+    public function get_product_by_id($id){
+        $query = "SELECT products.*,
+                         units.id AS 'unit_id',
+                         units.name AS 'unit_name'
+                    FROM products
+                    INNER JOIN units ON
+                        units.id = products.unit_id
+                    WHERE   products.id = ".$this->db->escape($id)." AND
+                            products.deleter IS NULL";
+
+        return $this->db->query($query);
+    }
+    
+    public function get_categories_by_product($id){
+        $query = "SELECT categories.id, categories.name
+                    FROM product_categories
+                    INNER JOIN categories ON
+                        product_categories.product_id = ".$this->db->escape($id)." AND
+                        categories.id = product_categories.category_id AND
+                        categories.deleter IS NULL";
+echo $query;
         return $this->db->query($query);
     }
 }

@@ -107,7 +107,7 @@ img{
 }
 
 #main_content a{
-    text-decoration:none; 
+    text-decoration:none;
 }
 
 div.first{
@@ -135,11 +135,11 @@ div.text_title{
     padding: 5px 0px 5px 0px;
 }
 
-div.first div:first-child,
-div.second div:first-child,
-div.text_title div:first-child{
-   line-height: 26px;
-   padding-left: 5px;
+div.first div.text_left:first-child,
+div.second div.text_left:first-child,
+div.text_title div:first-child,
+div.list div:first-child{
+    padding-left: 5px;
 }
 
 div.text{

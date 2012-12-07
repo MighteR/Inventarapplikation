@@ -13,4 +13,7 @@ $lang['title_categories'] = 'Categories';
 $lang['title_price_per_unit'] = 'Price / Unit';
 $lang['title_price_per_package'] = 'Price / Package';
 $lang['title_quantity'] = 'Quantity';
+$lang['error_price_is_mandatory'] = 'Price is mandatory';
+$lang['error_categories_doesnt_exist'] = 'One of the categories doesn\'t exist';
+$lang['error_unit_doesnt_exist'] = 'This unit doesn\'t exist';
 ?>

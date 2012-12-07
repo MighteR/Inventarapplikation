@@ -13,4 +13,7 @@ $lang['title_categories'] = 'Kategorien';
 $lang['title_price_per_unit'] = 'Preis / Einheit';
 $lang['title_price_per_package'] = 'Preis / Verpackung';
 $lang['title_quantity'] = 'Anzahl';
+$lang['error_price_is_mandatory'] = 'Preis ist pflicht';
+$lang['error_categories_doesnt_exist'] = 'Einer der Kategorien existiert nicht';
+$lang['error_unit_doesnt_exist'] = 'Diese Einheit exisitert nicht';
 ?>

@@ -92,7 +92,7 @@ $(document).ready(function(){
     $('#reset').click(function(){
         var old_parent_category = <?php echo $old_parent_category; ?>;
     
-        if(!jQuery.isEmptyObject(old_parent_category)) $("#categories").select2("data", old_parent_category);
+        if(!jQuery.isEmptyObject(old_parent_category)) $("#parent_category").select2("data", old_parent_category);
     });
 });
 //]]>
@@ -116,7 +116,7 @@ $(document).ready(function(){
         <?php echo lang('title_parent_category','parent_category'); ?><span class="important">*</span>:
     </div>
     <div class="text_right">
-        <input name="parent_category" id="parent_category" style="width:300px;" type="hidden" value="<?php echo set_value('parent_category', $old_parent_category); ?>"/>
+        <input name="parent_category" id="parent_category" style="width:300px;" type="hidden" value="<?php echo set_value('parent_category', $old_parent_category_list); ?>"/>
     </div>
 </div>
 <div class="first">
@@ -124,7 +124,7 @@ $(document).ready(function(){
         <?php echo lang('title_general_report','general_report'); ?>:
     </div>
     <div class="text_right">
-        <input name="general_report" class="formular" id="general_report" type="checkbox" value="1" <?php echo set_checkbox('general_report','1', $old_general_report); ?>/>
+        <input name="general_report" id="general_report" type="checkbox" value="1" <?php echo set_checkbox('general_report','1', $old_general_report); ?>/>
     </div>
 </div>
 <div class="second">
