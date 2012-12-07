@@ -61,7 +61,7 @@ class Product_model extends CI_Model {
             $data['creation_timestamp'] = date('Y-m-d H:i:s');
         }
 
-        $this->db->insert('prices', $data);
+        $this->db->insert('product_prices', $data);
     }
     
     public function insert_package_type_price($data){
