@@ -7,6 +7,7 @@ class MY_Controller extends CI_Controller {
         
         $url_exception[] = 'user/login';
         $url_exception[] = 'user/logout';
+        $data['logged_in'] = $this->session->userdata('id');
         
         if(!$this->session->userdata('id') AND !in_array(uri_string(),$url_exception)){
             $this->session->set_userdata('login_url', uri_string());
@@ -27,7 +28,7 @@ class MY_Controller extends CI_Controller {
         $this->template->write('version','0.1');
                         
         //Write information to template file
-        $this->template->write_view('menu','template/menu');
+        $this->template->write_view('menu','template/menu',$data);
     }
 }
 /* End of file MY_Controller.php */

@@ -39,6 +39,7 @@ $lang['menu_admin_user'] = 'Benutzerverwaltung';
 $lang['menu_admin_category'] = 'Kategorieverwaltung';
 $lang['menu_admin_unit'] = 'Einheitenverwaltung';
 $lang['menu_admin_product'] = 'Produktverwaltung';
+$lang['menu_logout'] = 'Logout';
 
 $lang['error_id_does_not_exist'] = 'Diese ID existiert nicht!';
 $lang['error_no_access'] = 'Sie haben keine Berechtigung!';

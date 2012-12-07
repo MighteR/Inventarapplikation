@@ -14,7 +14,7 @@ $(document).ready(function(){
 </div>
 <div class="first">
     <div>
-      <br /><?php echo lang('text_login_information'); ?>.<br /><br />
+        <?php echo lang('text_login_information'); ?>.
     </div>
 </div>
 <?php echo form_error('login'); ?>

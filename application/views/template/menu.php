@@ -32,6 +32,9 @@
                 <li><a href="<?php echo base_url('help'); ?>"><?php echo lang('menu_help_about'); ?></a></li>
                 <li><a href="#"><?php echo lang('menu_help_online'); ?></a></li>
             </ul>
-        </li>       
+        </li>
+        <?php if($logged_in): ?>
+        <li><a href="<?php echo base_url('user/logout'); ?>"><?php echo lang('menu_logout'); ?></a></li>
+        <?php endif; ?>
     </div>
 </div>
