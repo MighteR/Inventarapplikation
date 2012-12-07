@@ -69,7 +69,7 @@ class Product extends MY_Controller {
             $this->form_validation->set_rules('package_type', 'lang:title_unit', 'trim|callback_unit_check');
             $this->form_validation->set_rules('unit_price', 'lang:title_price_per_unit', 'required|trim|greater_than[0]');
             $this->form_validation->set_rules('package_price', 'lang:title_price_per_package', 'trim|greater_than[0]|callback_package_price_check');
-            $this->form_validation->set_rules('unit_quantity', 'lang:title_quantity', 'required|trim|greater_than[-1]');
+            $this->form_validation->set_rules('unit_quantity', 'lang:title_quantity', 'trim|greater_than[-1]');
             $this->form_validation->set_rules('package_quantity', 'lang:title_quantity', 'trim|greater_than[-1]');
             
             if($this->form_validation->run()){
@@ -161,18 +161,57 @@ class Product extends MY_Controller {
                     $this->load->library('messages');
                     $this->messages->get_message('error',$this->lang->line('error_product_locked_by').$this->lock_model->get_info());
                 }else{
-                    if(empty($_POST)){                   
+                    if(empty($_POST)){
                         $data['changed'] = 'false';
                         $data['old_categories']     = json_encode(array());
-                        $data['old_package_type']   = json_encode(array());
-                        $data['old_unit']           = json_encode(array());
                         
                         $this->lock_model->create();
                         
                         $product = $product_query->row();
 
                         $data['old_name']   = $product->name;
-    
+                        $data['old_unit']   = $product->unit_name;
+                        
+                        $old_package_type = '';
+                        if($product->package_name != NULL){
+                            $old_package_type = $product->package_name;
+                        }
+                        
+                        $data['old_package_type'] = $old_package_type;
+
+                        $query = $this->product_model->get_last_product_information($id);
+                        
+                        $last_unit_update = '';
+                        $old_unit_price = 0;
+                        $old_unit_quantity = 0;
+                        
+                        if($query->num_rows() == 1){
+                            $unit = $query->row();
+                            
+                            $last_unit_update    = $unit->timestamp;
+                            $old_unit_price     = $unit->price;
+                            $old_unit_quantity  = $unit->quantity;
+                        }
+                        
+                        $data['last_unit_update']   = $last_unit_update;
+                        $data['old_unit_price']     = $old_unit_price;
+                        $data['old_unit_quantity']  = $old_unit_quantity;
+                        
+                        $query = $this->product_model->get_last_package_information($id);
+                        
+                        $old_package_quantity = 0;
+                        $old_package_price = 0;
+                        
+                        if($query->num_rows() == 1){
+                            $unit = $query->row();
+                            
+                            $old_package_price     = $unit->price;
+                            $old_package_quantity  = $unit->quantity;
+                        }
+                        
+                        $data['old_package_price']     = $old_package_price;
+                        $data['old_package_quantity']  = $old_package_quantity;
+                        
                         $query = $this->product_model->get_categories_by_product($id);
 
                         if($query->num_rows() > 0){
@@ -262,6 +301,8 @@ class Product extends MY_Controller {
                         $this->messages->get_message('info',$this->lang->line('info_product_created'),'product');
                     }else{
                         $this->form_validation->set_error_delimiters('<div class="notice">', '</div>');
+                        
+                        $data['id'] = $id;
 
                         $data['error_class_name'] = '';
                         $data['error_class_unit'] = '';
@@ -304,7 +345,7 @@ class Product extends MY_Controller {
                             $data['error_class_package_quantity'] = '_error';
                         }
 
-                        $this->template->write_view('content','product/create', $data);
+                        $this->template->write_view('content','product/modify', $data);
                     }
                 }
             }else{
