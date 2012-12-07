@@ -38,7 +38,7 @@ $lang['menu_help_online'] = 'Online Help';
 $lang['menu_admin'] = 'Administration';
 $lang['menu_admin_user'] = 'User Administration';
 $lang['menu_admin_category'] = 'Category Administration';
-$lang['menu_admin_package_type'] = 'Package Type Administration';
+$lang['menu_admin_unit'] = 'Unit Administration';
 $lang['menu_admin_product'] = 'Product Administration';
 
 $lang['error_id_does_not_exist'] = 'This id doesn\'t exist!';

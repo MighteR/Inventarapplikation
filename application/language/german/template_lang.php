@@ -37,7 +37,7 @@ $lang['menu_help_online'] = 'Online Hilfe';
 $lang['menu_admin'] = 'Administration';
 $lang['menu_admin_user'] = 'Benutzerverwaltung';
 $lang['menu_admin_category'] = 'Kategorieverwaltung';
-$lang['menu_admin_package_type'] = 'Verpackungstypenverwaltung';
+$lang['menu_admin_unit'] = 'Einheitenverwaltung';
 $lang['menu_admin_product'] = 'Produktverwaltung';
 
 $lang['error_id_does_not_exist'] = 'Diese ID existiert nicht!';

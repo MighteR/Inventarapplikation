@@ -21,7 +21,7 @@
             <ul>
                 <li><a href="<?php echo base_url('user'); ?>"><?php echo lang('menu_admin_user'); ?></a></li>
                 <li><a href="<?php echo base_url('category'); ?>"><?php echo lang('menu_admin_category'); ?></a></li>
-                <li><a href="<?php echo base_url('package_type'); ?>"><?php echo lang('menu_admin_package_type'); ?></a></li>
+                <li><a href="<?php echo base_url('unit'); ?>"><?php echo lang('menu_admin_unit'); ?></a></li>
                 <li><a href="<?php echo base_url('product'); ?>"><?php echo lang('menu_admin_product'); ?></a></li>
             </ul>        
         </li>
