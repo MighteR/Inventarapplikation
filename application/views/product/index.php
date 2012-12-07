@@ -73,7 +73,7 @@ function search_product(page){
             'page_output': output
         },
         success: function(html){
-            $('#product').html(html);
+            $('#products').html(html);
         }
     });
 }
@@ -95,11 +95,11 @@ function search_product(page){
         &nbsp;
     </div>
     <div class="text_right">
-        <button name="create" type="button" id="search_product" ><?php echo lang('title_submit'); ?></button>
-        <button name="create" type="button" id="reset_search_product" ><?php echo lang('title_reset'); ?></button>
+        <button name="submit" type="button" id="search_product" ><?php echo lang('title_submit'); ?></button>
+        <button name="reset" type="button" id="reset_search_product" ><?php echo lang('title_reset'); ?></button>
     </div>
 </div>
 <div class="text_title" style="text-align:center">
     <div><button name="create" type="button" id="create" ><?php echo lang('title_create_product'); ?></button></div>
 </div>
-<div id="product"></div>
+<div id="products"></div>

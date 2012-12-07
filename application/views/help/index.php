@@ -2,7 +2,7 @@
     <span><?php echo lang('title_help_about'); ?></span>
 </div>
 <div class="first">
-    <div>
+    <div class="text">
         <?php echo lang('text_about'); ?>
     </div>
 </div>

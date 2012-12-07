@@ -349,7 +349,7 @@ class Product extends MY_Controller {
                     $this->pages->check_page($query->num_rows(),$page,true,$p_page_output);
 
                     $query = $this->product_model->get_product_by_name($p_name,$this->pages->get_limit());
-                    $data['units'] = $query->result_object();
+                    $data['products'] = $query->result_object();
 
                     $data['entry'] = true;
                 }else{
