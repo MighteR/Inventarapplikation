@@ -7,7 +7,7 @@ class Report extends MY_Controller {
         $this->lang->load('report', $this->session->userdata('language'));
     }
     
-        public function inventar(){
+    public function inventar(){
         $this->session->set_userdata('url',  uri_string());
         
         if($this->session->userdata('admin')){
