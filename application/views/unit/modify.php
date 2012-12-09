@@ -66,7 +66,7 @@ $(document).ready(function(){
         <label for="package_type"><?php echo lang('title_package_type','package_type'); ?></label>:
     </div>
     <div class="text_right">
-        <input name="package_type" class="formular" id="package_type" type="checkbox" value="1" <?php echo set_checkbox('package_type','1', $old_package_type); ?>/>
+        <input name="package_type" id="package_type" type="checkbox" value="1" <?php echo set_checkbox('package_type','1', $old_package_type); ?>/>
     </div>
 </div>
 <div class="first">

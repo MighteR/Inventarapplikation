@@ -72,7 +72,7 @@ $(document).ready(function(){
         <?php echo lang('title_admin','admin'); ?>:
     </div>
     <div class="text_right">
-        <input name="admin" class="formular" id="admin" type="checkbox" value="1" <?php echo set_checkbox('admin','1'); ?>/>
+        <input name="admin" id="admin" type="checkbox" value="1" <?php echo set_checkbox('admin','1'); ?>/>
     </div>
 </div>
 <div class="first">

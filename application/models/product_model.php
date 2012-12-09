@@ -55,6 +55,83 @@ class Product_model extends CI_Model {
         $this->db->trans_complete();
     }
     
+    public function update($id, $data){
+        $modifier               = $this->session->userdata('id');
+        $modification_timestamp = date('Y-m-d H:i:s');
+
+        $product_data = array();
+        
+        $product_data['name'] = $data['name'];
+        $product_data['modifier'] = $modifier;
+        $product_data['modification_timestamp'] = $modification_timestamp;
+  
+        $this->db->trans_strict(FALSE);
+        $this->db->trans_start();
+        
+        $this->db->update('products', $product_data, array('id' => $id));
+
+        if($data['unit_price'] != $data['old_unit_price'] OR
+                $data['unit_quantity'] != $data['old_unit_quantity']){
+            $product_price_data = array();
+            
+            $timestamp = $data['unit_update_date'];
+            $timestamp = mktime(date('H'),date('i'),date('s'),substr($timestamp,4,2),substr($timestamp,6,2),substr($timestamp,0,4));
+            
+            $product_price_data['creator']              = $modifier;
+            $product_price_data['creation_timestamp']   = $modification_timestamp;
+            $product_price_data['product_id']           = $id;    
+            $product_price_data['timestamp']            = date('Y-m-d H:i:s', $timestamp);
+            $product_price_data['price']                = $data['unit_price'];
+            $product_price_data['quantity']             = $data['unit_quantity'];
+
+            $this->insert_product_price($product_price_data);
+        }
+        
+        if($data['package_price'] != $data['old_package_price'] OR
+                $data['package_quantity'] != $data['old_package_quantity']){
+            $package_type_price_data = array();
+            
+            $timestamp = $data['package_update_date'];
+            $timestamp = mktime(date('H'),date('i'),date('s'),substr($timestamp,4,2),substr($timestamp,6,2),substr($timestamp,0,4));
+            
+            $package_type_price_data['creator']                 = $modifier;
+            $package_type_price_data['creation_timestamp']      = $modification_timestamp;
+            $package_type_price_data['product_id']              = $id;
+            $package_type_price_data['unit_id']                 = $data['old_package']; 
+            $package_type_price_data['timestamp']               = date('Y-m-d H:i:s', $timestamp);
+            $package_type_price_data['price']                   = $data['unit_price'];
+            $package_type_price_data['quantity']                = $data['unit_quantity'];
+
+            $this->insert_package_type_price($package_type_price_data);
+        }
+        
+        $categories_query   = $this->get_categories_by_product($id);
+        $categories         = array_unique(explode(',',$data['categories']));
+        $old_categories     = array();
+        
+        foreach($categories_query->result() AS $category){
+            $old_categories[] = $category->id;
+            
+            if(!in_array($category->id, $categories)){
+                $this->db->delete('product_categories', array('product_id' => $id,
+                                                              'category_id' => $category->id));
+            }
+        }
+
+        $product_categories = array();
+        $product_categories['product_id'] = $id;        
+
+        for($i = 0; $i < count($categories); $i++){
+            if(!in_array($categories[$i],$old_categories)){
+                $product_categories['category_id'] = $categories[$i];
+                
+                $this->db->insert('product_categories', $product_categories);
+            }
+        }
+        
+        $this->db->trans_complete();
+    }
+    
     public function insert_product_price($data){
         if(empty($data['creator'])){
             $data['creator'] = $this->session->userdata('id');
@@ -77,7 +154,7 @@ class Product_model extends CI_Model {
         $product_categories_data = array();
         $product_categories_data['product_id'] = $data['product_id'];
         
-        $categories = explode(',', $data['categories']);
+        $categories = array_unique(explode(',', $data['categories']));
         
         for($i = 0; $i < count($categories); $i++){
            $product_categories_data['category_id'] = $categories[$i];

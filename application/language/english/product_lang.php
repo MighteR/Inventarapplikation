@@ -16,4 +16,8 @@ $lang['title_quantity'] = 'Quantity';
 $lang['error_price_is_mandatory'] = 'Price is mandatory';
 $lang['error_categories_doesnt_exist'] = 'One of the categories doesn\'t exist';
 $lang['error_unit_doesnt_exist'] = 'This unit doesn\'t exist';
+$lang['title_last_update'] = 'Last Update';
+$lang['title_price_update'] = 'Price Update on';
+$lang['info_product_created'] = 'The product is successfully created';
+$lang['info_product_modified'] = 'The product is successfully modified';
 ?>

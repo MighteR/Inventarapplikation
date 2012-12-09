@@ -116,7 +116,7 @@ $(document).ready(function(){
         <?php echo lang('title_general_report','general_report'); ?>:
     </div>
     <div class="text_right">
-        <input name="general_report" class="formular" id="general_report" type="checkbox" value="1" <?php echo set_checkbox('general_report','1'); ?>/>
+        <input name="general_report" id="general_report" type="checkbox" value="1" <?php echo set_checkbox('general_report','1'); ?>/>
     </div>
 </div>
 <?php if($categories_exists): ?>

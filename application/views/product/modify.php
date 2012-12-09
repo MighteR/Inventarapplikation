@@ -51,7 +51,7 @@ $(document).ready(function(){
 
     $('#categories').select2({
         initSelection : function (element, callback) {
-            callback(<?php echo $old_categories; ?>);
+            callback(<?php echo $old_categories_list; ?>);
         },
         formatSelection: function(selection){ 
             return selection.text; 
@@ -92,14 +92,56 @@ $(document).ready(function(){
     });
     
     $('#reset').click(function(){
-        var old_categories      = <?php echo $old_categories; ?>;
+        var old_categories      = <?php echo $old_categories_list; ?>;
 
         if(!jQuery.isEmptyObject(old_categories)) $("#categories").select2("data", old_categories);
     });
     
-    $('#date').attr('disabled',true);
-    $('#date').addClass('disabled');
+    $('#unit_update_date').attr('disabled',true);
+    $('#unit_update_date').addClass('disabled');
     
+    $('#unit_price, #unit_quantity').change(function(){
+       var old_price    = '<?php echo $old_unit_price; ?>';
+       var old_quantity = '<?php echo $old_unit_quantity; ?>';
+       
+       if($('#unit_price').val() != old_price || $('#unit_quantity').val() != old_quantity){
+           $('#unit_update_date').attr('disabled',false);
+           $('#unit_update_date').removeClass('disabled');
+           $('#unit_update_date').val('<?php echo $actual_date; ?>');
+           $('#unit_update_date_db').val('<?php echo $actual_date_db; ?>');
+       }else{
+           $('#unit_update_date').attr('disabled',true);
+           $('#unit_update_date').addClass('disabled');
+           $('#unit_update_date').val('');
+           $('#unit_update_date_db').val('');
+       }
+    });
+    
+    $('#package_price, #package_quantity').change(function(){
+       var old_price    = '<?php echo $old_package_price; ?>';
+       var old_quantity = '<?php echo $old_package_quantity; ?>';
+       
+       if($('#package_price').val() != old_price || $('#package_quantity').val() != old_quantity){
+           $('#package_update_date').attr('disabled',false);
+           $('#package_update_date').removeClass('disabled');
+           $('#package_update_date').val('<?php echo $actual_date; ?>');
+           $('#package_update_date_db').val('<?php echo $actual_date_db; ?>');
+       }else{
+           $('#package_update_date').attr('disabled',true);
+           $('#package_update_date').addClass('disabled');
+           $('#package_update_date').val('');
+           $('#package_update_date_db').val('');
+       }
+    });
+    
+    $(".date").each(function(){
+        $(this).datepicker({
+            
+            dateFormat: 'dd.mm.yy',
+            altField: '#' + $(this).attr('name') + '_db',
+            altFormat: "yymmdd"
+        });
+    });
 });
 //]]>
 </script>
@@ -122,17 +164,8 @@ $(document).ready(function(){
         <div class="text_left<?php echo $error_class_unit; ?>">
            <?php echo lang('title_unit','unit'); ?>:
         </div>
-        <div>
+        <div class="text_right">
             <?php echo $old_unit; ?>
-        </div>
-    </div>
-    <div style="float:left;width:30%;">
-        <?php echo form_error('unit_price'); ?>
-        <div class="text_left<?php echo $error_class_unit_price; ?>">
-           <?php echo lang('title_price_per_unit','unit_price'); ?><span class="important">*</span>:
-        </div>
-        <div>
-            <input name="unit_price" class="formular<?php echo $error_class_unit_price; ?>" id="unit_price" type="text" value="<?php echo set_value('unit_price',$old_unit_price); ?>" />
         </div>
     </div>
     <div style="float:left;width:20%;">
@@ -144,23 +177,34 @@ $(document).ready(function(){
             <input name="unit_quantity" class="formular<?php echo $error_class_unit_quantity; ?>" id="unit_quantity" type="text" size="3" value="<?php echo set_value('unit_quantity',$old_unit_quantity); ?>" />
         </div>
     </div>
-    <div style="float:left;width:25%;">
-        <div class="text_left">
-           asdfaslkfajsdflk<?php echo lang('title_update'); ?>:
+    <div style="float:left;width:20%;">
+        <?php echo form_error('unit_price'); ?>
+        <div class="text_left<?php echo $error_class_unit_price; ?>">
+           <?php echo lang('title_price_per_unit','unit_price'); ?><span class="important">*</span>:
         </div>
         <div>
-            <input name="unit_quantity" id="date" class="formular<?php echo $error_class_unit_quantity; ?>" id="unit_quantity" type="text" size="10" value="<?php echo set_value('unit_quantity',$old_unit_quantity); ?>" />
+            <input name="unit_price" class="formular<?php echo $error_class_unit_price; ?>" id="unit_price" type="text" size="3" value="<?php echo set_value('unit_price',$old_unit_price); ?>" />
         </div>
     </div>
-    <div style="float:left;width:75%">
-        &nbsp;
-    </div>
-    <div style="float:left;width:25%;">
+    <div style="float:left;width:35%;">
         <div class="text_left">
            <?php echo lang('title_last_update'); ?>:
         </div>
-        <div>
+        <div class="text_right">
             <?php echo $last_unit_update; ?>
+        </div>
+    </div>
+    <div style="float:left;width:65%">
+        &nbsp;
+    </div>
+    <div style="float:left;width:35%;">
+        <?php echo form_error('unit_update_date'); ?>
+        <div class="text_left">
+           <?php echo lang('title_price_update','unit_update_date'); ?>:
+        </div>
+        <div>
+            <input name="unit_update_date" id="unit_update_date" class="formular<?php echo $error_class_unit_update_date; ?> date" type="text" size="10" value="<?php echo set_value('unit_update_date',$old_unit_update_date); ?>" />
+            <input name="unit_update_date_db" id="unit_update_date_db" id="unit_update_date" type="hidden" value="<?php echo set_value('unit_update_date_db',$old_unit_update_date_db); ?>" />
         </div>
     </div>
 </div>
@@ -174,7 +218,7 @@ $(document).ready(function(){
     </div>
 </div>
 <div class="second">
-    <div style="float:left;width:40%;">
+    <div style="float:left;width:25%;">
     <?php echo form_error('package_type'); ?>
         <div class="text_left<?php echo $error_class_package_type; ?>">
            <?php echo lang('title_package_type','package_type'); ?>:
@@ -183,22 +227,43 @@ $(document).ready(function(){
             <?php echo $old_package_type; ?>
         </div>
     </div>
-    <div style="float:left;width:30%;">
-        <?php echo form_error('package_price'); ?>
-        <div class="text_left<?php echo $error_class_package_price; ?>">
-           <?php echo lang('title_price_per_package','package_price'); ?>
-        </div>
-        <div>
-            <input name="package_price" class="formular<?php echo $error_class_package_price; ?>" id="package_price" type="text" value="<?php echo set_value('package_price',$old_package_price); ?>" />
-        </div>
-    </div>
-    <div style="float:left;width:30%;">
+    <div style="float:left;width:20%;">
         <?php echo form_error('package_quantity'); ?>
         <div class="text_left<?php echo $error_class_package_quantity; ?>">
            <?php echo lang('title_quantity','package_quantity'); ?>
         </div>
         <div>
             <input name="package_quantity" class="formular<?php echo $error_class_package_quantity; ?>" id="package_quantity" type="text" size="3" value="<?php echo set_value('package_quantity',$old_package_quantity); ?>" />
+        </div>
+    </div>
+    <div style="float:left;width:20%;">
+        <?php echo form_error('package_price'); ?>
+        <div class="text_left<?php echo $error_class_package_price; ?>">
+           <?php echo lang('title_price_per_package','package_price'); ?>
+        </div>
+        <div>
+            <input name="package_price" class="formular<?php echo $error_class_package_price; ?>" id="package_price" type="text" size="3" value="<?php echo set_value('package_price',$old_package_price); ?>" />
+        </div>
+    </div>
+    <div style="float:left;width:35%;">
+        <div class="text_left">
+           <?php echo lang('title_last_update'); ?>:
+        </div>
+        <div class="text_right">
+            <?php echo $last_package_update; ?>
+        </div>
+    </div>
+    <div style="float:left;width:65%">
+        &nbsp;
+    </div>
+    <div style="float:left;width:35%;">
+        <?php echo form_error('package_update_date'); ?>
+        <div class="text_left">
+           <?php echo lang('title_price_update','package_update_date'); ?>:
+        </div>
+        <div>
+            <input name="package_update_date" id="package_update_date" class="formular<?php echo $error_class_package_update_date; ?> date" type="text" size="10" value="<?php echo set_value('package_update_date',$old_package_update_date); ?>" />
+            <input name="package_update_date_db" id="package_update_date_db" type="hidden" value="<?php echo set_value('package_update_date_db',$old_package_update_date_db); ?>" />
         </div>
     </div>
 </div>    

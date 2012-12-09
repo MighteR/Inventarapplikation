@@ -45,6 +45,7 @@ $lang['error_id_does_not_exist'] = 'Diese ID existiert nicht!';
 $lang['error_no_access'] = 'Sie haben keine Berechtigung!';
 $lang['error_no_entries'] = 'Keine Einträge gefunden!';
 $lang['error_no_number'] = 'Sie müssen eine Numer eintragen!';
+$lang['error_no_date'] = 'Sie müssen ein Datum eingeben';
 
 $lang['notice_unsaved_data'] = 'Sie haben ungespeicherte Daten! Wenn Sie die Seite verlassen verlieren Sie alle ungespeicherten Daten.';
 /* End of file template_lang.php */

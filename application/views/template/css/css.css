@@ -143,16 +143,16 @@ div.list div:first-child{
     padding-left: 5px;
 }
 
-div.first div,
-div.second div{
-    line-height: 26px;
-}
-
 div.text{
     width: 100%;
     float:left;
     padding-left: 5px;
 }
+
+div.text_only{
+    line-height: 26px;
+}
+
 div.text_error{
     width: 100%;
     float:left;
@@ -177,6 +177,7 @@ div.text_left_error{
 }
 div.text_right{
     float: left;
+    line-height: 26px;
 }
 
 #content_title{

@@ -46,6 +46,7 @@ $lang['error_id_does_not_exist'] = 'This id doesn\'t exist!';
 $lang['error_no_access'] = 'You don\'t have access!';
 $lang['error_no_entries'] = 'No entries found!';
 $lang['error_no_number'] = 'You have to enter a number!';
+$lang['error_no_date'] = 'You have to enter a date';
 
 $lang['notice_unsaved_data'] = 'You have unsaved data! if you leave this page you will lose all your unsaved data.';
 

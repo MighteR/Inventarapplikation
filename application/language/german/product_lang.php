@@ -16,4 +16,8 @@ $lang['title_quantity'] = 'Anzahl';
 $lang['error_price_is_mandatory'] = 'Preis ist pflicht';
 $lang['error_categories_doesnt_exist'] = 'Einer der Kategorien existiert nicht';
 $lang['error_unit_doesnt_exist'] = 'Diese Einheit exisitert nicht';
+$lang['title_last_update'] = 'Letzte Aktualisierung';
+$lang['title_price_update'] = 'Preisaktualisierung ab';
+$lang['info_product_created'] = 'Das Product wurde erfolgreich angelegt';
+$lang['info_product_modified'] = 'Das Product wurde erfolgreich verändert';
 ?>
