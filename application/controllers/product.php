@@ -31,8 +31,9 @@ class Product extends MY_Controller {
                     
                     foreach($query->result() AS $category){
                         $list_array = array();
-                        $list_array['id']   = $category->id;
-                        $list_array['text'] = $category->name;
+                        $list_array['id']           = $category->id;
+                        $list_array['text']         = $category->name;
+                        $list_array['inventory']    = $category->general_report;
                         
                         array_push($category_result, $list_array);
                     }
@@ -141,9 +142,15 @@ class Product extends MY_Controller {
         $this->template->render();
      }
      
-     public function delete(){
-         
-     }
+    public function delete(){
+        if($this->session->userdata('admin')){
+            if($this->input->is_ajax_request() AND !empty($_POST)){
+                $this->load->model('product_model');
+                
+                $this->product_model->delete($this->input->post('id'));
+            }
+        }
+    }
      
      public function modify($id){
         $this->session->set_userdata('url',  uri_string());
@@ -232,8 +239,9 @@ class Product extends MY_Controller {
 
                             foreach($query->result() AS $category){
                                 $list_array = array();
-                                $list_array['id']   = $category->id;
-                                $list_array['text'] = $category->name;
+                                $list_array['id']           = $category->id;
+                                $list_array['text']         = $category->name;
+                                $list_array['inventory']    = $category->general_report;
 
                                 array_push($category_result, $list_array);
                                 $old_categories[] = $list_array['id'];
@@ -267,8 +275,9 @@ class Product extends MY_Controller {
 
                             foreach($query->result() AS $category){
                                 $list_array = array();
-                                $list_array['id']   = $category->id;
-                                $list_array['text'] = $category->name;
+                                $list_array['id']           = $category->id;
+                                $list_array['text']         = $category->name;
+                                $list_array['inventory']    = $category->general_report;
 
                                 array_push($category_result, $list_array);
                             }
@@ -454,6 +463,22 @@ class Product extends MY_Controller {
                 $this->form_validation->set_message('categories_check', $this->lang->line('error_categories_doesnt_exist'));
                 return FALSE;
             }else{
+                $inventory_category = 0;;
+                
+                foreach($query->result() AS $category){
+                    if($category->general_report){
+                        $inventory_category++;
+                    }
+                }
+                
+                if($inventory_category == 0){
+                    $this->form_validation->set_message('categories_check', $this->lang->line('error_no_inventar_category'));    
+                    return FALSE;
+                }elseif($inventory_category > 1){
+                    $this->form_validation->set_message('categories_check', $this->lang->line('error_max_inventar_category'));    
+                    return FALSE;
+                }
+                
                 return TRUE;
             }
         }else{

@@ -44,7 +44,7 @@ function predefine_category_search(name,category_with_child){
 }
 function search_category(page){
     var search_name = $('#search_name').val();
-    var search_category_with_child = $('#search_category_with_child').val();
+    //var search_category_with_child = $('#search_category_with_child').val();
     var search_general_report = $("input:radio[name='search_general_report']:checked").val();
 
     if(typeof page === 'undefined'){
@@ -73,7 +73,7 @@ function search_category(page){
         type: 'POST',
         data: {
             'name': search_name,
-            'category_with_child': search_category_with_child,
+            //'category_with_child': search_category_with_child,
             'general_report': search_general_report,
             'page_output': output
         },
@@ -95,6 +95,7 @@ function search_category(page){
         <input class="formular" id="search_name" name="search_name" size="50" type="text" />
     </div>
 </div>
+<!--
 <div class="second">
     <div class="text_left">
        <?php echo lang('title_category_with_childs','search_category_with_child'); ?>
@@ -112,6 +113,8 @@ endif; ?>
     </div>
 </div>
 <div class="first">
+/!-->
+<div class="second">
     <div class="text_left">
         <?php echo lang('title_general_report'); ?>
     </div>

@@ -1,7 +1,7 @@
 <link href="<?php echo base_url('application/views/template/css/smoothness/jquery-ui-1.9.1.custom.min.css'); ?>" rel="stylesheet" type="text/css" />
-<link href="<?php echo base_url('application/views/template/css/select2.css'); ?>" rel="stylesheet" type="text/css" />
+<!--<link href="<?php echo base_url('application/views/template/css/select2.css'); ?>" rel="stylesheet" type="text/css" />/!-->
 <script type="text/javascript" src="<?php echo base_url('application/views/template/js/jquery-ui-1.9.1.custom.min.js'); ?>"></script>
-<script type="text/javascript" src="<?php echo base_url('application/views/template/js/select2.min.js'); ?>"></script>
+<!--<script type="text/javascript" src="<?php echo base_url('application/views/template/js/select2.min.js'); ?>"></script>/!-->
 <script type="text/javascript">
 //<![CDATA[
 $(document).ready(function(){
@@ -48,7 +48,7 @@ $(document).ready(function(){
         });
     });
     
-    $('#parent_category').select2({
+    /*$('#parent_category').select2({
         initSelection : function (element, callback) {
             callback(<?php echo $old_parent_category; ?>);
         },
@@ -93,13 +93,13 @@ $(document).ready(function(){
         var old_parent_category = <?php echo $old_parent_category; ?>;
     
         if(!jQuery.isEmptyObject(old_parent_category)) $("#parent_category").select2("data", old_parent_category);
-    });
+    });*/
 });
 //]]>
 </script>
 <form id="form" action="<?php echo current_url(); ?>" method="post" accept-charset="utf-8">
 <div id="content_title">
-	<span><?php echo lang('title_create_category'); ?></span>
+	<span><?php echo lang('title_modify_category'); ?></span>
 </div>
 <?php echo form_error('name'); ?>
 <div class="first">
@@ -110,6 +110,7 @@ $(document).ready(function(){
         <input name="name" class="formular<?php echo $error_class_name; ?>" id="name" type="text" value="<?php echo set_value('name', $old_name); ?>"/>
     </div>
 </div>
+<!--
 <?php echo form_error('parent_category'); ?>
 <div class="second">
     <div class="text_left">
@@ -120,6 +121,8 @@ $(document).ready(function(){
     </div>
 </div>
 <div class="first">
+/!-->
+<div class="second">
     <div class="text_left">
         <?php echo lang('title_general_report','general_report'); ?>:
     </div>

@@ -2,6 +2,7 @@
 $lang['title_product_list'] = 'Product List';
 $lang['title_product_name'] = 'Product Name';
 $lang['title_create_product'] = 'Create Product';
+$lang['title_modify_product'] = 'Change an existing Product';
 $lang['title_delete_product'] = 'Delete Product';
 $lang['title_product'] = 'Product';
 $lang['title_search_unit'] = 'Search for a Unit';
@@ -20,4 +21,8 @@ $lang['title_last_update'] = 'Last Update';
 $lang['title_price_update'] = 'Price Update on';
 $lang['info_product_created'] = 'The product is successfully created';
 $lang['info_product_modified'] = 'The product is successfully modified';
+$lang['error_no_inventar_category'] = 'You need to select one category which is relevant for the inventory';
+$lang['error_max_inventar_category'] = 'You have to select only one category which is relevant for the inventory';
+$lang['question_delete_product'] = 'Are you sure you want to delete this product?';
+$lang['error_product_locked_by'] = 'This product is locked by ';
 ?>

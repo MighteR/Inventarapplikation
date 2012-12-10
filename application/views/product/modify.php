@@ -48,14 +48,21 @@ $(document).ready(function(){
         });
     });
     
+    
+    function format_category(data){
+        if(data.inventory == 1){
+            return data.text + ' <img alt="inventory" name="inventory" src="<?php echo base_url('application/views/template/images/inventory.png'); ?>" />';
+        }else{
+            return data.text
+        }
+    }
 
     $('#categories').select2({
         initSelection : function (element, callback) {
             callback(<?php echo $old_categories_list; ?>);
         },
-        formatSelection: function(selection){ 
-            return selection.text; 
-        },
+        formatSelection: format_category,
+        formatResult: format_category,
         placeholder: '<?php echo lang('title_search_categories'); ?>',
         formatNoMatches: function(term){
             return '<?php echo lang('title_no_matches_found'); ?>';

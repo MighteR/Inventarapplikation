@@ -24,7 +24,7 @@ class Lock_model extends CI_Model {
                                     INNER JOIN users ON
                                         $this->type$this->table_suffix.id = ".$this->db->escape($this->id)." AND
                                         users.id = $this->type$this->table_suffix.user_id");
-        
+
         if($query->num_rows() == 1){
             $data = $query->row();
 

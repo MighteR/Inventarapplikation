@@ -198,7 +198,7 @@ class Product_model extends CI_Model {
     }
     
     public function get_categories_by_product($id){
-        $query = "SELECT categories.id, categories.name
+        $query = "SELECT categories.id, categories.name, categories.general_report
                     FROM product_categories
                     INNER JOIN categories ON
                         product_categories.product_id = ".$this->db->escape($id)." AND
@@ -228,5 +228,22 @@ class Product_model extends CI_Model {
                     LIMIT 1";
 
         return $this->db->query($query);
+    }
+    
+    public function get_inventory($category, $due_date = NULL){
+        if($due_date == NULL){
+            $due_date = date('Y-m-d');
+        }
+        
+        return $this->db->query("call getInventory(".$category.",'".$due_date."')");
+    }
+    
+    public function delete($id){
+        $data['deleter'] = $this->session->userdata('id');
+        $data['deletion_timestamp'] = date('Y-m-d H:i:s');
+
+        $this->db->update('products', $data, array('id' => $id));
+        $this->db->update('product_prices', $data, array('product_id' => $id));
+        $this->db->update('products', $data, array('product_id' => $id));
     }
 }

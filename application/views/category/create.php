@@ -1,7 +1,7 @@
 <link href="<?php echo base_url('application/views/template/css/smoothness/jquery-ui-1.9.1.custom.min.css'); ?>" rel="stylesheet" type="text/css" />
-<link href="<?php echo base_url('application/views/template/css/select2.css'); ?>" rel="stylesheet" type="text/css" />
+<!--<link href="<?php echo base_url('application/views/template/css/select2.css'); ?>" rel="stylesheet" type="text/css" />/!-->
 <script type="text/javascript" src="<?php echo base_url('application/views/template/js/jquery-ui-1.9.1.custom.min.js'); ?>"></script>
-<script type="text/javascript" src="<?php echo base_url('application/views/template/js/select2.min.js'); ?>"></script>
+<!--<script type="text/javascript" src="<?php echo base_url('application/views/template/js/select2.min.js'); ?>"></script>/!-->
 <script type="text/javascript">
 //<![CDATA[
 $(document).ready(function(){
@@ -36,7 +36,7 @@ $(document).ready(function(){
         });
     });
     
-    $('#parent_category').select2({
+    /*$('#parent_category').select2({
         initSelection : function (element, callback) {
             callback(<?php echo $old_parent_category; ?>);
         },
@@ -81,7 +81,7 @@ $(document).ready(function(){
         var old_parent_category = <?php echo $old_parent_category; ?>;
     
         if(!jQuery.isEmptyObject(old_parent_category)) $("#categories").select2("data", old_parent_category);
-    });
+    });*/
 });
 //]]>
 </script>
@@ -98,6 +98,7 @@ $(document).ready(function(){
         <input name="name" class="formular<?php echo $error_class_name; ?>" id="name" type="text" value="<?php echo set_value('name'); ?>"/>
     </div>
 </div>
+<!--
 <?php if($categories_exists): ?>
 <?php echo form_error('parent_category'); ?>
 <div class="second">
@@ -122,8 +123,9 @@ $(document).ready(function(){
 <?php if($categories_exists): ?>
 <div class="second">
 <?php else: ?>
+/!-->
 <div class="first">
-<?php endif; ?>
+<!--<?php endif; ?>/!-->
     <div class="text_left">
         &nbsp;
     </div>

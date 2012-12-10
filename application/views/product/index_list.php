@@ -3,7 +3,7 @@
 $(document).ready(function(){
     $("img[name='delete']").click(function(){
         var id = $(this).attr('id').split('_');
-        id = id[3];
+        id = id[2];
 
         var name = $('#product_' + id).text();
 
@@ -56,7 +56,7 @@ $(document).ready(function(){
 <?php if ($entry): ?>
 <?php $c = 0;
 foreach($products as $product): ?>
-<div id="package_type_<?php echo $product->id; ?>" class="<?php echo ($c++ % 2) ? 'second' : 'first'; ?> list">
+<div class="<?php echo ($c++ % 2) ? 'second' : 'first'; ?> list">
     <div style="float:left; width:95%;">
         <a href="<?php echo base_url('product/modify/'.$product->id); ?>"><span id="product_<?php echo $product->id; ?>"><?php echo $product->name; ?></span></a>
     </div>

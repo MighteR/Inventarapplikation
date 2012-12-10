@@ -3,7 +3,7 @@
 $(document).ready(function(){
     $("img[name='delete']").click(function(){
         var id = $(this).attr('id').split('_');
-        id = id[3];
+        id = id[2];
 
         var name = $('#unit_' + id).text();
 

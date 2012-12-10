@@ -137,8 +137,8 @@ div.text_title{
 
 div.first div.text_left:first-child,
 div.second div.text_left:first-child,
-div.text_title div:first-child,
-div.list div:first-child{
+div.text_title div,
+div.list div{
     line-height: 26px;
     padding-left: 5px;
 }

@@ -123,14 +123,18 @@ class Category_model extends CI_Model {
         return $this->db->query($query);
     }
     
-    public function get_category_simple_list($name, $except = NULL, $limit = array()){
-        $query = "SELECT id, name
+    public function get_category_simple_list($name, $except = NULL, $inventory = FALSE, $limit = array()){
+        $query = "SELECT id, name, general_report
                     FROM categories
                     WHERE name LIKE ".$this->db->escape('%'.$name.'%')."
                           AND deleter IS NULL";
         
         if($except != NULL){
             $query .= " AND id != ".$this->db->escape($except);
+        }
+        
+        if($inventory){
+            $query .= " AND general_report = 1";
         }
         
         $query .= " ORDER BY name ASC";
