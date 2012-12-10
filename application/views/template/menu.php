@@ -11,7 +11,7 @@
         <!--Report!-->
         <li><a href="test3.html"><?php echo lang('menu_report'); ?></a>
             <ul>
-                <li><a href="<?php echo base_url('report/inventar'); ?>"><?php echo lang('menu_report_generate'); ?></a></li>
+                <li><a href="<?php echo base_url('report/inventory'); ?>"><?php echo lang('menu_report_generate'); ?></a></li>
                 <li><a href="<?php echo base_url('report/price'); ?>"><?php echo lang('menu_report_price'); ?></a></li>
             </ul>
         </li>
