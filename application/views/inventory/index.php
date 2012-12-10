@@ -29,10 +29,9 @@
         inventory('show');
     });
     
-    $('#change_inventory').click(function(){
-        inventory('change');
-    });
-    
+    $('#update_inventory').click(function(){
+        window.location.href = '<?php echo current_url(); ?>/update/' + $('#search_category').val();
+    });    
     
     $('#search_category').select2({
         initSelection : function (element, callback) {
@@ -76,7 +75,7 @@
     });
 });
 
-function inventory(type){
+function inventory(){
     var search_category = $('#search_category').val();
 
     $('#loader').dialog({

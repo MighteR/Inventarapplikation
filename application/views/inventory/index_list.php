@@ -39,7 +39,10 @@ foreach($inventory_list as $product):
         <b><?php echo $product->product_name; ?></b>
     </div>
     <div style="float:left; width: 10%">
-        <?php echo $product->unit_quantity; ?> <?php echo $product->unit_name; ?>
+        <?php echo $product->unit_name; ?>
+    </div>
+    <div style="float:left; width: 10%">
+        <?php echo $product->unit_quantity; ?>
     </div>
     <div style="float:left; width: 10%">
         <?php echo formatCurrency($product->unit_price); ?>

@@ -7,7 +7,7 @@ $(document).ready(function(){
     //predefine_user_search('');
 
     $('#create').click(function(){
-            window.location.href = '<?php echo current_url(); ?>/create';
+        window.location.href = '<?php echo current_url(); ?>/create';
     });
 	
     $(document).keypress(function(e){ 

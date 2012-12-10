@@ -99,7 +99,7 @@ $(document).ready(function(){
 </script>
 <form id="form" action="<?php echo current_url(); ?>" method="post" accept-charset="utf-8">
 <div id="content_title">
-	<span><?php echo lang('title_modify_category'); ?></span>
+    <span><?php echo lang('title_modify_category'); ?></span>
 </div>
 <?php echo form_error('name'); ?>
 <div class="first">
