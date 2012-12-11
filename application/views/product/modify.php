@@ -104,8 +104,15 @@ $(document).ready(function(){
         if(!jQuery.isEmptyObject(old_categories)) $("#categories").select2("data", old_categories);
     });
     
-    $('#unit_update_date').attr('disabled',true);
-    $('#unit_update_date').addClass('disabled');
+    if(<?php echo $unit_update_date_hidden; ?>){
+        $('#unit_update_date').attr('disabled',true);
+        $('#unit_update_date').addClass('disabled');
+    }
+    
+    if(<?php echo $package_update_date_hidden; ?>){
+        $('#package_update_date').attr('disabled',true);
+        $('#package_update_date').addClass('disabled');
+    }
     
     $('#unit_price, #unit_quantity').change(function(){
        var old_price    = '<?php echo $old_unit_price; ?>';

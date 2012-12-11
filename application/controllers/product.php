@@ -227,6 +227,9 @@ class Product extends MY_Controller {
                     
                     if(empty($_POST)){
                         $data['changed'] = 'false';
+                        $data['unit_update_date_hidden'] = 'true';
+                        $data['package_update_date_hidden'] = 'true';
+                        
                         $data['old_categories_list']     = json_encode(array());
                         
                         $this->lock_model->create();
@@ -266,6 +269,16 @@ class Product extends MY_Controller {
                         $data['old_package_price']          = $this->input->post('package_price');
                         $data['old_package_update_date']    = $this->input->post('package_update_date');
                         $data['old_package_update_date_db'] = $this->input->post('package_update_date_db');
+                        
+                        $data['unit_update_date_hidden'] = 'true';
+                        if($this->input->post('unit_update_date_db')){
+                            $data['unit_update_date_hidden'] = 'false';
+                        }
+                        
+                        $data['package_update_date_hidden'] = 'true';
+                        if($this->input->post('package_update_date_db')){
+                            $data['package_update_date_hidden'] = 'false';
+                        }
                         
                         $query = $this->category_model->get_categories_by_id_list(explode(',', $this->input->post('categories')));
                         
@@ -483,6 +496,43 @@ class Product extends MY_Controller {
             }
         }else{
             return TRUE;
+        }
+    }
+    
+    public function simple_search_list(){
+        if($this->input->is_ajax_request() AND !empty($_POST)){
+            $p_name         = $this->input->post('name');
+            $p_page         = $this->input->post('page');
+
+            $this->load->model('product_model');
+
+            $query = $this->product_model->get_product_simple_list($p_name);
+
+            $data_return['total']   = $query->num_rows();
+            $data_return['results'] = array();
+            
+            if($query->num_rows() > 0){
+                $this->load->library('pages');
+                $this->pages->check_page($query->num_rows(),$p_page);
+
+                $query = $this->product_model->get_product_simple_list($p_name, $this->pages->get_limit());
+
+                $products = $query->result_object();
+                $data = array();
+                
+                $i = 0;
+                foreach ($products as $product){
+                    $row_array['id']        = $product->id;
+                    $row_array['text']      = $product->name;
+                    
+                    array_push($data,$row_array);
+                }
+                
+                $data_return['results'] = $data;
+            }
+            
+            echo json_encode($data_return);
+            return;
         }
     }
     

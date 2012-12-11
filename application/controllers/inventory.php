@@ -65,6 +65,8 @@ class Inventory extends MY_Controller {
             }else{*/
                 if(empty($_POST)){
                     $data['changed'] = 'false';
+                    $data['actual_date']    = date('d.m.Y');
+                    $data['actual_date_db'] = date('Ymd');
 
                     $query = $this->product_model->get_inventory($category);
 
@@ -78,79 +80,128 @@ class Inventory extends MY_Controller {
                 }else{
                     $data['changed']    = 'true';
                     $data['entry']      = true;
-                    
-                    $category_names = $this->input->post('category_name');
-                    $product_ids = $this->input->post('product_id');
-                    $product_names = $this->input->post('product_name');
-                    $unit_ids = $this->input->post('unit_id');
-                    $unit_names = $this->input->post('unit_name');
-                    $unit_prices = $this->input->post('unit_price');
-                    $unit_quantities = $this->input->post('unit_quantity');
-                    $package_ids = $this->input->post('package_id');
-                    $package_names = $this->input->post('package_name');
-                    $package_prices = $this->input->post('package_price');
-                    $package_quantities = $this->input->post('package_quantity');
+
+                    $product_ids        = $this->input->post('product_id');
 
                     $inventory = array();
                     for($i = 0; $i < count($product_ids); $i++){
                         $result = array();
-                        $result['category_name'] = $category_names[$i];
-                        $result['product_id'] = $product_ids[$i];
-                        $result['product_name'] = $product_names[$i];
-                        $result['unit_id'] = $unit_ids[$i];
-                        $result['unit_name'] = $unit_names[$i];
-                        $result['unit_price'] = $unit_prices[$i];
-                        $result['unit_quantity'] = $unit_quantities[$i];
-                        if(!empty($package_ids[$i])){
-                            $result['package_id'] = $package_ids[$i];
-                            $result['package_name'] = $package_names[$i];
-                            $result['package_price'] = $package_prices[$i];
-                            $result['package_quantity'] = $package_quantities[$i];
-                        }else{
-                            $result['package_id'] = '';
-                            $result['package_name'] = '';
-                            $result['package_price'] = '';
-                            $result['package_quantity'] = '';
-                        }
                         
+                        $product_id = $product_ids[$i];
+                        
+                        $result['category_name']        = $this->input->post('category_name_'.$product_id);
+                        $result['product_id']           = $product_id;
+                        $result['product_name']         = $this->input->post('product_name_'.$product_id);
+                        $result['unit_id']              = $this->input->post('unit_id_'.$product_id);
+                        $result['unit_name']            = $this->input->post('unit_name_'.$product_id);
+                        $result['unit_price']           = $this->input->post('unit_price_'.$product_id);
+                        $result['unit_quantity']        = $this->input->post('unit_quantity_'.$product_id);
+                        $result['unit_update_date']     = $this->input->post('unit_update_date_'.$product_id);
+                        $result['unit_update_date_db']  = $this->input->post('unit_update_date_db_'.$product_id);
+                        $result['old_unit_price']       = $this->input->post('old_unit_price_'.$product_id);
+                        $result['old_unit_quantity']    = $this->input->post('old_unit_quantity_'.$product_id);
+                        $result['old_unit_quantity']    = $this->input->post('old_unit_quantity_'.$product_id);
+                        
+                        $package_id = $this->input->post('package_id_'.$product_id);
+                        if(!empty($package_id)){
+                            $result['package_id']               = $package_id;
+                            $result['package_name']             = $this->input->post('package_name_'.$product_id);
+                            $result['package_price']            = $this->input->post('package_price_'.$product_id);
+                            $result['package_quantity']         = $this->input->post('package_quantity_'.$product_id);
+                            $result['old_package_price']        = $this->input->post('old_package_price_'.$product_id);
+                            $result['old_package_quantity']     = $this->input->post('old_package_quantity_'.$product_id);
+                            $result['package_update_date']      = $this->input->post('package_update_date_'.$product_id);
+                            $result['package_update_date_db']   = $this->input->post('package_update_date_db_'.$product_id);
+                        
+                        }else{
+                            $result['package_id']               = '';
+                            $result['package_name']             = '';
+                            $result['package_price']            = '';
+                            $result['package_quantity']         = '';
+                            $result['old_package_price']        = '';
+                            $result['old_package_quantity']     = '';
+                            $result['package_update_date']      = '';
+                            $result['package_update_date_db']   = '';
+                        }
+
                         array_push($inventory, $result);
                     }
                     
-                    $data['inventory_list'] = $inventory;
-                    
-                    $this->load->library('form_validation');
-                    $this->form_validation->set_rules('unit_quantity[]', 'lang:title_quantity', 'required|trim|greater_than[-1]');
-                    $this->form_validation->set_rules('unit_price[]', 'lang:title_price', 'required|trim|greater_than[0]');
-                    $this->form_validation->set_rules('package_quantity[]', 'lang:title_quantity', 'required|trim|greater_than[-1]');
-                    $this->form_validation->set_rules('package_price[]', 'lang:title_price', 'required|trim|greater_than[0]');
+                    $data['inventory_list'] = $inventory;                    
                 }
 
+                $this->load->library('form_validation');
                 $this->load->helper('form');
                 
+                for($i = 0; $i < count($data['inventory_list']); $i++){
+                    $product_id = $data['inventory_list'][$i]['product_id'];
+
+                    $this->form_validation->set_rules('unit_quantity_'.$product_id, 'lang:title_quantity', 'required|trim|greater_than[-1]');
+                    $this->form_validation->set_rules('unit_price_'.$product_id, 'lang:title_price', 'required|trim|greater_than[0]');
+                    $this->form_validation->set_rules('unit_update_date', 'lang:title_date', 'trim|callback_date_check[unit_update_date]');
+
+                    
+                    if(!empty($result['package_id'])){
+                        $this->form_validation->set_rules('package_quantity_'.$product_id, 'lang:title_quantity', 'required|trim|greater_than[-1]');
+                        $this->form_validation->set_rules('package_price_'.$product_id, 'lang:title_price', 'required|trim|greater_than[0]');
+                        $this->form_validation->set_rules('package_update_date', 'lang:title_date', 'trim|callback_date_check[package_update_date]');
+                    }                    
+                }
+                
                 if($this->form_validation->run()){
-                    $model_data['name'] = $this->input->post('name');
-                    //$model_data['parent_category']  = (!$this->input->post('parent_category')) ? NULL : $this->input->post('parent_category');
-                    $model_data['general_report']  = $this->input->post('report');
+                    for($i = 0; $i < count($data['inventory_list']); $i++){
+                        $product_id = $data['inventory_list'][$i]['product_id'];
+                        
+                        $model_data = array();
+                    
+                        $model_data['unit_price']           = $data['inventory_list'][$i]['unit_price'];
+                        $model_data['unit_quantity']        = $data['inventory_list'][$i]['unit_quantity'];
+                        $model_data['unit_update_date']     = $data['inventory_list'][$i]['unit_update_date_db'];
+                        $model_data['package_price']        = $data['inventory_list'][$i]['package_price'];
+                        $model_data['package_quantity']     = $data['inventory_list'][$i]['package_quantity'];
+                        $model_data['package_update_date']  = $data['inventory_list'][$i]['package_update_date_db'];
+                        
+                        $model_data['old_unit_price']       = $data['inventory_list'][$i]['old_unit_price'];
+                        $model_data['old_unit_quantity']    = $data['inventory_list'][$i]['old_unit_quantity'];
+                        $model_data['old_package_price']    = $data['inventory_list'][$i]['old_package_price'];
+                        $model_data['old_package_quantity'] = $data['inventory_list'][$i]['old_package_quantity'];
+                        $model_data['old_package']          = $data['inventory_list'][$i]['package_id'];
 
+                        $this->product_model->update($product_id,$model_data);
+                    }
                     //$this->category_model->update($id,$model_data);
-
+exit();
                     $this->load->library('messages');
                     $this->messages->get_message('info',$this->lang->line('info_category_modified'),'category');
                 }else{
                     $this->form_validation->set_error_delimiters('<div class="notice">', '</div>');
 
-                    //$data['id'] = $id;
+                    for($i = 0; $i < count($data['inventory_list']); $i++){
+                        $product_id = $data['inventory_list'][$i]['product_id'];
 
-                    $data['error_class_name'] = '';
-                    //$data['error_class_parent_category'] = '';
-
-                    if(form_error('name')){
-                        $data['error_class_name'] = '_error';
+                        $data['error_class_unit_quantity_'.$product_id]      = '';
+                        $data['error_class_unit_price_'.$product_id]         = '';
+                        $data['error_class_unit_update_date_'.$product_id]         = '';
+                        $data['error_class_package_quantity_'.$product_id]   = '';
+                        $data['error_class_package_price_'.$product_id]      = '';
+                        $data['error_class_package_update_date_'.$product_id]      = '';
+                        
+                        if(form_error('unit_quantity_'.$product_id)){
+                            $data['error_class_unit_quantity_'.$product_id] = '_error';
+                        }
+                        
+                        if(form_error('unit_price_'.$product_id)){
+                            $data['error_class_unit_price_'.$product_id] = '_error';
+                        }
+                        
+                        if(form_error('package_quantity_'.$product_id)){
+                            $data['error_class_package_quantity_'.$product_id] = '_error';
+                        }
+                        
+                        if(form_error('package_price_'.$product_id)){
+                            $data['error_class_package_price_'.$product_id] = '_error';
+                        }
                     }
-
-                    /*if(form_error('parent_category')){
-                        $data['error_class_parent_category'] = '_error';
-                    }*/
 
                     $this->template->write_view('content','inventory/modify',$data);
                 }

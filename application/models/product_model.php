@@ -61,7 +61,10 @@ class Product_model extends CI_Model {
 
         $product_data = array();
         
-        $product_data['name'] = $data['name'];
+        if(isset($data['name'])){
+            $product_data['name'] = $data['name'];
+        }
+        
         $product_data['modifier'] = $modifier;
         $product_data['modification_timestamp'] = $modification_timestamp;
   
@@ -90,7 +93,7 @@ class Product_model extends CI_Model {
         if($data['package_price'] != $data['old_package_price'] OR
                 $data['package_quantity'] != $data['old_package_quantity']){
             $package_type_price_data = array();
-            
+
             $timestamp = $data['package_update_date'];
             $timestamp = mktime(date('H'),date('i'),date('s'),substr($timestamp,4,2),substr($timestamp,6,2),substr($timestamp,0,4));
             
@@ -99,33 +102,35 @@ class Product_model extends CI_Model {
             $package_type_price_data['product_id']              = $id;
             $package_type_price_data['unit_id']                 = $data['old_package']; 
             $package_type_price_data['timestamp']               = date('Y-m-d H:i:s', $timestamp);
-            $package_type_price_data['price']                   = $data['unit_price'];
-            $package_type_price_data['quantity']                = $data['unit_quantity'];
+            $package_type_price_data['price']                   = $data['package_price'];
+            $package_type_price_data['quantity']                = $data['package_quantity'];
 
             $this->insert_package_type_price($package_type_price_data);
         }
         
-        $categories_query   = $this->get_categories_by_product($id);
-        $categories         = array_unique(explode(',',$data['categories']));
-        $old_categories     = array();
-        
-        foreach($categories_query->result() AS $category){
-            $old_categories[] = $category->id;
-            
-            if(!in_array($category->id, $categories)){
-                $this->db->delete('product_categories', array('product_id' => $id,
-                                                              'category_id' => $category->id));
+        if(isset($data['categories'])){
+            $categories_query   = $this->get_categories_by_product($id);
+            $categories         = array_unique(explode(',',$data['categories']));
+            $old_categories     = array();
+
+            foreach($categories_query->result() AS $category){
+                $old_categories[] = $category->id;
+
+                if(!in_array($category->id, $categories)){
+                    $this->db->delete('product_categories', array('product_id' => $id,
+                                                                  'category_id' => $category->id));
+                }
             }
-        }
 
-        $product_categories = array();
-        $product_categories['product_id'] = $id;        
+            $product_categories = array();
+            $product_categories['product_id'] = $id;        
 
-        for($i = 0; $i < count($categories); $i++){
-            if(!in_array($categories[$i],$old_categories)){
-                $product_categories['category_id'] = $categories[$i];
-                
-                $this->db->insert('product_categories', $product_categories);
+            for($i = 0; $i < count($categories); $i++){
+                if(!in_array($categories[$i],$old_categories)){
+                    $product_categories['category_id'] = $categories[$i];
+
+                    $this->db->insert('product_categories', $product_categories);
+                }
             }
         }
         
@@ -245,5 +250,40 @@ class Product_model extends CI_Model {
         $this->db->update('products', $data, array('id' => $id));
         $this->db->update('product_prices', $data, array('product_id' => $id));
         $this->db->update('products', $data, array('product_id' => $id));
+    }
+    
+    public function get_product_trends($id, $date_from, $date_to){
+        $query = "SELECT UNIX_TIMESTAMP(timestamp) AS 'timestamp', price, quantity
+                    FROM product_prices
+                    WHERE  product_id = ".$this->db->escape($id)." AND
+                        deleter IS NULL AND
+                        DATE(timestamp) BETWEEN ".$this->db->escape($date_from)." AND ".$this->db->escape($date_to)."
+                    ORDER BY timestamp ASC";
+        
+        return $this->db->query($query);
+    }
+    
+    public function get_package_trends($id){
+        $query = "SELECT UNIX_TIMESTAMP(timestamp) AS 'timestamp', price, quantity
+                    FROM package_type_prices
+                    WHERE  product_id = ".$this->db->escape($id)." AND
+                        deleter IS NULL
+                    ORDER BY timestamp ASC";
+        
+        return $this->db->query($query);
+    }
+    
+    public function get_product_simple_list($name, $limit = array()){
+        $query = "SELECT id, name
+                    FROM products
+                    WHERE name LIKE ".$this->db->escape('%'.$name.'%')."
+                          AND deleter IS NULL
+                    ORDER BY name ASC";
+        
+        if(!empty($limit)){
+            $query .= " LIMIT ".$limit['begin'].",".$limit['limit'];
+        }
+        
+        return $this->db->query($query);
     }
 }
