@@ -150,8 +150,6 @@ foreach($inventory_list as $product):
     if($product['package_id'] != NULL){
         $total_price += $product['package_quantity'] * $product['package_price'];
     }
-    
-    echo validation_errors();
 ?>
 <?php if($category_name_tmp != $category_name):
     $category_name = $category_name_tmp; ?>

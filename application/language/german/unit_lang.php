@@ -2,6 +2,7 @@
 $lang['title_unit_list'] = 'Einheitenliste';
 $lang['title_unit_name'] = 'Einheit Name';
 $lang['title_create_unit'] = 'Einheit erstellen';
+$lang['title_modify_unit'] = 'Ändern einer bestehenden Einheit';
 $lang['question_delete_unit'] = 'Wollen Sie diese Einheit löschen?';
 $lang['title_delete_unit'] = 'Einheit löschen';
 $lang['title_create_unit'] = 'Einheit erstellen';

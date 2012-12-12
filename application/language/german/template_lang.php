@@ -12,6 +12,8 @@ $lang['title_apply'] = 'Übernehmen';
 $lang['title_cancel'] = 'Abbrechen';
 $lang['title_no_matches_found'] = 'Keine übereinstimmung gefunden';
 $lang['title_loading_more_results'] = 'Lade mehr Resultate';
+$lang['title_changelogs'] = 'Änderungsbelege';
+$lang['title_close'] = 'Schliessen';
 
 //Loader
 $lang['title_loader'] = 'Laden';

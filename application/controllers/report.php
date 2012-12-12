@@ -131,7 +131,7 @@ class Report extends MY_Controller {
                     array_push($result['unit_data'], array(time()*1000, (double)formatCurrency($product->price), (double)$product->quantity));
 
 
-                    $query = $this->product_model->get_package_trends(12, $p_date_from, $p_date_to);
+                    $query = $this->product_model->get_package_trends($p_id, $p_date_from, $p_date_to);
 
                     if($query->num_rows() > 0){
                         $result['package_data'] = array();

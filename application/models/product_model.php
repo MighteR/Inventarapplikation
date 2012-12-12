@@ -9,8 +9,10 @@ class Product_model extends CI_Model {
     
     public function create($data){
         $creator            = $this->session->userdata('id');
-        $creation_timestamp = date('Y-m-d H:i:s');
-        
+        $time               = time();
+        $creation_timestamp = date('Y-m-d H:i:s', $time);
+        $timestamp          = date('Y-m-d 00:00:00', $time);
+
         $product_data = array();
         $product_data['creator'] = $creator;
         $product_data['creation_timestamp'] = $creation_timestamp;
@@ -27,7 +29,7 @@ class Product_model extends CI_Model {
         $product_price_data['creator'] = $creator;
         $product_price_data['creation_timestamp'] = $creation_timestamp;
         $product_price_data['product_id'] = $product_id;
-        $product_price_data['timestamp'] = $creation_timestamp;
+        $product_price_data['timestamp'] = $timestamp;
         $product_price_data['quantity'] = $data['unit_quantity'];
         $product_price_data['price'] = $data['unit_price'];
         
@@ -45,7 +47,7 @@ class Product_model extends CI_Model {
             $package_type_data['creation_timestamp'] = $creation_timestamp;
             $package_type_data['product_id'] = $product_id;
             $package_type_data['unit_id'] = $data['package_type'];
-            $package_type_data['timestamp'] = $creation_timestamp;
+            $package_type_data['timestamp'] = $timestamp;
             $package_type_data['quantity'] = $data['package_quantity'];
             $package_type_data['price'] = $data['package_price'];
         
@@ -78,7 +80,7 @@ class Product_model extends CI_Model {
             $product_price_data = array();
             
             $timestamp = $data['unit_update_date'];
-            $timestamp = mktime(date('H'),date('i'),date('s'),substr($timestamp,4,2),substr($timestamp,6,2),substr($timestamp,0,4));
+            $timestamp = mktime(0,0,0,substr($timestamp,4,2),substr($timestamp,6,2),substr($timestamp,0,4));
             
             $product_price_data['creator']              = $modifier;
             $product_price_data['creation_timestamp']   = $modification_timestamp;
@@ -95,7 +97,7 @@ class Product_model extends CI_Model {
             $package_type_price_data = array();
 
             $timestamp = $data['package_update_date'];
-            $timestamp = mktime(date('H'),date('i'),date('s'),substr($timestamp,4,2),substr($timestamp,6,2),substr($timestamp,0,4));
+            $timestamp = mktime(0,0,0,substr($timestamp,4,2),substr($timestamp,6,2),substr($timestamp,0,4));
             
             $package_type_price_data['creator']                 = $modifier;
             $package_type_price_data['creation_timestamp']      = $modification_timestamp;

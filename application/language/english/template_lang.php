@@ -12,6 +12,8 @@ $lang['title_apply'] = 'Apply';
 $lang['title_cancel'] = 'Cancel';
 $lang['title_no_matches_found'] = 'No matches found';
 $lang['title_loading_more_results'] = 'Loading more results';
+$lang['title_changelogs'] = 'Change logs';
+$lang['title_close'] = 'Close';
 
 //Loader
 $lang['title_loader'] = 'Loading';

@@ -3,8 +3,8 @@
 <script type="text/javascript" src="<?php echo base_url('application/views/template/js/jquery-ui-1.9.1.custom.min.js'); ?>"></script>
 <script type="text/javascript" src="<?php echo base_url('application/views/template/js/select2.min.js'); ?>"></script>
 <script type="text/javascript">
-    
-    $(document).ready(function(){
+//<![CDATA[    
+$(document).ready(function(){
     $('button').button();
     //predefine_user_search('');
 	
@@ -100,7 +100,7 @@ function inventory(){
         }
     });
 }
-    
+//]]>
 </script>
 <div id="content_title">
     <span><?php echo lang('title_inventory'); ?></span>

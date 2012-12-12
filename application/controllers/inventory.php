@@ -63,10 +63,11 @@ class Inventory extends MY_Controller {
                 $this->load->library('messages');
                 $this->messages->get_message('error',$this->lang->line('error_category_locked_by').$this->lock_model->get_info());
             }else{*/
+                $data['actual_date']    = date('d.m.Y');
+                $data['actual_date_db'] = date('Ymd');
+                
                 if(empty($_POST)){
                     $data['changed'] = 'false';
-                    $data['actual_date']    = date('d.m.Y');
-                    $data['actual_date_db'] = date('Ymd');
 
                     $query = $this->product_model->get_inventory($category);
 

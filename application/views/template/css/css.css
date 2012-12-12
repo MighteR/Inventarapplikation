@@ -222,7 +222,7 @@ div.notice{
     text-align: center;
     line-height: 26px;
 }
-span.important{
+.important{
     color: red;
 }
 
