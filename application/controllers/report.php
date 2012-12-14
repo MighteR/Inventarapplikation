@@ -26,8 +26,8 @@ class Report extends MY_Controller {
     
     public function excel(){
         
-        $p_id       =   $this->input->post('id');
-        $p_due_date =   $this->input->post('set_due_date');
+        $p_id       =   0;//$this->input->post('id');
+        $p_due_date =   '20121231';//$this->input->post('set_due_date');
         
         $this->load->model('product_model');
         
@@ -37,13 +37,26 @@ class Report extends MY_Controller {
         
         if($query->num_rows() > 0){
             $result['verify'] = true;
+            $this->load->library('excel');
+            $this->excel->setActiveSheetIndex(0);
             
-            require_once '../excel/PHPExcel.php';
+            //name the worksheet
+            $this->excel->getActiveSheet()->setTitle('test worksheet');
+            //set cell A1 content with some text
+            $this->excel->getActiveSheet()->setCellValue('A1', 'This is just some text value');
+            //change the font size
+            $this->excel->getActiveSheet()->getStyle('A1')->getFont()->setSize(20);
+            //make the font become bold
+            $this->excel->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
+            //merge cell A1 until D1
+            $this->excel->getActiveSheet()->mergeCells('A1:D1');
+            //set aligment to center for that merged cell (A1 to D1)
+
+            $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
             
-            $excel = new PHPExcel();
-            
-            $objWriter = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
-            $objWriter->save('php://output');
+            $filename = time().'.xlsx';
+            $objWriter->save(APPPATH.'third_party/excel/output/'.$filename);
+            $result['filename'] = $filename;
             
         }else{
             $result['verify'] = false;

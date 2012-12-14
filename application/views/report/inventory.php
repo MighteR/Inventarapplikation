@@ -7,12 +7,12 @@
 $(document).ready(function(){
     $('button').button();
     
-    var changed     = <?php echo $changed; ?>;
+    /*var changed     = <?php echo $changed; ?>;
     var sMessage    ='<?php echo $this->lang->line('notice_unsaved_data') ?>';
 
     $(window).bind('beforeunload', function(e){
         if (changed) return sMessage;
-    });
+    });*/
     
     $(document).keypress(function(e){ 
         var element = e.target.nodeName.toLowerCase(); 
@@ -22,36 +22,46 @@ $(document).ready(function(){
     });
     
     $('#submit').click(function(){
-        generate_report();
-    });
-    
-    $('#reset').click(function(){
-        reset();
+                $('#loader').dialog({
+                closeOnEscape: false,
+                dialogClass: 'loader',
+                height: 50,
+                resizable: false,
+                width: 50
+        });
+        
+
+        $.ajax({
+            complete: function(html){
+                $('#loader').dialog('close');
+            },
+            url: '<?php echo base_url('report/excel'); ?>',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                'id': $('#search_category').val(),
+                'set_due_date': $('#set_due_date_db').val()
+            },
+            success: function(data){
+                
+                if(data.verify){
+                    alert(data.output);
+                }else{
+                    alert('ERROR');
+                }
+            },
+            error:function(a,b,c){
+                alert('error');
+                alert(a.status);
+                document.write(a.responseText);
+            }
+        });
     });
 
     $("input[type='text'], select, textarea").change(function(){
         changed = true;
     });
-    
-    $('#form').submit(function(){
-        changed = false;
-        $('input:disabled, select:disabled').each(function(i){
-            this.disabled = false;
-        });
-
-        $("input[type='submit']").each(function(i){
-            this.disabled = true;
-        });
-    });
-    
-    function generate_report(){
-        alert("Submit");
-    }
-    
-    function reset(){
-        alert("Reset");
-    }
-    
+            
     $('#search_category').select2({
         initSelection : function (element, callback) {
             callback(<?php echo $inventory_category; ?>);
@@ -93,6 +103,14 @@ $(document).ready(function(){
         }
     });
     
+    $("#set_due_date").each(function(){
+        $(this).datepicker({            
+            dateFormat: 'dd.mm.yy',
+            altField: '#' + $(this).attr('name') + '_db',
+            altFormat: "yymmdd"
+        });
+    });
+    
     $('#reset').click(function(){
         var inventory_category = <?php echo $inventory_category; ?>;
 
@@ -101,17 +119,16 @@ $(document).ready(function(){
 });
 //]]>
 </script>
-<form id="form" action="<?php echo current_url(); ?>" method="post" accept-charset="utf-8">
 <div id="content_title">
     <span><?php echo lang('title_generate_report'); ?></span>
 </div>
-<?php echo form_error('set_due_date'); ?>
 <div class="first">
-    <div class="text_left<?php echo $error_class_set_due_date; ?>">
+    <div class="text_left">
         <?php echo lang('title_due_date','set_due_date'); ?><span class="important">*</span>
     </div>
     <div class="text_right">
-        <input class="formular" id="set_due_date" name="set_due_date" size="50" type="text" />
+        <input class="formular" id="set_due_date" name="set_due_date" size="10" type="text" />
+        <input name="set_due_date_db" id="set_due_date_db" type="hidden" value="" />
     </div>
 </div>
 <div class="second">
@@ -131,4 +148,3 @@ $(document).ready(function(){
         <button name="reset" type="button" id="reset" ><?php echo lang('title_reset'); ?></button>
     </div>
 </div>
-</form>
