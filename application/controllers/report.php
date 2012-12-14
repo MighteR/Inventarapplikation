@@ -69,7 +69,6 @@ class Report extends MY_Controller {
               
             }
             $row++;
-            $column = 0;
             }
             for($i = 0; $i < 12; $i++){
                 $this->excel->getActiveSheet()->getColumnDimensionByColumn($i,1)->setAutoSize(true);
