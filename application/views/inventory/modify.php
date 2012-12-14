@@ -108,12 +108,12 @@ function checkDateField(id, type){
         $('#' + type + '_update_date_' + id).attr('disabled',false);
         $('#' + type + '_update_date_' + id).removeClass('disabled');
         $('#' + type + '_update_date_' + id).val('<?php echo $actual_date; ?>');
-        $('#' + type + '_update_date_db_' + id).val('<?php echo $actual_date_db; ?>');
+        $('#' + type + '_update_date_' + id + '_db').val('<?php echo $actual_date_db; ?>');
     }else{
         $('#' + type + '_update_date_' + id).attr('disabled',true);
         $('#' + type + '_update_date_' + id).addClass('disabled');
         $('#' + type + '_update_date_' + id).val('');
-        $('#' + type + '_update_date_db_' + id).val('');
+        $('#' + type + '_update_date_' + id + '_db').val('');
     }
 }
 //]]>    
@@ -216,7 +216,7 @@ foreach($inventory_list as $product):
     </div>
     <div style="float:left; width: 10%;">
         <input name="unit_update_date_<?php echo $product_id; ?>" id="unit_update_date_<?php echo $product_id; ?>" class="formular<?php echo ${'error_class_unit_update_date_'.$product_id}; ?> date" type="text" size="10" value="<?php echo (!isset($product['unit_update_date'])) ? '' : $product['unit_update_date']; ?>" />
-        <input name="unit_update_date_db_<?php echo $product_id; ?>" id="unit_update_date_db_<?php echo $product_id; ?>" type="hidden" value="<?php echo (!isset($product['unit_update_date'])) ? '' : $product['unit_update_date_db']; ?>" />
+        <input name="unit_update_date_db_<?php echo $product_id; ?>" id="unit_update_date_<?php echo $product_id; ?>_db" type="hidden" value="<?php echo (!isset($product['unit_update_date'])) ? '' : $product['unit_update_date_db']; ?>" />
     </div>
     <div style="float:left; width: 10%">
         <div id="unit_total_data_<?php echo $product_id; ?>" style="display:none">
@@ -238,7 +238,7 @@ foreach($inventory_list as $product):
     </div>
     <div style="float:left; width: 10%;">
         <input name="package_update_date_<?php echo $product_id; ?>" id="package_update_date_<?php echo $product_id; ?>" class="formular<?php echo ${'error_class_package_update_date_'.$product_id}; ?> date" type="text" size="10" value="<?php echo (!isset($product['package_update_date'])) ? '' : $product['package_update_date']; ?>" />
-        <input name="package_update_date_db_<?php echo $product_id; ?>" id="package_update_date_db_<?php echo $product_id; ?>" type="hidden" value="<?php echo (!isset($product['package_update_date'])) ? '' : $product['package_update_date_db']; ?>" />
+        <input name="package_update_date_db_<?php echo $product_id; ?>" id="package_update_date_<?php echo $product_id; ?>_db" type="hidden" value="<?php echo (!isset($product['package_update_date'])) ? '' : $product['package_update_date_db']; ?>" />
     </div>
     <div style="float:left; width: 10%">
         <div id="package_total_data_<?php echo $product_id; ?>" style="display:none">

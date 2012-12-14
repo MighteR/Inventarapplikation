@@ -76,7 +76,7 @@ class Report extends MY_Controller {
     public function price_picture(){
         if($this->input->is_ajax_request() AND !empty($_POST)){
             $this->load->model('product_model');
-            $this->load->helper('currency_helper');
+            $this->load->helper('number_helper');
             
             $p_id           = $this->input->post('id');
             $p_date_from    = $this->input->post('date_from');
@@ -125,10 +125,10 @@ class Report extends MY_Controller {
                     $result['unit_data'] = array();
 
                     foreach($query->result_object() AS $product){
-                        array_push($result['unit_data'], array($product->timestamp*1000, (double)formatCurrency($product->price), (double)$product->quantity));
+                        array_push($result['unit_data'], array($product->timestamp*1000, (double)formatNumber($product->price), (double)$product->quantity));
                     }
 
-                    array_push($result['unit_data'], array(time()*1000, (double)formatCurrency($product->price), (double)$product->quantity));
+                    array_push($result['unit_data'], array(time()*1000, (double)formatNumber($product->price), (double)$product->quantity));
 
 
                     $query = $this->product_model->get_package_trends($p_id, $p_date_from, $p_date_to);
@@ -137,10 +137,10 @@ class Report extends MY_Controller {
                         $result['package_data'] = array();
 
                         foreach($query->result_object() AS $package){
-                            array_push($result['package_data'], array($package->timestamp*1000, (double)formatCurrency($package->price), (double)$package->quantity));
+                            array_push($result['package_data'], array($package->timestamp*1000, (double)formatNumber($package->price), (double)$package->quantity));
                         }
 
-                        array_push($result['package_data'], array(time()*1000, (double)formatCurrency($package->price), (double)$package->quantity));
+                        array_push($result['package_data'], array(time()*1000, (double)formatNumber($package->price), (double)$package->quantity));
                     }
                 }else{
                     $result['verify'] = false;

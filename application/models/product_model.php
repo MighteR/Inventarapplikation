@@ -270,7 +270,7 @@ class Product_model extends CI_Model {
         $query = "SELECT UNIX_TIMESTAMP(timestamp) AS 'timestamp', price, quantity
                     FROM product_prices
                     WHERE  product_id = ".$this->db->escape($id)." AND
-                        deleter = 0 AND
+                        deleted = 0 AND
                         DATE(timestamp) BETWEEN ".$this->db->escape($date_from)." AND ".$this->db->escape($date_to)."
                     ORDER BY timestamp ASC";
         
@@ -281,7 +281,7 @@ class Product_model extends CI_Model {
         $query = "SELECT UNIX_TIMESTAMP(timestamp) AS 'timestamp', price, quantity
                     FROM package_type_prices
                     WHERE  product_id = ".$this->db->escape($id)." AND
-                        deleter = 0
+                        deleted = 0
                     ORDER BY timestamp ASC";
         
         return $this->db->query($query);
@@ -291,7 +291,7 @@ class Product_model extends CI_Model {
         $query = "SELECT id, name
                     FROM products
                     WHERE name LIKE ".$this->db->escape('%'.$name.'%')."
-                          AND deleter = 0
+                          AND deleted = 0
                     ORDER BY name ASC";
         
         if(!empty($limit)){
