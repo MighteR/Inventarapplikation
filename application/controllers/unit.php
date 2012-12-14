@@ -135,6 +135,19 @@ class Unit extends MY_Controller {
         
     }
     
+    public function reactivate(){
+        if($this->session->userdata('admin')){
+            if($this->input->is_ajax_request() AND !empty($_POST)){
+                $this->load->model('unit_model');
+                
+                $model_data = array();
+                $model_data['deleted'] = 0;
+                
+                $this->unit_model->update($this->input->post('id'), $model_data);
+            }
+        }
+    }
+    
     public function simple_search_list(){
         if($this->input->is_ajax_request() AND !empty($_POST)){
             $p_unit_id      = $this->input->post('id');

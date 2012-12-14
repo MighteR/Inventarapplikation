@@ -14,6 +14,10 @@ $lang['title_no_matches_found'] = 'No matches found';
 $lang['title_loading_more_results'] = 'Loading more results';
 $lang['title_changelogs'] = 'Change logs';
 $lang['title_close'] = 'Close';
+$lang['title_creator'] = 'Created by';
+$lang['title_creation_timestamp'] = 'Created on';
+$lang['title_modifier'] = 'Last Modification by';
+$lang['title_modification_timestamp'] = 'Last Modification on';
 
 //Loader
 $lang['title_loader'] = 'Loading';

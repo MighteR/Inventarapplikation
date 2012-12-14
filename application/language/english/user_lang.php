@@ -8,6 +8,7 @@ $lang['title_password'] = 'Password';
 $lang['title_password_confirmation'] = 'Password Confirmation';
 $lang['title_username'] = 'Username';
 $lang['title_user_list'] = 'Userlist';
+$lang['title_reactivate_user'] = 'Reactivate User';
 
 $lang['error_login'] = 'The username and/or the password is wrong';
 $lang['error_user_locked_by'] = 'The user is locked by ';
@@ -20,6 +21,7 @@ $lang['info_user_not_logged_in'] = 'Your are not logged in';
 $lang['info_user_modified'] = 'The user is successfully modified';
 
 $lang['question_delete_user'] = 'You are going to delete this user, are you sure?';
+$lang['question_rectivate_user'] = 'You are going to reactivate this user, are you sure?';
 
 /* End of file user_lang.php */
 /* Location: ./system/language/english/user_lang.php */

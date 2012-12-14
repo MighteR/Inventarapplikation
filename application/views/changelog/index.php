@@ -48,9 +48,9 @@ foreach($logs as $log):
 <?php endif; ?>
         <p>
             <div class="first list">
-                <?php if($log->field != 'deleter'): ?>
+                <?php if(!preg_match("/deleted/i", $log->field)): ?>
                 <div style="float:left;width:25%;">
-                    <?php echo $log->field; ?>
+                    <?php echo lang('title_'.$log->field); ?>
                 </div>
                 <div style="float:left;width:30%;">
                     <?php echo $log->from; ?>
@@ -58,12 +58,14 @@ foreach($logs as $log):
                 <div style="float:left;">
                     <?php echo $log->to; ?>
                 </div>
-                <?php else: ?>
+                <?php else: 
+                    $field = str_replace('deleted_','',$log->field);
+                ?>
                 <div class="important" style="float:left;">
-                    <?php if($log->to == 'NULL'){
-                        echo lang('title_deleted');
+                    <?php if($log->to == 1){
+                        echo lang('title_deleted_'.$field);
                     }else{
-                        echo lang('title_reactivate');
+                        echo lang('title_reactivated_'.$field);
                     }?>
                 </div>
                 <?php endif; ?>

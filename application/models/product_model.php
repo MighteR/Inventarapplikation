@@ -1,8 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Product_model extends CI_Model {
-    var $id = '';
-    
     public function __construct() {
         parent::__construct();
     }
@@ -67,6 +65,10 @@ class Product_model extends CI_Model {
             $product_data['name'] = $data['name'];
         }
         
+        if(isset($data['deleted'])){
+            $product_data['deleted'] = $data['deleted'];
+        }
+        
         $product_data['modifier'] = $modifier;
         $product_data['modification_timestamp'] = $modification_timestamp;
   
@@ -74,40 +76,44 @@ class Product_model extends CI_Model {
         $this->db->trans_start();
         
         $this->db->update('products', $product_data, array('id' => $id));
+        
+        if(isset($data['unit_price']) AND isset($data['unit_quantity'])){
+            if($data['unit_price'] != $data['old_unit_price'] OR
+                    $data['unit_quantity'] != $data['old_unit_quantity']){
+                $product_price_data = array();
 
-        if($data['unit_price'] != $data['old_unit_price'] OR
-                $data['unit_quantity'] != $data['old_unit_quantity']){
-            $product_price_data = array();
-            
-            $timestamp = $data['unit_update_date'];
-            $timestamp = mktime(0,0,0,substr($timestamp,4,2),substr($timestamp,6,2),substr($timestamp,0,4));
-            
-            $product_price_data['creator']              = $modifier;
-            $product_price_data['creation_timestamp']   = $modification_timestamp;
-            $product_price_data['product_id']           = $id;    
-            $product_price_data['timestamp']            = date('Y-m-d H:i:s', $timestamp);
-            $product_price_data['price']                = $data['unit_price'];
-            $product_price_data['quantity']             = $data['unit_quantity'];
+                $timestamp = $data['unit_update_date'];
+                $timestamp = mktime(0,0,0,substr($timestamp,4,2),substr($timestamp,6,2),substr($timestamp,0,4));
 
-            $this->insert_product_price($product_price_data);
+                $product_price_data['creator']              = $modifier;
+                $product_price_data['creation_timestamp']   = $modification_timestamp;
+                $product_price_data['product_id']           = $id;    
+                $product_price_data['timestamp']            = date('Y-m-d H:i:s', $timestamp);
+                $product_price_data['price']                = $data['unit_price'];
+                $product_price_data['quantity']             = $data['unit_quantity'];
+
+                $this->insert_product_price($product_price_data);
+            }
         }
         
-        if($data['package_price'] != $data['old_package_price'] OR
-                $data['package_quantity'] != $data['old_package_quantity']){
-            $package_type_price_data = array();
+        if(isset($data['package_price']) AND isset($data['package_quantity'])){
+            if($data['package_price'] != $data['old_package_price'] OR
+                    $data['package_quantity'] != $data['old_package_quantity']){
+                $package_type_price_data = array();
 
-            $timestamp = $data['package_update_date'];
-            $timestamp = mktime(0,0,0,substr($timestamp,4,2),substr($timestamp,6,2),substr($timestamp,0,4));
-            
-            $package_type_price_data['creator']                 = $modifier;
-            $package_type_price_data['creation_timestamp']      = $modification_timestamp;
-            $package_type_price_data['product_id']              = $id;
-            $package_type_price_data['unit_id']                 = $data['old_package']; 
-            $package_type_price_data['timestamp']               = date('Y-m-d H:i:s', $timestamp);
-            $package_type_price_data['price']                   = $data['package_price'];
-            $package_type_price_data['quantity']                = $data['package_quantity'];
+                $timestamp = $data['package_update_date'];
+                $timestamp = mktime(0,0,0,substr($timestamp,4,2),substr($timestamp,6,2),substr($timestamp,0,4));
 
-            $this->insert_package_type_price($package_type_price_data);
+                $package_type_price_data['creator']                 = $modifier;
+                $package_type_price_data['creation_timestamp']      = $modification_timestamp;
+                $package_type_price_data['product_id']              = $id;
+                $package_type_price_data['unit_id']                 = $data['old_package']; 
+                $package_type_price_data['timestamp']               = date('Y-m-d H:i:s', $timestamp);
+                $package_type_price_data['price']                   = $data['package_price'];
+                $package_type_price_data['quantity']                = $data['package_quantity'];
+
+                $this->insert_package_type_price($package_type_price_data);
+            }
         }
         
         if(isset($data['categories'])){
@@ -171,10 +177,15 @@ class Product_model extends CI_Model {
     }
     
     public function get_product_by_name($name,$limit = array()){
-        $query = "SELECT id, name
+        $query = "SELECT products.*,
+                         creator.username AS 'creator_name',
+                         modifier.username AS 'modifier_name'
                     FROM products
-                    WHERE name LIKE ".$this->db->escape('%'.$name.'%')."
-                          AND deleter IS NULL";
+                    INNER JOIN users creator ON
+                        products.name LIKE ".$this->db->escape('%'.$name.'%')." AND
+                        creator.id = products.creator
+                    LEFT JOIN users modifier ON
+                        modifier.id = products.modifier";
 
         if(!empty($limit)){
             $query .= " LIMIT ".$limit['begin'].",".$limit['limit'];
@@ -246,8 +257,9 @@ class Product_model extends CI_Model {
     }
     
     public function delete($id){
-        $data['deleter'] = $this->session->userdata('id');
-        $data['deletion_timestamp'] = date('Y-m-d H:i:s');
+        $data['deleted'] = 1;
+        $data['modifier'] = $this->session->userdata('id');
+        $data['modification_timestamp'] = date('Y-m-d H:i:s');
 
         $this->db->update('products', $data, array('id' => $id));
         $this->db->update('product_prices', $data, array('product_id' => $id));
@@ -258,7 +270,7 @@ class Product_model extends CI_Model {
         $query = "SELECT UNIX_TIMESTAMP(timestamp) AS 'timestamp', price, quantity
                     FROM product_prices
                     WHERE  product_id = ".$this->db->escape($id)." AND
-                        deleter IS NULL AND
+                        deleter = 0 AND
                         DATE(timestamp) BETWEEN ".$this->db->escape($date_from)." AND ".$this->db->escape($date_to)."
                     ORDER BY timestamp ASC";
         
@@ -269,7 +281,7 @@ class Product_model extends CI_Model {
         $query = "SELECT UNIX_TIMESTAMP(timestamp) AS 'timestamp', price, quantity
                     FROM package_type_prices
                     WHERE  product_id = ".$this->db->escape($id)." AND
-                        deleter IS NULL
+                        deleter = 0
                     ORDER BY timestamp ASC";
         
         return $this->db->query($query);
@@ -279,7 +291,7 @@ class Product_model extends CI_Model {
         $query = "SELECT id, name
                     FROM products
                     WHERE name LIKE ".$this->db->escape('%'.$name.'%')."
-                          AND deleter IS NULL
+                          AND deleter = 0
                     ORDER BY name ASC";
         
         if(!empty($limit)){

@@ -27,7 +27,7 @@ $(document).ready(function(){
         changed = true;
     });*/
     
-    $('#submit').click(function(){
+    $('#trend').click(function(){
         generate_price_trend();
     });
     
@@ -82,10 +82,7 @@ $(document).ready(function(){
                 };
             }
         }
-    });
-    
-    
-    
+    });    
     
     $("#date_from").each(function(){
         $(this).datepicker({            
@@ -140,6 +137,8 @@ $(document).ready(function(){
             },
             success: function(data){
                 if(data.verify){
+                    $('#price_data').css('min-height','600px');
+                    
                     var unit_price = [],
                         unit_quantity = [],
                         seriesOptions = [];
@@ -260,7 +259,6 @@ $(document).ready(function(){
     
     function reset(){
         clearErrors();
-        alert("Reset");
     }
     
     function clearErrors(){
@@ -313,8 +311,9 @@ $(document).ready(function(){
         &nbsp;
     </div>
     <div class="text_right">
+        <button name="trend" type="button" id="trend" ><?php echo lang('title_submit'); ?></button>
         <button name="submit" type="button" id="submit" ><?php echo lang('title_submit'); ?></button>
         <button name="reset" type="button" id="reset" ><?php echo lang('title_reset'); ?></button>
     </div>
 </div>
-<div id="price_data" style="min-height: 600px;"></div>
+<div id="price_data"></div>

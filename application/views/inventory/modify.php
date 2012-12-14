@@ -37,10 +37,10 @@ $(document).ready(function(){
         var value = quantity * price;
         
         $('#unit_total_data_' + product_id).text(value);
-        $('#unit_total_text_' + product_id).text('CHF ' + formatCurrency(value));
+        $('#unit_total_text_' + product_id).text('CHF ' + formatNumber(value));
         
         calculate();
-        
+
         checkDateField(product_id, 'unit');
 
     });
@@ -54,7 +54,7 @@ $(document).ready(function(){
         var value = quantity * price;
         
         $('#package_total_data_' + product_id).text(value);
-        $('#package_total_text_' + product_id).text('CHF ' + formatCurrency(value));
+        $('#package_total_text_' + product_id).text('CHF ' + formatNumber(value));
         
         calculate();
         
@@ -82,10 +82,10 @@ function calculate(){
         total += Number($(this).text());
     });
 
-    $('#total').text('<?php echo lang('title_total').': CHF '; ?>' + formatCurrency(total));
+    $('#total').text('<?php echo lang('title_total').': CHF '; ?>' + formatNumber(total));
 }
 
-function formatCurrency(num){
+function formatNumber(num){
     num = Math.round(num / 0.05) * 0.05;
     
     num = isNaN(num) || num === '' || num === null ? 0.00 : num;
@@ -98,11 +98,11 @@ function formatCurrency(num){
 }
 
 function checkDateField(id, type){
-    var old_price       = formatCurrency($('#old_' + type + '_price_' + id).val());
-    var old_quantity    = formatCurrency($('#old_' + type + '_quantity_' + id).val());
+    var old_price       = formatNumber($('#old_' + type + '_price_' + id).val());
+    var old_quantity    = formatNumber($('#old_' + type + '_quantity_' + id).val());
     
-    var new_price       = formatCurrency($('#' + type + '_price_' + id).val());
-    var new_quantity    = formatCurrency($('#' + type + '_quantity_' + id).val());
+    var new_price       = formatNumber($('#' + type + '_price_' + id).val());
+    var new_quantity    = formatNumber($('#' + type + '_quantity_' + id).val());
 
     if(new_price != old_price || new_quantity != old_quantity){
         $('#' + type + '_update_date_' + id).attr('disabled',false);
@@ -125,11 +125,38 @@ function checkDateField(id, type){
 </div>
 <?php if($entry): ?>
 <div class="text_title">
-    <div style="float:left; width: 95%;">
+    <div style="float:left; width: 10%;">
         <?php echo lang('title_product'); ?>
     </div>
-    <div style="float:left;">
-        &nbsp;
+    <div style="float:left; width: 5%;">
+       <?php echo lang('title_unit'); ?>
+    </div>
+    <div style="float:left; width: 5%;">
+       <?php echo lang('title_quantity'); ?>
+    </div>
+    <div style="float:left; width: 10%;">
+       <?php echo lang('title_price_per_unit'); ?>
+    </div>
+    <div style="float:left; width: 10%;">
+       &nbsp;
+    </div>
+    <div style="float:left; width: 10%;">
+       <?php echo lang('title_sum'); ?>
+    </div>
+    <div style="float:left; width: 10%;">
+       <?php echo lang('title_package_type'); ?>
+    </div>
+    <div style="float:left; width: 5%;">
+        <?php echo lang('title_quantity'); ?>
+    </div>
+    <div style="float:left; width: 5%;">
+       <?php echo lang('title_price_per_package'); ?>
+    </div>
+    <div style="float:left; width: 10%;">
+       &nbsp;
+    </div>
+    <div style="float:left; width: 10%;">
+       <?php echo lang('title_sum'); ?>
     </div>
 </div>
 <?php $c = 0;
@@ -182,10 +209,10 @@ foreach($inventory_list as $product):
         <?php echo $product['unit_name']; ?>
     </div>
     <div style="float:left; width: 5%">
-        <input name="unit_quantity_<?php echo $product_id; ?>" id="unit_quantity_<?php echo $product_id; ?>" class="formular<?php echo ${'error_class_unit_quantity_'.$product_id}; ?>" type="text" size="5" value="<?php echo formatCurrency($product['unit_quantity']); ?>"/>
+        <input name="unit_quantity_<?php echo $product_id; ?>" id="unit_quantity_<?php echo $product_id; ?>" class="formular<?php echo ${'error_class_unit_quantity_'.$product_id}; ?>" type="text" size="5" value="<?php echo formatNumber($product['unit_quantity']); ?>"/>
     </div>
     <div style="float:left; width: 10%">
-        / <input name="unit_price_<?php echo $product_id; ?>" id="unit_price_<?php echo $product_id; ?>" class="formular<?php echo ${'error_class_unit_price_'.$product_id}; ?>" type="text" size="5" value="<?php echo formatCurrency($product['unit_price']); ?>"/>
+        / <input name="unit_price_<?php echo $product_id; ?>" id="unit_price_<?php echo $product_id; ?>" class="formular<?php echo ${'error_class_unit_price_'.$product_id}; ?>" type="text" size="5" value="<?php echo formatNumber($product['unit_price']); ?>"/>
     </div>
     <div style="float:left; width: 10%;">
         <input name="unit_update_date_<?php echo $product_id; ?>" id="unit_update_date_<?php echo $product_id; ?>" class="formular<?php echo ${'error_class_unit_update_date_'.$product_id}; ?> date" type="text" size="10" value="<?php echo (!isset($product['unit_update_date'])) ? '' : $product['unit_update_date']; ?>" />
@@ -196,7 +223,7 @@ foreach($inventory_list as $product):
             <?php echo $product['unit_quantity'] * $product['unit_price']; ?>
         </div>
         <span id="unit_total_text_<?php echo $product_id; ?>">
-            <?php echo 'CHF '.formatCurrency($product['unit_quantity'] * $product['unit_price'], true); ?>
+            <?php echo 'CHF '.formatNumber($product['unit_quantity'] * $product['unit_price'], true); ?>
         </span>
     </div>
 <?php if($product['package_id'] != NULL): ?>
@@ -204,10 +231,10 @@ foreach($inventory_list as $product):
         <b><?php echo $product['package_name']; ?></b>
     </div>
     <div style="float:left; width: 5%">
-        <input name="package_quantity_<?php echo $product_id; ?>" id="package_quantity_<?php echo $product_id; ?>" class="formular<?php echo ${'error_class_package_quantity_'.$product_id}; ?>" type="text" size="5" value="<?php echo formatCurrency($product['package_quantity']); ?>"/>
+        <input name="package_quantity_<?php echo $product_id; ?>" id="package_quantity_<?php echo $product_id; ?>" class="formular<?php echo ${'error_class_package_quantity_'.$product_id}; ?>" type="text" size="5" value="<?php echo formatNumber($product['package_quantity']); ?>"/>
     </div>
     <div style="float:left; width: 10%">
-        / <input name="package_price_<?php echo $product_id; ?>" id="package_price_<?php echo $product_id; ?>" class="formular<?php echo ${'error_class_package_price_'.$product_id}; ?>" type="text" size="5" value="<?php echo formatCurrency($product['package_price']); ?>"/>
+        / <input name="package_price_<?php echo $product_id; ?>" id="package_price_<?php echo $product_id; ?>" class="formular<?php echo ${'error_class_package_price_'.$product_id}; ?>" type="text" size="5" value="<?php echo formatNumber($product['package_price']); ?>"/>
     </div>
     <div style="float:left; width: 10%;">
         <input name="package_update_date_<?php echo $product_id; ?>" id="package_update_date_<?php echo $product_id; ?>" class="formular<?php echo ${'error_class_package_update_date_'.$product_id}; ?> date" type="text" size="10" value="<?php echo (!isset($product['package_update_date'])) ? '' : $product['package_update_date']; ?>" />
@@ -218,17 +245,16 @@ foreach($inventory_list as $product):
             <?php echo $product['package_quantity'] * $product['package_price']; ?>
         </div>
         <span id="package_total_text_<?php echo $product_id; ?>">
-            <?php echo 'CHF '.formatCurrency($product['package_quantity'] * $product['package_price'], true); ?>
+            <?php echo 'CHF '.formatNumber($product['package_quantity'] * $product['package_price'], true); ?>
         </span>
     </div>
 <?php endif; ?>
 </div>
 <?php endforeach; ?>
 <div class="text_title">
-    <div style="float:left;width:90%;">&nbsp;</div>
     <div style="float:right;padding-right: 5px;">
         <span id="total">
-            <?php echo lang('title_total').': CHF '.formatCurrency($total_price, true); ?>
+            <?php echo lang('title_total').': CHF '.formatNumber($total_price, true); ?>
         </span>
     </div>
 </div>

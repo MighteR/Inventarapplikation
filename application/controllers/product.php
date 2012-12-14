@@ -151,6 +151,19 @@ class Product extends MY_Controller {
             }
         }
     }
+    
+    public function reactivate(){
+        if($this->session->userdata('admin')){
+            if($this->input->is_ajax_request() AND !empty($_POST)){
+                $this->load->model('product_model');
+                
+                $model_data = array();
+                $model_data['deleted'] = 0;
+                
+                $this->product_model->update($this->input->post('id'), $model_data);
+            }
+        }
+    }
      
      public function modify($id){
         $this->session->set_userdata('url',  uri_string());

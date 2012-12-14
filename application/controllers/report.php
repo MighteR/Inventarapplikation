@@ -152,5 +152,9 @@ class Report extends MY_Controller {
             return;
         }
     }
+    
+    function price_index(){
+        
+    }
 }
 ?>

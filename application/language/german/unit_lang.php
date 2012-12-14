@@ -11,4 +11,6 @@ $lang['title_package_type'] = 'Verpackungs Typ';
 $lang['info_unit_created'] = 'Die Einheit erfolgreich erstellt';
 $lang['info_unit_modified'] = 'Die Einheit wurde erfolgreich verändert';
 $lang['error_unit_locked_by'] = 'Die Einheit ist gesperrt durch ';
+$lang['title_reactivate_unit'] = 'Einheit reaktivieren';
+$lang['question_rectivate_unit'] = 'Sie möchten diese Einheit reaktivieren, sind sie sicher?';
 ?>

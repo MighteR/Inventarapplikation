@@ -14,6 +14,10 @@ $lang['title_no_matches_found'] = 'Keine übereinstimmung gefunden';
 $lang['title_loading_more_results'] = 'Lade mehr Resultate';
 $lang['title_changelogs'] = 'Änderungsbelege';
 $lang['title_close'] = 'Schliessen';
+$lang['title_creator'] = 'Erstellt durch';
+$lang['title_creation_timestamp'] = 'Erstellt am';
+$lang['title_modifier'] = 'Letzte Änderung durch';
+$lang['title_modification_timestamp'] = 'Letzte Änderung am';
 
 //Loader
 $lang['title_loader'] = 'Laden';

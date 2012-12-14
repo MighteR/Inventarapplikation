@@ -45,12 +45,54 @@ $(document).ready(function(){
             this.disabled = true;
         });
     });
+    
+    $('#changelog').click(function(){
+        $('#loader').dialog({
+            closeOnEscape: false,
+            dialogClass: 'loader',
+            height: 50,
+            resizable: false,
+            width: 50
+        });
+
+        $.ajax({
+            complete: function(){
+                $('#loader').dialog('close');
+            },
+            url: '<?php echo base_url('changelog'); ?>',
+            type: 'POST',
+            data: {
+                'id': <?php echo $id; ?>,
+                'type': 'user'
+            },
+            success: function(html){
+                $('#gui').html(html);
+                
+                $('#gui').dialog({
+                    buttons: {
+                        '<?php echo lang('title_close'); ?>': function(){
+                            $('#gui').dialog('destroy');
+                        }
+                    },
+                    modal: true,
+                    resizable: false,
+                    title: '<?php echo lang('title_changelogs'); ?>',
+                    width: 500,
+                    beforeClose: function(){
+                        $('#gui').dialog('destroy');
+                    }
+                });
+            }
+        });
+    });
 });
 //]]>
 </script>
 <form id="form" action="<?php echo current_url(); ?>" method="post" accept-charset="utf-8">
 <div id="content_title">
-    <span><?php echo lang('title_modify_user'); ?></span>
+    <span>
+        <?php echo lang('title_modify_user'); ?> <img alt="changelog" name="changelog" id="changelog" src="<?php echo base_url('application/views/template/images/changelog.png'); ?>" style="cursor: pointer;"/>
+    </span>
 </div>
 <?php echo form_error('username'); ?>
 <div class="first">

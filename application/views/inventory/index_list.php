@@ -8,11 +8,32 @@ $(document).ready(function(){
 </script>
 <?php if($entry): ?>
 <div class="text_title">
-    <div style="float:left; width: 95%;">
+    <div style="float:left; width: 10%;">
         <?php echo lang('title_product'); ?>
     </div>
+    <div style="float:left; width: 10%;">
+       <?php echo lang('title_unit'); ?>
+    </div>
+    <div style="float:left; width: 10%;">
+       <?php echo lang('title_quantity'); ?>
+    </div>
+    <div style="float:left; width: 10%;">
+       <?php echo lang('title_price_per_unit'); ?>
+    </div>
+    <div style="float:left; width: 10%;">
+       <?php echo lang('title_sum'); ?>
+    </div>
+    <div style="float:left; width: 10%;">
+       <?php echo lang('title_package_type'); ?>
+    </div>
+    <div style="float:left; width: 10%;">
+        <?php echo lang('title_quantity'); ?>
+    </div>
+    <div style="float:left; width: 20%;">
+       <?php echo lang('title_price_per_package'); ?>
+    </div>
     <div style="float:left;">
-        &nbsp;
+       <?php echo lang('title_sum'); ?>
     </div>
 </div>
 <?php $c = 0;
@@ -42,34 +63,33 @@ foreach($inventory_list as $product):
         <?php echo $product->unit_name; ?>
     </div>
     <div style="float:left; width: 10%">
-        <?php echo $product->unit_quantity; ?>
+        <?php echo formatNumber($product->unit_quantity); ?>
     </div>
     <div style="float:left; width: 10%">
-        <?php echo formatCurrency($product->unit_price); ?>
+        <?php echo 'CHF '.formatNumber($product->unit_price); ?>
     </div>
     <div style="float:left; width: 10%">
-        <?php echo formatCurrency($product->unit_quantity * $product->unit_price); ?>
+        <?php echo 'CHF '.formatNumber($product->unit_quantity * $product->unit_price); ?>
     </div>
 <?php if($product->package_id != NULL): ?>
     <div style="float:left; width: 10%">
         <b><?php echo $product->package_name; ?></b>
     </div>
     <div style="float:left; width: 10%">
-        <?php echo $product->package_quantity; ?>
+        <?php echo formatNumber($product->package_quantity); ?>
     </div>
-    <div style="float:left; width: 10%">
-        <?php echo formatCurrency($product->package_price); ?>
+    <div style="float:left; width: 20%">
+        <?php echo 'CHF '.formatNumber($product->package_price); ?>
     </div>
-    <div style="float:left; width: 10%">
-        <?php echo formatCurrency($product->package_quantity * $product->package_price); ?>
+    <div style="float:right;padding-right: 5px;">
+        <?php echo 'CHF '.formatNumber($product->package_quantity * $product->package_price); ?>
     </div>
 <?php endif; ?>
 </div>
 <?php endforeach; ?>
 <div class="text_title">
-    <div style="float:left;width:90%;">&nbsp;</div>
-    <div style="float:left;">
-    <?php echo lang('title_total').': CHF '.formatCurrency($total_price); ?>
+    <div style="float:right;padding-right: 5px;">
+    <?php echo lang('title_total').': CHF '.formatNumber($total_price); ?>
     </div>
 </div>
 <?php else: ?>

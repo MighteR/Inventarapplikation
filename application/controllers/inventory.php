@@ -5,11 +5,12 @@ class Inventory extends MY_Controller {
         parent::__construct();
 
         $this->lang->load('inventory', $this->session->userdata('language'));
-        $this->lang->load('category', $this->session->userdata('language'));
     }
     
     public function index(){
-        $this->session->set_userdata('url',  uri_string());        
+        $this->session->set_userdata('url',  uri_string());   
+        
+        $this->lang->load('category', $this->session->userdata('language'));
 
         $this->load->helper('form');
         
@@ -25,10 +26,12 @@ class Inventory extends MY_Controller {
     
     public function indexList(){
         if($this->input->is_ajax_request() AND !empty($_POST)){
+            $this->lang->load('product', $this->session->userdata('language'));
+            
             $p_category = $this->input->post('category');
 
             $this->load->model('product_model');
-            $this->load->helper('currency_helper');
+            $this->load->helper('number');
 
             $query = $this->product_model->get_inventory($p_category);
 
@@ -49,9 +52,11 @@ class Inventory extends MY_Controller {
     public function update($category){
         $this->session->set_userdata('url',  uri_string());
         
+        $this->lang->load('product', $this->session->userdata('language'));
+        
         $this->load->model('product_model');
         $this->load->model('category_model');
-        $this->load->helper('currency_helper');
+        $this->load->helper('number');
 
         $category_query = $this->category_model->get_category_by_id($category);
 
@@ -85,6 +90,7 @@ class Inventory extends MY_Controller {
                     $product_ids        = $this->input->post('product_id');
 
                     $inventory = array();
+
                     for($i = 0; $i < count($product_ids); $i++){
                         $result = array();
                         
@@ -141,10 +147,9 @@ class Inventory extends MY_Controller {
                     $this->form_validation->set_rules('unit_price_'.$product_id, 'lang:title_price', 'required|trim|greater_than[0]');
                     $this->form_validation->set_rules('unit_update_date', 'lang:title_date', 'trim|callback_date_check[unit_update_date]');
 
-                    
                     if(!empty($result['package_id'])){
-                        $this->form_validation->set_rules('package_quantity_'.$product_id, 'lang:title_quantity', 'required|trim|greater_than[-1]');
-                        $this->form_validation->set_rules('package_price_'.$product_id, 'lang:title_price', 'required|trim|greater_than[0]');
+                        //$this->form_validation->set_rules('package_quantity_'.$product_id, 'lang:title_quantity', 'required|trim|greater_than[-1]');
+                        //$this->form_validation->set_rules('package_price_'.$product_id, 'lang:title_price', 'required|trim|greater_than[0]');
                         $this->form_validation->set_rules('package_update_date', 'lang:title_date', 'trim|callback_date_check[package_update_date]');
                     }                    
                 }
@@ -170,10 +175,9 @@ class Inventory extends MY_Controller {
 
                         $this->product_model->update($product_id,$model_data);
                     }
-                    //$this->category_model->update($id,$model_data);
-exit();
+
                     $this->load->library('messages');
-                    $this->messages->get_message('info',$this->lang->line('info_category_modified'),'category');
+                    $this->messages->get_message('info',$this->lang->line('info_inventory_modified'),'inventory');
                 }else{
                     $this->form_validation->set_error_delimiters('<div class="notice">', '</div>');
 

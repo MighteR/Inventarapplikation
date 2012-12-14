@@ -25,4 +25,6 @@ $lang['error_no_inventar_category'] = 'You need to select one category which is 
 $lang['error_max_inventar_category'] = 'You have to select only one category which is relevant for the inventory';
 $lang['question_delete_product'] = 'Are you sure you want to delete this product?';
 $lang['error_product_locked_by'] = 'This product is locked by ';
+$lang['title_reactivate_product'] = 'Reactivate Product';
+$lang['question_rectivate_product'] = 'You are going to reactivate this product, are you sure?';
 ?>

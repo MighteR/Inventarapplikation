@@ -74,6 +74,19 @@ class User extends MY_Controller {
         }
     }
     
+    public function reactivate(){
+        if($this->session->userdata('admin')){
+            if($this->input->is_ajax_request() AND !empty($_POST)){
+                $this->load->model('user_model');
+                
+                $model_data = array();
+                $model_data['deleted'] = 0;
+                
+                $this->user_model->update($this->input->post('id'), $model_data);
+            }
+        }
+    }
+    
     public function modify($id){
         if($this->session->userdata('admin')){
             $this->session->set_userdata('url',  uri_string());
@@ -214,7 +227,10 @@ class User extends MY_Controller {
     
     public function login(){
         if(!$this->session->userdata('id')){
-            $this->session->set_userdata('url',  uri_string());
+            
+            if(!$this->session->userdata('url')){
+                $this->session->set_userdata('url', 'inventory');
+            }
 
             $this->load->library('form_validation');
             $this->load->helper('form');
@@ -225,7 +241,7 @@ class User extends MY_Controller {
 
             if($this->form_validation->run()){
                 $this->load->library('messages');
-                $this->messages->get_message('info',$this->lang->line('info_user_logged_in'),$this->session->userdata('login_url'));
+                $this->messages->get_message('info',$this->lang->line('info_user_logged_in'), $this->session->userdata('url'));
             }else{
                 $this->form_validation->set_error_delimiters('<div class="notice">', '</div>');
 
@@ -244,7 +260,7 @@ class User extends MY_Controller {
             }
         }else{
             $this->load->library('messages');
-            $this->messages->get_message('info',$this->lang->line('info_user_already_logged_in'),$this->session->userdata('url'));
+            $this->messages->get_message('info',$this->lang->line('info_user_already_logged_in'), $this->session->userdata('url'));
         }
       
         $this->template->render();

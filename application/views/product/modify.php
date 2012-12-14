@@ -200,9 +200,9 @@ $(document).ready(function(){
 </script>
 <form id="form" action="<?php echo current_url(); ?>" method="post" accept-charset="utf-8">
 <div id="content_title">
-	<span>
-            <?php echo lang('title_modify_product'); ?> <img alt="changelog" name="changelog" id="changelog" src="<?php echo base_url('application/views/template/images/changelog.png'); ?>" style="cursor: pointer;"/>
-        </span>
+    <span>
+        <?php echo lang('title_modify_product'); ?> <img alt="changelog" name="changelog" id="changelog" src="<?php echo base_url('application/views/template/images/changelog.png'); ?>" style="cursor: pointer;"/>
+    </span>
 </div>
 <?php echo form_error('name'); ?>
 <div class="first">

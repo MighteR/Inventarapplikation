@@ -1,17 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Category_model extends CI_Model {
-    var $id = '';
-    /*var $username = '';
-    var $password = '';
-    var $admin = '';
-    var $creator = '';
-    var $creation_timestamp = '';
-    var $modifier = '';
-    var $modification_timestamp = '';
-    var $deleter = '';
-    var $deletion_timestamp = '';*/
-    
     public function __construct() {
         parent::__construct();
     }
@@ -33,8 +22,9 @@ class Category_model extends CI_Model {
     }
     
     public function delete($id){
-        $data['deleter'] = $this->session->userdata('id');
-        $data['deletion_timestamp'] = date('Y-m-d H:i:s');
+        $data['deleted'] = 1;
+        $data['modifier'] = $this->session->userdata('id');
+        $data['modification_timestamp'] = date('Y-m-d H:i:s');
 
         $this->db->update('categories', $data, array('id' => $id));
     }
@@ -42,7 +32,7 @@ class Category_model extends CI_Model {
     public function get_all_categories($parent = FALSE){
         $query = "SELECT id, name
                     FROM categories
-                    WHERE deleter IS NULL";
+                    WHERE deleted = 0";
 
 
         if($parent){
@@ -60,7 +50,7 @@ class Category_model extends CI_Model {
                     LEFT JOIN categories parent ON
                         parent.id = categories.parent_category
                     WHERE   categories.id = ".$this->db->escape($id)." AND
-                            categories.deleter IS NULL";
+                            categories.deleted = 0";
 
         return $this->db->query($query);
     }
@@ -77,12 +67,12 @@ class Category_model extends CI_Model {
                     LEFT JOIN categories parent ON
                         parent.id = categories.parent_category
                     WHERE   categories.id IN (".$ids.") AND
-                            categories.deleter IS NULL";
+                            categories.deleted = 0";
 
         return $this->db->query($query);
     }
     
-    public function get_category_by_name($name, $exact_match = TRUE){
+    /*public function get_category_by_name($name, $exact_match = TRUE){
         if($exact_match){
             $query = "SELECT * FROM categories
                         WHERE   name = ".$this->db->escape($name)." AND
@@ -94,17 +84,22 @@ class Category_model extends CI_Model {
         }
 
         return $this->db->query($query);
-    }
+    }*/
     
     public function get_category_list($name, $general_report, $parent = NULL, $limit = array()){
-        $query = "SELECT categories.id, categories.name,
+        $query = "SELECT categories.*,
+                         creator.username AS 'creator_name',
+                         modifier.username AS 'modifier_name',
                          parent.id AS 'parent_id', parent.name AS 'parent_name'
                     FROM categories
+                    INNER JOIN users creator ON
+                        categories.name LIKE ".$this->db->escape('%'.$name.'%')." AND
+                        creator.id = categories.creator
+                    LEFT JOIN users modifier ON
+                        modifier.id = categories.modifier
                     LEFT JOIN categories parent ON
                         parent.id = categories.parent_category AND
-                        parent.deleter IS NULL
-                    WHERE categories.name LIKE ".$this->db->escape('%'.$name.'%')."
-                          AND categories.deleter IS NULL";
+                        parent.deleter = 0";
 
         if($general_report == '1'){
             $query .= " AND categories.general_report = 1";
@@ -127,7 +122,7 @@ class Category_model extends CI_Model {
         $query = "SELECT id, name, general_report
                     FROM categories
                     WHERE name LIKE ".$this->db->escape('%'.$name.'%')."
-                          AND deleter IS NULL";
+                          AND deleted = 0";
         
         if($except != NULL){
             $query .= " AND id != ".$this->db->escape($except);
@@ -151,14 +146,14 @@ class Category_model extends CI_Model {
         $data['modifier'] = $this->session->userdata('id');
         $data['modification_timestamp'] = date('Y-m-d H:i:s');
         
-        if($data['parent_category'] != NULL){
+        /*if($data['parent_category'] != NULL){
             $query = $this->get_category_by_name($data['parent_category']);
             
             if($query->num_rows() == 1){
                 $parent_category = $query->row();
                 $data['parent_category'] = $parent_category->id;
             }
-        }
+        }*/
 
         $this->db->update('categories', $data, array('id' => $id));
     }

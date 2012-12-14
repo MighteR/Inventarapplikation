@@ -1,16 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class User_model extends CI_Model {
-    var $id = '';
-    var $username = '';
-    var $password = '';
-    var $admin = '';
-    var $creator = '';
-    var $creation_timestamp = '';
-    var $modifier = '';
-    var $modification_timestamp = '';
-    var $deleter = '';
-    var $deletion_timestamp = '';    
     
     public function __construct() {
         parent::__construct();
@@ -24,8 +14,9 @@ class User_model extends CI_Model {
     }
     
     public function delete($id){
-        $data['deleter'] = $this->session->userdata('id');
-        $data['deletion_timestamp'] = date('Y-m-d H:i:s');
+        $data['deleted'] = 1;
+        $data['modifier'] = $this->session->userdata('id');
+        $data['modification_timestamp'] = date('Y-m-d H:i:s');
 
         $this->db->update('users', $data, array('id' => $id));
     }
@@ -33,16 +24,21 @@ class User_model extends CI_Model {
     public function get_user_by_id($id){
         $query = "SELECT * FROM users
                     WHERE   id = ".$this->db->escape($id)." AND
-                            deleter IS NULL";
+                            deleted = 0";
         
         return $this->db->query($query);
     }
     
     public function get_users_by_username($username,$limit = array()){
-        $query = "SELECT id, username
+        $query = "SELECT users.*,
+                         creator.username AS 'creator_name',
+                         modifier.username AS 'modifier_name'
                     FROM users
-                    WHERE username LIKE ".$this->db->escape('%'.$username.'%')."
-                          AND deleter IS NULL";
+                        INNER JOIN users creator ON
+                            users.username LIKE ".$this->db->escape('%'.$username.'%')." AND
+                            creator.id = users.creator
+                        LEFT JOIN users modifier ON
+                            modifier.id = users.modifier";
 
         if(!empty($limit)){
             $query .= " LIMIT ".$limit['begin'].",".$limit['limit'];
@@ -54,9 +50,9 @@ class User_model extends CI_Model {
     public function get_user_by_login($username, $password){
         $query = "SELECT id, username, admin
                             FROM users
-                            WHERE username =  ".$this->db->escape($username)."
-                                  AND password = MD5(".$this->db->escape($password).")
-                                  AND deleter IS NULL";
+                            WHERE username =  ".$this->db->escape($username)." AND
+                                  password = MD5(".$this->db->escape($password).") AND
+                                  deleted = 0";
         
         $query = $this->db->query($query);
         

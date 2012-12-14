@@ -24,5 +24,8 @@ $lang['info_product_modified'] = 'Das Product wurde erfolgreich verändert';
 $lang['error_no_inventar_category'] = 'Sie müssen eine Kategorie auswählen welche für das Inventar relevant ist';
 $lang['error_max_inventar_category'] = 'Sie dürfen nur eine Kategorie auswählen welche für das Inventar relevant ist';
 $lang['question_delete_product'] = 'Wollen Sie diesd Ptofukz wirklich löschen?';
-$lang['error_product_locked_by'] = 'Dieses Produkt ist gesperrt durch '
+$lang['error_product_locked_by'] = 'Dieses Produkt ist gesperrt durch ';
+$lang['title_reactivate_product'] = 'Produkt reaktivieren';
+$lang['question_rectivate_product'] = 'Sie möchten dieses Produkt reaktivieren, sind sie sicher?';
+
 ?>

@@ -1,8 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Unit_model extends CI_Model {
-    var $id = '';
-    
     public function __construct() {
         parent::__construct();
     }
@@ -15,8 +13,9 @@ class Unit_model extends CI_Model {
     }
     
     public function delete($id){
-        $data['deleter'] = $this->session->userdata('id');
-        $data['deletion_timestamp'] = date('Y-m-d H:i:s');
+        $data['deleted'] = 1;
+        $data['modifier'] = $this->session->userdata('id');
+        $data['modification_timestamp'] = date('Y-m-d H:i:s');
 
         $this->db->update('units', $data, array('id' => $id));
     }
@@ -24,30 +23,35 @@ class Unit_model extends CI_Model {
     public function get_unit_by_id($id){
         $query = "SELECT * FROM units
                     WHERE   id = ".$this->db->escape($id)." AND
-                            deleter IS NULL";
+                            deleted = 0";
         
         return $this->db->query($query);
     }
     
-    public function get_unit_by_name($name, $exact_match = TRUE){
+/*    public function get_unit_by_name($name, $exact_match = TRUE){
         if($exact_match){
             $query = "SELECT * FROM units
                         WHERE   name = ".$this->db->escape($name)." AND
-                                deleter IS NULL";
+                                deleted = 1";
         }else{
             $query = "SELECT * FROM units
                         WHERE   name LIKE ".$this->db->escape("%".$name."%")." AND
-                                deleter IS NULL";
+                                deleted = 1";
         }
 
         return $this->db->query($query);
-    }
+    }*/
     
-    public function get_unit_list($name,$limit = array()){
-        $query = "SELECT id, name
+    public function get_unit_list($name, $limit = array()){
+        $query = "SELECT units.*,
+                         creator.username AS 'creator_name',
+                         modifier.username AS 'modifier_name'
                     FROM units
-                    WHERE name LIKE ".$this->db->escape('%'.$name.'%')."
-                          AND deleter IS NULL";
+                        INNER JOIN users creator ON
+                            units.name LIKE ".$this->db->escape('%'.$name.'%')." AND
+                            creator.id = units.creator
+                        LEFT JOIN users modifier ON
+                            modifier.id = units.modifier";
 
         if(!empty($limit)){
             $query .= " LIMIT ".$limit['begin'].",".$limit['limit'];
@@ -60,7 +64,7 @@ class Unit_model extends CI_Model {
         $query = "SELECT id, name
                     FROM units
                     WHERE name LIKE ".$this->db->escape('%'.$name.'%')."
-                          AND deleter IS NULL";
+                          AND deleted = 0";
 
         if($except != NULL){
             $query .= " AND id != ".$this->db->escape($except);

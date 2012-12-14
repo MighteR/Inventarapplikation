@@ -20,4 +20,6 @@ $lang['title_excluded'] = 'excluded';
 $lang['title_search_category'] = 'Search Category';
 $lang['error_category_doesnt_exist'] = 'This category doesn\'t exists.';
 $lang['title_search_category'] = 'Search for a category';
+$lang['title_reactivate_category'] = 'Reactivate Category';
+$lang['question_rectivate_category'] = 'You are going to reactivate this category, are you sure?';
 ?>

@@ -11,4 +11,6 @@ $lang['title_package_type'] = 'Package Type';
 $lang['info_unit_created'] = 'Package Type has been created successfully';
 $lang['info_unit_modified'] = 'The unit is successfully modified';
 $lang['error_unit_locked_by'] = 'The unit is locked by ';
+$lang['title_reactivate_unit'] = 'Reactivate Unit';
+$lang['question_rectivate_unit'] = 'You are going to reactivate this unit, are you sure?';
 ?>
