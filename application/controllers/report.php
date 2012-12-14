@@ -10,45 +10,52 @@ class Report extends MY_Controller {
     public function inventory(){
         $this->session->set_userdata('url',  uri_string());
         
-        if($this->session->userdata('admin')){
-            $this->load->library('form_validation');
-            $this->load->helper('form');
-            $this->lang->load('category', $this->session->userdata('language'));
-            $this->lang->load('inventory', $this->session->userdata('language'));
-            
-            $inventory_category = array();
-            $inventory_category['id'] = 0;
-            $inventory_category['text'] = $this->lang->line('title_whole_inventory');
-        
-            $data['inventory_category'] = json_encode($inventory_category);
-            
-            $data['changed'] = 'false';
-            
-            if(!empty($_POST)){
-                $data['changed'] = 'true';
-            }
-            
-            $this->form_validation->set_rules('set_due_date', 'lang:title_due_date', 'required|trim');
-            
-            if($this->form_validation->run()){
-                            //To Do
-            }else{
-                $this->form_validation->set_error_delimiters('<div class="notice">', '</div>');
-                
-                $data['error_class_set_due_date'] = '';
+        $this->lang->load('category', $this->session->userdata('language'));
+        $this->lang->load('inventory', $this->session->userdata('language'));
 
-                if(form_error('set_due_date')){
-                    $data['error_class_set_due_date'] = '_error';
-                }
-            }
+        $inventory_category = array();
+        $inventory_category['id'] = 0;
+        $inventory_category['text'] = $this->lang->line('title_whole_inventory');
+
+        $data['inventory_category'] = json_encode($inventory_category);
+
+        $this->template->write_view('content','report/inventory',$data);
+
+        $this->template->render();
+    }
+    
+    public function excel(){
+        
+        $p_id       =   $this->input->post('id');
+        $p_due_date =   $this->input->post('set_due_date');
+        
+        $this->load->model('product_model');
+        
+        $query = $this->product_model->get_inventory($p_id,$p_due_date);
+        
+        $result = array();
+        
+        if($query->num_rows() > 0){
+            $result['verify'] = true;
             
-            $this->template->write_view('content','report/inventory',$data);
+            require_once '../excel/PHPExcel.php';
+            
+            $excel = new PHPExcel();
+            
+            $objWriter = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+            $objWriter->save('php://output');
+            
         }else{
-            $this->load->library('messages');
-            $this->messages->get_message('error',$this->lang->line('error_no_access'));
+            $result['verify'] = false;
         }
         
-        $this->template->render();
+
+                
+
+        $result['output'] = $this->input->post('id').$this->input->post('set_due_date');
+
+        echo json_encode($result);    
+        return;
     }
     
     public function price(){
