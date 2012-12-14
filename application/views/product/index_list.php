@@ -117,7 +117,7 @@ foreach($products as $product): ?>
         <?php if (!$product->deleted): ?>
         <img alt="delete" id="delete_product_<?php echo $product->id; ?>" name="delete" src="<?php echo base_url('application/views/template/images/trash.png'); ?>" style="cursor:pointer;" />
         <?php else: ?>
-        <img alt="reactivate" id="reactivate_product_<?php echo $product->id; ?>" name="reactivate" src="<?php echo base_url('application/views/template/images/inventory.png'); ?>" style="cursor:pointer;" />
+        <img alt="reactivate" id="reactivate_product_<?php echo $product->id; ?>" name="reactivate" src="<?php echo base_url('application/views/template/images/reactivate.png'); ?>" style="cursor:pointer;" />
         <?php endif; ?>
     </div>
 </div>

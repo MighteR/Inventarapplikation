@@ -263,7 +263,7 @@ class Product_model extends CI_Model {
 
         $this->db->update('products', $data, array('id' => $id));
         $this->db->update('product_prices', $data, array('product_id' => $id));
-        $this->db->update('products', $data, array('product_id' => $id));
+        $this->db->update('package_type_prices', $data, array('product_id' => $id));
     }
     
     public function get_product_trends($id, $date_from, $date_to){

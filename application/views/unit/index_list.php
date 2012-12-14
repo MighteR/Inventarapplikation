@@ -117,7 +117,7 @@ foreach($units as $unit): ?>
         <?php if (!$unit->deleted): ?>
         <img alt="delete" id="delete_unit_<?php echo $unit->id; ?>" name="delete" src="<?php echo base_url('application/views/template/images/trash.png'); ?>" style="cursor:pointer;" />
         <?php else: ?>
-        <img alt="reactivate" id="reactivate_unit_<?php echo $unit->id; ?>" name="reactivate" src="<?php echo base_url('application/views/template/images/inventory.png'); ?>" style="cursor:pointer;" />
+        <img alt="reactivate" id="reactivate_unit_<?php echo $unit->id; ?>" name="reactivate" src="<?php echo base_url('application/views/template/images/reactivate.png'); ?>" style="cursor:pointer;" />
         <?php endif; ?>
     </div>
 </div>

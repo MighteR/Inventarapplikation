@@ -22,4 +22,6 @@ $lang['title_deleted_user'] = 'Benutzer gelöscht';
 $lang['title_reactivated_user'] = 'Benutzer reaktiviert';
 $lang['title_deleted_unit'] = 'Einheit gelöscht';
 $lang['title_reactivated_unit'] = 'Einheit reaktiviert';
+$lang['title_deleted_categorz'] = 'Kategorie gelöscht';
+$lang['title_reactivated_categorz'] = 'Kategorie reaktiviert';
 ?>

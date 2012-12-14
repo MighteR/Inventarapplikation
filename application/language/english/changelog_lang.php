@@ -22,4 +22,6 @@ $lang['title_deleted_user'] = 'User deleted';
 $lang['title_reactivated_user'] = 'User reactivated';
 $lang['title_deleted_unit'] = 'Unit deleted';
 $lang['title_reactivated_unit'] = 'Unit reactivated';
+$lang['title_deleted_category'] = 'Category deleted';
+$lang['title_reactivated_category'] = 'Category reactivated';
 ?>

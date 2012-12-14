@@ -311,7 +311,7 @@ $(document).ready(function(){
         &nbsp;
     </div>
     <div class="text_right">
-        <button name="trend" type="button" id="trend" ><?php echo lang('title_submit'); ?></button>
+        <!--<button name="trend" type="button" id="trend" ><img alt="excel" name="excel" src="<?php echo base_url('application/views/template/images/reactivate.png'); ?>" />&nbsp;<?php echo lang('title_submit'); ?></button>/!-->
         <button name="submit" type="button" id="submit" ><?php echo lang('title_submit'); ?></button>
         <button name="reset" type="button" id="reset" ><?php echo lang('title_reset'); ?></button>
     </div>

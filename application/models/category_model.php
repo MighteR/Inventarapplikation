@@ -9,14 +9,14 @@ class Category_model extends CI_Model {
         $data['creator'] = $this->session->userdata('id');
         $data['creation_timestamp'] = date('Y-m-d H:i:s');
         
-        if($data['parent_category'] != NULL){
+        /*if($data['parent_category'] != NULL){
             $query = $this->get_category_by_name($data['parent_category']);
             
             if($query->num_rows() == 1){
                 $parent_category = $query->row();
                 $data['parent_category'] = $parent_category->id;
             }
-        }
+        }*/
 
         $this->db->insert('categories', $data);
     }
@@ -35,20 +35,26 @@ class Category_model extends CI_Model {
                     WHERE deleted = 0";
 
 
-        if($parent){
+        /*if($parent){
             $query .= " AND categories.id IN (SELECT parent_category FROM categories)";
-        }
+        }*/
         
         return $this->db->query($query);
     }
     
     public function get_category_by_id($id){
-        $query = "SELECT categories.*,
+        /*$query = "SELECT categories.*,
                          parent.id AS 'parent_id',
                          parent.name AS 'parent_name'
                     FROM categories
                     LEFT JOIN categories parent ON
                         parent.id = categories.parent_category
+                    WHERE   categories.id = ".$this->db->escape($id)." AND
+                            categories.deleted = 0";*/
+        $query = "SELECT categories.*,
+                         parent.id AS 'parent_id',
+                         parent.name AS 'parent_name'
+                    FROM categories
                     WHERE   categories.id = ".$this->db->escape($id)." AND
                             categories.deleted = 0";
 
@@ -61,11 +67,15 @@ class Category_model extends CI_Model {
         }
         $ids = (implode(',', $ids));
         
-        $query = "SELECT categories.*,
+/*        $query = "SELECT categories.*,
                          parent.name AS 'parent_name'
                     FROM categories
                     LEFT JOIN categories parent ON
                         parent.id = categories.parent_category
+                    WHERE   categories.id IN (".$ids.") AND
+                            categories.deleted = 0";*/
+        $query = "SELECT categories.*
+                    FROM categories
                     WHERE   categories.id IN (".$ids.") AND
                             categories.deleted = 0";
 
@@ -87,7 +97,7 @@ class Category_model extends CI_Model {
     }*/
     
     public function get_category_list($name, $general_report, $parent = NULL, $limit = array()){
-        $query = "SELECT categories.*,
+        /*$query = "SELECT categories.*,
                          creator.username AS 'creator_name',
                          modifier.username AS 'modifier_name',
                          parent.id AS 'parent_id', parent.name AS 'parent_name'
@@ -99,16 +109,21 @@ class Category_model extends CI_Model {
                         modifier.id = categories.modifier
                     LEFT JOIN categories parent ON
                         parent.id = categories.parent_category AND
-                        parent.deleter = 0";
+                        parent.deleter = 0";*/
+        $query = "SELECT categories.*,
+                         creator.username AS 'creator_name',
+                         modifier.username AS 'modifier_name'
+                    FROM categories
+                    INNER JOIN users creator ON
+                        categories.name LIKE ".$this->db->escape('%'.$name.'%')." AND
+                        creator.id = categories.creator
+                    LEFT JOIN users modifier ON
+                        modifier.id = categories.modifier";
 
         if($general_report == '1'){
             $query .= " AND categories.general_report = 1";
         }elseif($general_report == '0'){
             $query .= " AND categories.general_report = 0";
-        }
-
-        if($parent != NULL){
-            $query .= " AND categories.parent_category = ".$this->db->escape($parent);
         }
 
         if(!empty($limit)){
