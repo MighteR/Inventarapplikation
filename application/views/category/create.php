@@ -124,6 +124,14 @@ $(document).ready(function(){
 <div class="second">
 <?php else: ?>
 /!-->
+<div class="second">
+    <div class="text_left">
+        <?php echo lang('title_general_report','general_report'); ?>:
+    </div>
+    <div class="text_right">
+        <input name="general_report" id="general_report" type="checkbox" value="1" <?php echo set_checkbox('general_report','1'); ?>/>
+    </div>
+</div>
 <div class="first">
 <!--<?php endif; ?>/!-->
     <div class="text_left">

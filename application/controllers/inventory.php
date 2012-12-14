@@ -11,8 +11,6 @@ class Inventory extends MY_Controller {
         $this->session->set_userdata('url',  uri_string());   
         
         $this->lang->load('category', $this->session->userdata('language'));
-
-        $this->load->helper('form');
         
         $inventory_category['id'] = 0;
         $inventory_category['text'] = $this->lang->line('title_whole_inventory');
@@ -148,8 +146,8 @@ class Inventory extends MY_Controller {
                     $this->form_validation->set_rules('unit_update_date', 'lang:title_date', 'trim|callback_date_check[unit_update_date]');
 
                     if(!empty($result['package_id'])){
-                        //$this->form_validation->set_rules('package_quantity_'.$product_id, 'lang:title_quantity', 'required|trim|greater_than[-1]');
-                        //$this->form_validation->set_rules('package_price_'.$product_id, 'lang:title_price', 'required|trim|greater_than[0]');
+                        $this->form_validation->set_rules('package_quantity_'.$product_id, 'lang:title_quantity', 'required|trim|greater_than[-1]');
+                        $this->form_validation->set_rules('package_price_'.$product_id, 'lang:title_price', 'required|trim|greater_than[0]');
                         $this->form_validation->set_rules('package_update_date', 'lang:title_date', 'trim|callback_date_check[package_update_date]');
                     }                    
                 }

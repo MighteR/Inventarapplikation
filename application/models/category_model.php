@@ -51,9 +51,7 @@ class Category_model extends CI_Model {
                         parent.id = categories.parent_category
                     WHERE   categories.id = ".$this->db->escape($id)." AND
                             categories.deleted = 0";*/
-        $query = "SELECT categories.*,
-                         parent.id AS 'parent_id',
-                         parent.name AS 'parent_name'
+        $query = "SELECT categories.*
                     FROM categories
                     WHERE   categories.id = ".$this->db->escape($id)." AND
                             categories.deleted = 0";
