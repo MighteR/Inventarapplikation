@@ -36,27 +36,52 @@ class Report extends MY_Controller {
         $result = array();
         
         if($query->num_rows() > 0){
+            $row = 1;
             $result['verify'] = true;
             $this->load->library('excel');
             $this->excel->setActiveSheetIndex(0);
+            $this->excel->getActiveSheet()->setTitle('Inventar');
             
-            //name the worksheet
-            $this->excel->getActiveSheet()->setTitle('test worksheet');
+            $cat_name   = '';
+            $cat_tmp    = '';
+                      
+            foreach($query->result_object() AS $product){
+                
+                $cat_tmp = $product->category_name;
+                if($cat_tmp != $cat_name){
+                    $cat_name = $cat_tmp;
+                    $this->excel->getActiveSheet()->getStyle($row)->getFont()->setBold(true);
+                    $this->excel->getActiveSheet()->setCellValueByColumnAndRow(0, $row, $product->category_name);
+                    $row++;
+                }
             //set cell A1 content with some text
-            $this->excel->getActiveSheet()->setCellValue('A1', 'This is just some text value');
-            //change the font size
-            $this->excel->getActiveSheet()->getStyle('A1')->getFont()->setSize(20);
-            //make the font become bold
-            $this->excel->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
-            //merge cell A1 until D1
-            $this->excel->getActiveSheet()->mergeCells('A1:D1');
-            //set aligment to center for that merged cell (A1 to D1)
-
-            $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(0, $row, $product->product_name);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(1, $row, $product->unit_name);  
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(2, $row, $product->unit_price);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(3, $row, $product->unit_quantity);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(4, $row, ((double)$product->unit_price*(double)$product->unit_quantity));
+            if($product->package_id != NULL){
+                //$this->excel->getActiveSheet()->setCellValueByColumnAndRow(5, $row, '');
+                $this->excel->getActiveSheet()->setCellValueByColumnAndRow(6, $row, $product->package_name);
+                $this->excel->getActiveSheet()->setCellValueByColumnAndRow(7, $row, $product->package_price);
+                $this->excel->getActiveSheet()->setCellValueByColumnAndRow(8, $row, $product->package_quantity);
+                $this->excel->getActiveSheet()->setCellValueByColumnAndRow(9, $row, ((double)$product->package_price*(double)$product->package_quantity));
+              
+            }
+            $row++;
+            $column = 0;
+            }
+            for($i = 0; $i < 12; $i++){
+                $this->excel->getActiveSheet()->getColumnDimensionByColumn($i,1)->setAutoSize(true);
+            }
+            $filename='just_some_random_name.xlsx'; 
             
-            $filename = time().'.xlsx';
-            $objWriter->save(APPPATH.'third_party/excel/output/'.$filename);
-            $result['filename'] = $filename;
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
+            header('Cache-Control: max-age=0'); //no cache
+            
+            $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
+            $objWriter->save('php://output');
             
         }else{
             $result['verify'] = false;
