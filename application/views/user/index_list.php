@@ -117,7 +117,7 @@ foreach($users as $user): ?>
         <?php if (!$user->deleted): ?>
         <img alt="delete" id="delete_user_<?php echo $user->id; ?>" name="delete" src="<?php echo base_url('application/views/template/images/trash.png'); ?>" style="cursor:pointer;" />
         <?php else: ?>
-        <img alt="reactivate" id="reactivate_user_<?php echo $user->id; ?>" name="reactivate" src="<?php echo base_url('application/views/template/images/inventory.png'); ?>" style="cursor:pointer;" />
+        <img alt="reactivate" id="reactivate_user_<?php echo $user->id; ?>" name="reactivate" src="<?php echo base_url('application/views/template/images/reactivate.png'); ?>" style="cursor:pointer;" />
         <?php endif; ?>
     </div>
 </div>

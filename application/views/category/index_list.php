@@ -120,7 +120,7 @@ foreach($categories as $category): ?>
         <?php if (!$category->deleted): ?>
         <img alt="delete" id="delete_category_<?php echo $category->id; ?>" name="delete" src="<?php echo base_url('application/views/template/images/trash.png'); ?>" style="cursor:pointer;" />
         <?php else: ?>
-        <img alt="reactivate" id="reactivate_category_<?php echo $category->id; ?>" name="reactivate" src="<?php echo base_url('application/views/template/images/inventory.png'); ?>" style="cursor:pointer;" />
+        <img alt="reactivate" id="reactivate_category_<?php echo $category->id; ?>" name="reactivate" src="<?php echo base_url('application/views/template/images/reactivate.png'); ?>" style="cursor:pointer;" />
         <?php endif; ?>
     </div>
 </div>
