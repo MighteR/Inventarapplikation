@@ -6,10 +6,10 @@
         <li><a href="<?php echo base_url(); ?>"><?php echo lang('menu_home'); ?></a></li>
         
         <!--Inventory!-->
-        <li><a href=""><?php echo lang('menu_inventory'); ?></a></li>
+        <li><a href="<?php echo base_url('inventory'); ?>"><?php echo lang('menu_inventory'); ?></a></li>
         
         <!--Report!-->
-        <li><a href="test3.html"><?php echo lang('menu_report'); ?></a>
+        <li><a href="#"><?php echo lang('menu_report'); ?></a>
             <ul>
                 <li><a href="<?php echo base_url('report/inventory'); ?>"><?php echo lang('menu_report_generate'); ?></a></li>
                 <li><a href="<?php echo base_url('report/price'); ?>"><?php echo lang('menu_report_price'); ?></a></li>
@@ -17,7 +17,7 @@
         </li>
         
         <!--Admin!-->
-        <li><a href="test.html"><?php echo lang('menu_admin'); ?></a>
+        <li><a href="#"><?php echo lang('menu_admin'); ?></a>
             <ul>
                 <li><a href="<?php echo base_url('user'); ?>"><?php echo lang('menu_admin_user'); ?></a></li>
                 <li><a href="<?php echo base_url('category'); ?>"><?php echo lang('menu_admin_category'); ?></a></li>
@@ -27,7 +27,7 @@
         </li>
         
         <!--Help!-->
-        <li><a href="test.html"><?php echo lang('menu_help'); ?></a>
+        <li><a href="#"><?php echo lang('menu_help'); ?></a>
             <ul>
                 <li><a href="<?php echo base_url('help'); ?>"><?php echo lang('menu_help_about'); ?></a></li>
                 <li><a href="#"><?php echo lang('menu_help_online'); ?></a></li>

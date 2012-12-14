@@ -26,13 +26,17 @@ $(document).ready(function(){
     $("input[type='text'], select, textarea").change(function(){
         changed = true;
     });*/
+        
+    $('#list').click(function(){
+        price_list();
+    });
     
     $('#trend').click(function(){
         generate_price_trend();
     });
     
     $('#reset').click(function(){
-        reset();
+        
     });
     
     $('#form').submit(function(){
@@ -257,6 +261,48 @@ $(document).ready(function(){
         });
     }
     
+    function price_list(){
+        $.ajax({
+            complete: function(html){
+                $('#loader').dialog('close');
+            },
+            url: '<?php echo base_url('report/price_list'); ?>',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                'id': $('#product').val(),
+                'date_from': $('#date_from_db').val(),
+                'date_to': $('#date_to_db').val()
+            },
+            success: function(data){
+                if(data.verify){
+                    $('#price_data').html(data.output);
+                }else{
+                    if(data.error.date_from){
+                        $('#error_class_date_from').parent().prepend('<div id="notice_date_from" class="notice">' + data.error.date_from + '</div>');
+                        $('#error_class_date_from').addClass('text_left_error');
+                        $('#date_from').addClass('formular_error');
+                    }
+
+                    if(data.error.date_to){
+                        $('#error_class_date_to').parent().prepend('<div id="notice_date_to" class="notice">' + data.error.date_to + '</div>');
+                        $('#error_class_date_to').addClass('text_left_error');
+                        $('#date_to').addClass('formular_error');
+                    }
+                    
+                    if(data.error.product){
+                        $('#error_class_product').parent().prepend('<div id="notice_product" class="notice">' + data.error.product + '</div>');
+                        $('#error_class_product').addClass('text_left_error');
+                    }
+                    
+                    if(data.error.trend){
+                        alert(data.error.trend);
+                    }
+                }
+            }
+        });
+    }
+    
     function reset(){
         clearErrors();
     }
@@ -311,8 +357,8 @@ $(document).ready(function(){
         &nbsp;
     </div>
     <div class="text_right">
-        <!--<button name="trend" type="button" id="trend" ><img alt="excel" name="excel" src="<?php echo base_url('application/views/template/images/reactivate.png'); ?>" />&nbsp;<?php echo lang('title_submit'); ?></button>/!-->
-        <button name="trend" type="button" id="trend" ><?php echo lang('title_submit'); ?></button>
+        <button name="list" type="button" id="list" ><?php echo lang('title_submit'); ?></button>
+        <button name="trend" type="button" id="trend" ><img alt="excel" name="excel" src="<?php echo base_url('application/views/template/images/reactivate.png'); ?>" />&nbsp;<?php echo lang('title_submit'); ?></button>
         <button name="reset" type="button" id="reset" ><?php echo lang('title_reset'); ?></button>
     </div>
 </div>

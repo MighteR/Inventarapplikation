@@ -1,5 +1,6 @@
 <?php
 $lang['title_inventory'] = 'Inventar';
+$lang['title_modify_inventory'] = 'Inventar aktualisieren';
 $lang['title_whole_inventory'] = 'Gesamtes Inventar';
 $lang['title_show'] = 'Anzeigen';
 $lang['title_update'] = 'Aktualisieren';

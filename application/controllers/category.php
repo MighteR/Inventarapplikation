@@ -148,7 +148,7 @@ class Category extends MY_Controller {
                     if($this->form_validation->run()){
                         $model_data['name'] = $this->input->post('name');
                         //$model_data['parent_category']  = (!$this->input->post('parent_category')) ? NULL : $this->input->post('parent_category');
-                        $model_data['general_report']  = $this->input->post('report');
+                        $model_data['general_report']  = $this->input->post('general_report');
 
                         $this->category_model->update($id,$model_data);
 

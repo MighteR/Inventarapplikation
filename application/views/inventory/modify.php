@@ -149,7 +149,7 @@ function checkDateField(id, type){
     <div style="float:left; width: 5%;">
         <?php echo lang('title_quantity'); ?>
     </div>
-    <div style="float:left; width: 5%;">
+    <div style="float:left; width: 10%;">
        <?php echo lang('title_price_per_package'); ?>
     </div>
     <div style="float:left; width: 10%;">

@@ -24,4 +24,6 @@ $lang['title_deleted_unit'] = 'Einheit gelöscht';
 $lang['title_reactivated_unit'] = 'Einheit reaktiviert';
 $lang['title_deleted_categorz'] = 'Kategorie gelöscht';
 $lang['title_reactivated_categorz'] = 'Kategorie reaktiviert';
+$lang['title_inventory_relevant'] = 'Inventar Relevant';
+$lang['title_package_type'] = 'Verpackungstyp';
 ?>
