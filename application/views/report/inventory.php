@@ -45,7 +45,8 @@ $(document).ready(function(){
             success: function(data){
                 
                 if(data.verify){
-                    alert(data.output);
+                    window.open('<?php echo base_url(); ?>' + data.filename);
+
                 }else{
                     alert('ERROR');
                 }

@@ -54,8 +54,8 @@ class Report extends MY_Controller {
 
             $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
             
-            $filename = time().'.xlsx';
-            $objWriter->save(APPPATH.'third_party/excel/output/'.$filename);
+            $filename = APPPATH.'third_party/excel/output/'.time().'.xlsx';
+            $objWriter->save($filename);
             $result['filename'] = $filename;
             
         }else{

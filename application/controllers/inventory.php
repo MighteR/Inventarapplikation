@@ -142,12 +142,12 @@ class Inventory extends MY_Controller {
                     $product_id = $data['inventory_list'][$i]['product_id'];
 
                     $this->form_validation->set_rules('unit_quantity_'.$product_id, 'lang:title_quantity', 'required|trim|greater_than[-1]');
-                    $this->form_validation->set_rules('unit_price_'.$product_id, 'lang:title_price', 'required|trim|greater_than[0]');
+                    $this->form_validation->set_rules('unit_price_'.$product_id, 'lang:title_price_per_unit', 'required|trim|greater_than[0]');
                     $this->form_validation->set_rules('unit_update_date', 'lang:title_date', 'trim|callback_date_check[unit_update_date]');
 
                     if(!empty($result['package_id'])){
                         $this->form_validation->set_rules('package_quantity_'.$product_id, 'lang:title_quantity', 'required|trim|greater_than[-1]');
-                        $this->form_validation->set_rules('package_price_'.$product_id, 'lang:title_price', 'required|trim|greater_than[0]');
+                        $this->form_validation->set_rules('package_price_'.$product_id, 'lang:title_price_per_package', 'required|trim|greater_than[0]');
                         $this->form_validation->set_rules('package_update_date', 'lang:title_date', 'trim|callback_date_check[package_update_date]');
                     }                    
                 }

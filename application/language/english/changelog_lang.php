@@ -24,4 +24,6 @@ $lang['title_deleted_unit'] = 'Unit deleted';
 $lang['title_reactivated_unit'] = 'Unit reactivated';
 $lang['title_deleted_category'] = 'Category deleted';
 $lang['title_reactivated_category'] = 'Category reactivated';
+$lang['title_inventory_relevant'] = 'Inventory Relevant';
+$lang['title_package_type'] = 'Package Type';
 ?>
