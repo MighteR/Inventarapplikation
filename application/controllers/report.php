@@ -76,7 +76,7 @@ class Report extends MY_Controller {
             /*
             $filename='just_some_random_name.xlsx'; 
             
-<<<<<<< HEAD
+
 
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
@@ -84,12 +84,7 @@ class Report extends MY_Controller {
             
             $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
             $objWriter->save('php://output');
-=======
-=======
->>>>>>> branch 'master' of https://github.com/MighteR/Inventarapplikation.git
-            $filename = APPPATH.'third_party/excel/output/'.time().'.xlsx';
-            $objWriter->save($filename);
-            $result['filename'] = $filename;
+
 */
             
         }else{
