@@ -74,14 +74,21 @@ class Report extends MY_Controller {
             for($i = 0; $i < 12; $i++){
                 $this->excel->getActiveSheet()->getColumnDimensionByColumn($i,1)->setAutoSize(true);
             }
+            /*
             $filename='just_some_random_name.xlsx'; 
             
+
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
             header('Cache-Control: max-age=0'); //no cache
             
             $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
             $objWriter->save('php://output');
+=======
+            $filename = APPPATH.'third_party/excel/output/'.time().'.xlsx';
+            $objWriter->save($filename);
+            $result['filename'] = $filename;
+*/
             
         }else{
             $result['verify'] = false;
