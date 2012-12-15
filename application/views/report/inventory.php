@@ -45,7 +45,7 @@ $(document).ready(function(){
             success: function(data){
                 
                 if(data.verify){
-                    window.open('<?php echo base_url(); ?>' + data.filename);
+                    window.open('<?php echo base_url('application/third_party/excel/output'); ?>/' + data.filename);
 
                 }else{
                     alert('ERROR');

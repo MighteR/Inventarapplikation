@@ -26,8 +26,18 @@ class Report extends MY_Controller {
     
     public function excel(){
         
-        $p_id       =   0;//$this->input->post('id');
-        $p_due_date =   '20121231';//$this->input->post('set_due_date');
+        $this->load->library('excel');
+        
+        //Delete existing .xlsx-files || DON'T TOUCH OR BE CAREFUL!!!
+        $this->load->helper('file');
+        delete_files(APPPATH.'/third_party/excel/output/');
+        
+        $this->lang->load('product', $this->session->userdata('language'));
+        $this->lang->load('inventory', $this->session->userdata('language'));
+        
+        $p_id       =   $this->input->post('id');
+        $p_due_date =   $this->input->post('set_due_date');
+        $p_due_date_string = substr($p_due_date,6,2).'.'.substr($p_due_date,4,2).'.'.substr($p_due_date,0,4);
         
         $this->load->model('product_model');
         
@@ -35,64 +45,126 @@ class Report extends MY_Controller {
         
         $result = array();
         
+        //Formatting the style for the document title
+        $format_title = array(
+            'font' => array(
+                'size' => 20,
+            )
+        );
+        
+        //Formatting the style for the category titles
+        $format_cat = array(
+            'font' => array(
+                'bold' => true,
+        ),
+            'fill' => array(
+                'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                'startcolor' => array(
+                'rgb' => '81BEF7'
+                )
+            )
+        );
+
         if($query->num_rows() > 0){
-            $row = 1;
-            $result['verify'] = true;
-            $this->load->library('excel');
-            $this->excel->setActiveSheetIndex(0);
-            $this->excel->getActiveSheet()->setTitle('Inventar');
             
+            $row = 4;
+            $result['verify'] = true;
             $cat_name   = '';
             $cat_tmp    = '';
-                      
+            $total_price = 0;
+            
+            //Set sheet properties
+            $this->excel->setActiveSheetIndex(0);
+            $this->excel->getActiveSheet()->setTitle('Inventar');
+            $this->excel->getProperties()->setCreator($this->session->userdata('username'));
+            $this->excel->getProperties()->setTitle($this->lang->line('title_inventory_by').' '.$p_due_date_string);
+                                                
+            //Set Sheet Title
+            $this->excel->getActiveSheet()->mergeCellsByColumnAndRow(0,1,3,1);
+            $this->excel->getActiveSheet()->getStyle('A1:J1')->applyFromArray($format_title);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(0,1, $this->lang->line('title_inventory_by').' '.$p_due_date_string);
+            
+            //Set Column Titles
+            $this->excel->getActiveSheet()->getStyle(3)->getFont()->setBold(true);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(0,3,$this->lang->line('title_product_name'));
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(1,3,$this->lang->line('title_unit'));
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(2,3,$this->lang->line('title_quantity'));
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(3,3,$this->lang->line('title_price_per_unit'));
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(4,3,$this->lang->line('title_sum'));
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(6,3,$this->lang->line('title_package_type'));
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(7,3,$this->lang->line('title_quantity'));
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(8,3,$this->lang->line('title_price_per_package'));
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(9,3,$this->lang->line('title_sum'));
+            
+            //Import data into Excel          
             foreach($query->result_object() AS $product){
                 
                 $cat_tmp = $product->category_name;
                 
                 if($cat_tmp != $cat_name){
+                    
+                    $this->excel->getActiveSheet()->setCellValueByColumnAndRow(0, $row, '');
+                    $row++;
                     $cat_name = $cat_tmp;
                     $this->excel->getActiveSheet()->getStyle($row)->getFont()->setBold(true);
+                    $this->excel->getActiveSheet()->getStyle('A'.$row.':J'.$row)->applyFromArray($format_cat);
                     $this->excel->getActiveSheet()->setCellValueByColumnAndRow(0, $row, $product->category_name);
                     $row++;
+                    
                 }
 
                 $this->excel->getActiveSheet()->setCellValueByColumnAndRow(0, $row, $product->product_name);
-                $this->excel->getActiveSheet()->setCellValueByColumnAndRow(1, $row, $product->unit_name);  
-                $this->excel->getActiveSheet()->setCellValueByColumnAndRow(2, $row, $product->unit_price);
-                $this->excel->getActiveSheet()->setCellValueByColumnAndRow(3, $row, $product->unit_quantity);
+                $this->excel->getActiveSheet()->setCellValueByColumnAndRow(1, $row, $product->unit_name);
+                $this->excel->getActiveSheet()->getStyle('D'.$row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+                $this->excel->getActiveSheet()->setCellValueByColumnAndRow(2, $row, $product->unit_quantity);
+                $this->excel->getActiveSheet()->setCellValueByColumnAndRow(3, $row, $product->unit_price);
+                $this->excel->getActiveSheet()->getStyle('E'.$row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
                 $this->excel->getActiveSheet()->setCellValueByColumnAndRow(4, $row, ((double)$product->unit_price*(double)$product->unit_quantity));
+                $total_price += ((double)$product->unit_price*(double)$product->unit_quantity);
+               
                 if($product->package_id != NULL){
-                    //$this->excel->getActiveSheet()->setCellValueByColumnAndRow(5, $row, '');
+                                        
                     $this->excel->getActiveSheet()->setCellValueByColumnAndRow(6, $row, $product->package_name);
-                    $this->excel->getActiveSheet()->setCellValueByColumnAndRow(7, $row, $product->package_price);
-                    $this->excel->getActiveSheet()->setCellValueByColumnAndRow(8, $row, $product->package_quantity);
+                    $this->excel->getActiveSheet()->getStyle('I'.$row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+                    $this->excel->getActiveSheet()->setCellValueByColumnAndRow(7, $row, $product->package_quantity);
+                    $this->excel->getActiveSheet()->setCellValueByColumnAndRow(8, $row, $product->package_price);
+                    $this->excel->getActiveSheet()->getStyle('J'.$row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
                     $this->excel->getActiveSheet()->setCellValueByColumnAndRow(9, $row, ((double)$product->package_price*(double)$product->package_quantity));
-
+                    $total_price += ((double)$product->package_price*(double)$product->package_quantity);
+                    
                 }
                 
                 $row++;
+                
             }
+            
+            //Set Total Price of inventory
+            $row++;
+            $this->excel->getActiveSheet()->getStyle('A'.$row.':J'.$row)->applyFromArray($format_cat);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(0, $row,'Total CHF');
+            $this->excel->getActiveSheet()->getStyle('B'.$row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+            $this->excel->getActiveSheet()->setCellValueByColumnAndRow(1, $row, $total_price);
+            
             for($i = 0; $i < 12; $i++){
+                
                 $this->excel->getActiveSheet()->getColumnDimensionByColumn($i,1)->setAutoSize(true);
+                
             }
             
-            $filename='just_some_random_name.xlsx'; 
-            
+            $filename = $this->lang->line('title_inventory').'_'.substr($p_due_date,6,2).substr($p_due_date,4,2).substr($p_due_date,0,4).'.'.'xlsx';
 
-            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
-            header('Cache-Control: max-age=0'); //no cache
+           // header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+           // header('Content-Disposition: attachment;filename="'.$filename.'"');
+           // header('Cache-Control: max-age=0'); //no cache
             
             $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
-            $objWriter->save('php://output');
-        
+            $objWriter->save(APPPATH.'/third_party/excel/output/'.$filename);
+            $result['filename'] = $filename;
+            
         }else{
             $result['verify'] = false;
         }
         
-
-                
-
         $result['output'] = $this->input->post('id').$this->input->post('set_due_date');
 
         echo json_encode($result);    
