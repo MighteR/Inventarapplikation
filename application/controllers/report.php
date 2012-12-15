@@ -78,6 +78,13 @@ class Report extends MY_Controller {
             $this->excel->getActiveSheet()->setTitle('Inventar');
             $this->excel->getProperties()->setCreator($this->session->userdata('username'));
             $this->excel->getProperties()->setTitle($this->lang->line('title_inventory_by').' '.$p_due_date_string);
+            
+            //Set AutoSize from comlumn 0 to 11
+            for($i = 0; $i < 12; $i++){
+                
+                $this->excel->getActiveSheet()->getColumnDimensionByColumn($i,1)->setAutoSize(true);
+                
+            }
                                                 
             //Set Sheet Title
             $this->excel->getActiveSheet()->mergeCellsByColumnAndRow(0,1,3,1);
@@ -138,19 +145,14 @@ class Report extends MY_Controller {
                 
             }
             
-            //Set Total Price of inventory
+            //Set Total Price
             $row++;
             $this->excel->getActiveSheet()->getStyle('A'.$row.':J'.$row)->applyFromArray($format_cat);
             $this->excel->getActiveSheet()->setCellValueByColumnAndRow(0, $row,'Total CHF');
             $this->excel->getActiveSheet()->getStyle('B'.$row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
             $this->excel->getActiveSheet()->setCellValueByColumnAndRow(1, $row, $total_price);
             
-            for($i = 0; $i < 12; $i++){
-                
-                $this->excel->getActiveSheet()->getColumnDimensionByColumn($i,1)->setAutoSize(true);
-                
-            }
-            
+            //Set filename
             $filename = $this->lang->line('title_inventory').'_'.substr($p_due_date,6,2).substr($p_due_date,4,2).substr($p_due_date,0,4).'.'.'xlsx';
 
            // header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -162,13 +164,17 @@ class Report extends MY_Controller {
             $result['filename'] = $filename;
             
         }else{
+            
             $result['verify'] = false;
+            
         }
         
         $result['output'] = $this->input->post('id').$this->input->post('set_due_date');
 
-        echo json_encode($result);    
+        echo json_encode($result);
+        
         return;
+    
     }
     
     public function price(){
