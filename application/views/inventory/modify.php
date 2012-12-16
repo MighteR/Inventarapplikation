@@ -9,7 +9,21 @@ $(document).ready(function(){
     var sMessage    ='<?php echo $this->lang->line('notice_unsaved_data') ?>';
 
     $(window).bind('beforeunload', function(e){
-        if (changed) return sMessage;
+        if(changed){
+            return sMessage;
+        }else{
+            $("input[name='locked_product[]']").each(function(){
+                $.ajax({
+                    url: '<?php echo base_url('lock/delete'); ?>',
+                    type: 'POST',
+                    async: false,
+                    data: {
+                        'type' : 'product',
+                        'id'   : $(this).val()
+                    }
+                });
+            });
+        }
     });
     
     $("input[type='text'], select, textarea").change(function(){
@@ -196,8 +210,12 @@ foreach($inventory_list as $product):
     <input name="package_name_<?php echo $product_id; ?>" type="hidden" value="<?php echo $product['package_name']; ?>" />
     <input name="old_package_quantity_<?php echo $product_id; ?>" id="old_package_quantity_<?php echo $product_id; ?>" type="hidden" value="<?php echo $old_package_quantity; ?>" />
     <input name="old_package_price_<?php echo $product_id; ?>" id="old_package_price_<?php echo $product_id; ?>" type="hidden" value="<?php echo $old_package_price; ?>" />
-    
-    
+
+    <?php if(isset($locked[$product_id])):
+    echo '<div class="notice">'.$locked[$product_id].'</div>';
+    else: ?>
+    <input name="locked_product[]" type="hidden" value="<?php echo $product_id; ?>" />
+    <?php endif; ?>
     <?php echo form_error('unit_quantity_'.$product_id); ?>
     <?php echo form_error('unit_price_'.$product_id); ?>
     <?php if($product['package_id'] != NULL) echo form_error('package_quantity_'.$product_id); ?>
@@ -209,14 +227,30 @@ foreach($inventory_list as $product):
         <?php echo $product['unit_name']; ?>
     </div>
     <div style="float:left; width: 5%">
+        <?php if(!isset($locked[$product_id])): ?>
         <input name="unit_quantity_<?php echo $product_id; ?>" id="unit_quantity_<?php echo $product_id; ?>" class="formular<?php echo ${'error_class_unit_quantity_'.$product_id}; ?>" type="text" size="5" value="<?php echo formatNumber($product['unit_quantity']); ?>"/>
+        <?php else: ?>
+        <input name="unit_quantity_<?php echo $product_id; ?>" id="unit_quantity_<?php echo $product_id; ?>" type="hidden" value="<?php echo formatNumber($product['unit_quantity']); ?>"/>
+        <?php echo formatNumber($product['unit_quantity']); ?>
+        <?php endif; ?>
     </div>
     <div style="float:left; width: 10%">
+        <?php if(!isset($locked[$product_id])): ?>
         / <input name="unit_price_<?php echo $product_id; ?>" id="unit_price_<?php echo $product_id; ?>" class="formular<?php echo ${'error_class_unit_price_'.$product_id}; ?>" type="text" size="5" value="<?php echo formatNumber($product['unit_price']); ?>"/>
+        <?php else: ?>
+        / <input name="unit_price_<?php echo $product_id; ?>" id="unit_price_<?php echo $product_id; ?>" type="hidden" value="<?php echo formatNumber($product['unit_price']); ?>"/>
+        <?php echo formatNumber($product['unit_price']); ?>        
+        <?php endif; ?>
     </div>
     <div style="float:left; width: 10%;">
+        <?php if(!isset($locked[$product_id])): ?>
         <input name="unit_update_date_<?php echo $product_id; ?>" id="unit_update_date_<?php echo $product_id; ?>" class="formular<?php echo ${'error_class_unit_update_date_'.$product_id}; ?> date" type="text" size="10" value="<?php echo (!isset($product['unit_update_date'])) ? '' : $product['unit_update_date']; ?>" />
         <input name="unit_update_date_db_<?php echo $product_id; ?>" id="unit_update_date_<?php echo $product_id; ?>_db" type="hidden" value="<?php echo (!isset($product['unit_update_date'])) ? '' : $product['unit_update_date_db']; ?>" />
+        <?php else: ?>
+        <input name="unit_update_date_<?php echo $product_id; ?>" id="unit_update_date_<?php echo $product_id; ?>" type="hidden" value="<?php echo (!isset($product['unit_update_date'])) ? '' : $product['unit_update_date']; ?>" />
+        <input name="unit_update_date_db_<?php echo $product_id; ?>" id="unit_update_date_<?php echo $product_id; ?>_db" type="hidden" value="<?php echo (!isset($product['unit_update_date'])) ? '' : $product['unit_update_date_db']; ?>" />
+        &nbsp;
+        <?php endif; ?>
     </div>
     <div style="float:left; width: 10%">
         <div id="unit_total_data_<?php echo $product_id; ?>" style="display:none">
@@ -231,14 +265,30 @@ foreach($inventory_list as $product):
         <b><?php echo $product['package_name']; ?></b>
     </div>
     <div style="float:left; width: 5%">
+        <?php if(!isset($locked[$product_id])): ?>
         <input name="package_quantity_<?php echo $product_id; ?>" id="package_quantity_<?php echo $product_id; ?>" class="formular<?php echo ${'error_class_package_quantity_'.$product_id}; ?>" type="text" size="5" value="<?php echo formatNumber($product['package_quantity']); ?>"/>
+        <?php else: ?>
+        <input name="package_quantity_<?php echo $product_id; ?>" id="package_quantity_<?php echo $product_id; ?>" type="hidden" value="<?php echo formatNumber($product['package_quantity']); ?>"/>
+        <?php echo formatNumber($product['package_quantity']); ?>
+        <?php endif; ?>
     </div>
     <div style="float:left; width: 10%">
+        <?php if(!isset($locked[$product_id])): ?>
         / <input name="package_price_<?php echo $product_id; ?>" id="package_price_<?php echo $product_id; ?>" class="formular<?php echo ${'error_class_package_price_'.$product_id}; ?>" type="text" size="5" value="<?php echo formatNumber($product['package_price']); ?>"/>
+        <?php else: ?>
+        / <input name="package_price_<?php echo $product_id; ?>" id="package_price_<?php echo $product_id; ?>" type="hidden" value="<?php echo formatNumber($product['package_price']); ?>"/>
+        <?php echo formatNumber($product['package_price']); ?>
+        <?php endif; ?>
     </div>
     <div style="float:left; width: 10%;">
+        <?php if(!isset($locked[$product_id])): ?>
         <input name="package_update_date_<?php echo $product_id; ?>" id="package_update_date_<?php echo $product_id; ?>" class="formular<?php echo ${'error_class_package_update_date_'.$product_id}; ?> date" type="text" size="10" value="<?php echo (!isset($product['package_update_date'])) ? '' : $product['package_update_date']; ?>" />
         <input name="package_update_date_db_<?php echo $product_id; ?>" id="package_update_date_<?php echo $product_id; ?>_db" type="hidden" value="<?php echo (!isset($product['package_update_date'])) ? '' : $product['package_update_date_db']; ?>" />
+        <?php else: ?>
+        <input name="package_update_date_<?php echo $product_id; ?>" id="package_update_date_<?php echo $product_id; ?>" type="hidden" value="<?php echo (!isset($product['package_update_date'])) ? '' : $product['package_update_date']; ?>" />
+        <input name="package_update_date_db_<?php echo $product_id; ?>" id="package_update_date_<?php echo $product_id; ?>_db" type="hidden" value="<?php echo (!isset($product['package_update_date'])) ? '' : $product['package_update_date_db']; ?>" />
+        &nbsp;
+        <?php endif; ?>
     </div>
     <div style="float:left; width: 10%">
         <div id="package_total_data_<?php echo $product_id; ?>" style="display:none">

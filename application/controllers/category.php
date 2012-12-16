@@ -94,11 +94,11 @@ class Category extends MY_Controller {
                     $this->load->library('messages');
                     $this->messages->get_message('error',$this->lang->line('error_category_locked_by').$this->lock_model->get_info());
                 }else{
+                    $this->lock_model->create();
+                    
                     if(empty($_POST)){
                         $data['changed'] = 'false';
                         //$data['old_parent_category'] = json_encode(array());
-                        
-                        $this->lock_model->create();
                         
                         $category = $category_query->row();
 

@@ -506,6 +506,72 @@ class Product_model extends CI_Model {
         return $this->db->query($query);
     }
     
+    public function get_product_prices($id,$date_from,$date_to){
+        $query = "DROP TABLE IF EXISTS prices";
+        
+        $this->db->query($query);
+
+        $query = "CREATE TEMPORARY TABLE prices(
+                        id INT(10) UNSIGNED NULL,
+                        timestamp timestamp NULL,
+                        type varchar(12),
+                        price DOUBLE NULL,
+                        quantity DOUBLE NULL,
+                        creator VARCHAR(64) NULL,
+                        creation_timestamp timestamp NULL,
+                        modifier VARCHAR(64) NULL,
+                        modification_timestamp timestamp NULL,
+                        deleted BOOL NULL);";
+        
+        $this->db->query($query);
+
+        $query = "INSERT INTO prices
+                SELECT  product_prices.product_id AS 'id',
+                        product_prices.timestamp,
+                        'product' AS 'type',
+                        product_prices.price,
+                        product_prices.quantity,
+                        creator.username AS 'creator',
+                        product_prices.creation_timestamp,
+                        modifier.username AS 'modifier',
+                        product_prices.modification_timestamp,
+                        product_prices.deleted
+                FROM product_prices
+                INNER JOIN users creator ON
+                    product_prices.product_id = ".$this->db->escape($id)." AND
+                    DATE(product_prices.timestamp) BETWEEN ".$this->db->escape($date_from)." AND ".$this->db->escape($date_to)." AND
+                    creator.id = product_prices.creator
+                LEFT JOIN users modifier ON
+                    modifier.id = product_prices.modifier";
+
+        $this->db->query($query);
+        
+        $query = "INSERT INTO prices
+                SELECT  package_type_prices.product_id AS 'id',
+                        package_type_prices.timestamp,
+                        'package_type' AS 'type',
+                        package_type_prices.price,
+                        package_type_prices.quantity,
+                        creator.username AS 'creator',
+                        package_type_prices.creation_timestamp,
+                        modifier.username AS 'modifier',
+                        package_type_prices.modification_timestamp,
+                        package_type_prices.deleted
+                FROM package_type_prices
+                INNER JOIN users creator ON
+                    package_type_prices.product_id = ".$this->db->escape($id)." AND
+                    DATE(package_type_prices.timestamp) BETWEEN ".$this->db->escape($date_from)." AND ".$this->db->escape($date_to)." AND
+                    creator.id = package_type_prices.creator
+                LEFT JOIN users modifier ON
+                    modifier.id = package_type_prices.modifier";
+
+        $this->db->query($query);
+
+        $query = "SELECT * FROM prices ORDER BY timestamp DESC";
+        
+        return $this->db->query($query);
+    }
+    
     public function get_product_simple_list($name, $limit = array()){
         $query = "SELECT id, name
                     FROM products

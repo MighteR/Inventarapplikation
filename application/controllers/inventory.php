@@ -77,17 +77,24 @@ class Inventory extends MY_Controller {
                     $data['entry'] = false;
 
                     if($query->num_rows() > 0){
-                        $data['inventory_list'] = $query->result_array();
-
                         $data['entry'] = true;
-                    }  
+                        
+                        $this->load->model('lock_model');
+
+                        $data['inventory_list'] = $query->result_array();
+                    }
+                    
+                    $locked_product = array();
                 }else{
                     $data['changed']    = 'true';
                     $data['entry']      = true;
+                    
+                    $this->load->model('lock_model');
 
                     $product_ids        = $this->input->post('product_id');
+                    $locked_product     = $this->input->post('locked_product');
 
-                    $inventory = array();
+                    $inventory  = array();
 
                     for($i = 0; $i < count($product_ids); $i++){
                         $result = array();
@@ -128,7 +135,7 @@ class Inventory extends MY_Controller {
                             $result['package_update_date']      = '';
                             $result['package_update_date_db']   = '';
                         }
-
+                        
                         array_push($inventory, $result);
                     }
                     
@@ -178,6 +185,8 @@ class Inventory extends MY_Controller {
                     $this->messages->get_message('info',$this->lang->line('info_inventory_modified'),'inventory');
                 }else{
                     $this->form_validation->set_error_delimiters('<div class="notice">', '</div>');
+                    
+                    $locked = array();
 
                     for($i = 0; $i < count($data['inventory_list']); $i++){
                         $product_id = $data['inventory_list'][$i]['product_id'];
@@ -204,7 +213,17 @@ class Inventory extends MY_Controller {
                         if(form_error('package_price_'.$product_id)){
                             $data['error_class_package_price_'.$product_id] = '_error';
                         }
+                        
+                        $this->lock_model->set_info('product',$product_id);
+
+                        if($this->lock_model->check() AND !in_array($product_id, $locked_product)){
+                            $locked[$product_id] = $this->lang->line('error_product_locked_by').$this->lock_model->get_info();
+                        }else{
+                            $this->lock_model->create();
+                        }
                     }
+
+                    $data['locked'] = $locked;
 
                     $this->template->write_view('content','inventory/modify',$data);
                 }

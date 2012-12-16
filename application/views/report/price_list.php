@@ -65,45 +65,61 @@ $(document).ready(function(){
 });
 //]]> 
 </script>
-<div class="first">
-    <div class="text" style="text-align:center;">
-        <?php echo $pages ?>&nbsp;
-    </div>
-</div>
 <div class="text_title">
-    <div style="float:left; width: 20%;">
-        <?php echo lang('title_timestamp'); ?>
-    </div>
-    <div style="float:left; width: 20%;">
-        <?php echo lang('title_creator'); ?>
-    </div>
-    <div style="float:left; width: 20%;">
-        <?php echo lang('title_quantity'); ?>
-    </div>
-    <div style="float:left; width: 20%;">
-        <?php echo lang('title_price'); ?>
-    </div>
-    <div style="float:left;">
+    <div style="float:left; width:10%;">
         &nbsp;
     </div>
+    <div style="float:left; width: 15%">
+        <?php echo lang('title_last_update'); ?>
+    </div>
+    <div style="float:left; width: 10%">
+        <?php echo lang('title_quantity'); ?>
+    </div>
+    <div style="float:left; width: 10%">
+        <?php echo lang('title_price'); ?>
+    </div>
+    <div style="float:left; width: 10%">
+        <?php echo lang('title_creator'); ?>
+    </div>
+    <div style="float:left; width: 15%">
+        <?php echo lang('title_creation_timestamp'); ?>
+    </div>
+    <div style="float:left; width: 10%">
+        <?php echo lang('title_modifier'); ?>
+    </div>
+    <div style="float:left; width: 10%">
+        <?php echo lang('title_modification_timestamp'); ?>
+    </div>
+    <div style="float:right;padding-right: 5px;" />
 </div>
-<?php if ($entry): ?>
 <?php $c = 0;
 foreach($prices as $price): ?>
 <div class="<?php echo ($c++ % 2) ? 'second' : 'first'; ?> list">
-    <div style="float:left; width:20%;">
-        <span id="price_<?php echo $price->id; ?>"><?php echo $price->pricename; ?></span>            
+    <div style="float:left; width:10%;">
+        <span id="price_<?php echo $price->id; ?>"><?php echo lang('title_'.$price->type); ?></span>            
     </div>
-    <div style="float:left; width: 20%">
-        <?php echo $price->creator_name; ?>
+    <div style="float:left; width: 15%">
+        <?php echo $price->timestamp; ?>
     </div>
-    <div style="float:left; width: 20%">
+    <div style="float:left; width: 10%">
         <?php echo formatNumber($price->quantity); ?>
     </div>
-    <div style="float:left; width: 20%">
-        <?php echo formatNumber($price->price); ?>
+    <div style="float:left; width: 10%">
+        <?php echo 'CHF '.formatNumber($price->price); ?>
     </div>
-    <div style="float:left;">
+    <div style="float:left; width: 10%">
+        <?php echo $price->creator; ?>
+    </div>
+    <div style="float:left; width: 15%">
+        <?php echo $price->creation_timestamp; ?>
+    </div>
+    <div style="float:left; width: 10%">
+        <?php echo $price->modifier; ?>&nbsp;
+    </div>
+    <div style="float:left; width: 10%">
+        <?php echo $price->modification_timestamp; ?>&nbsp;
+    </div>
+    <div style="float:right;padding-right: 5px;">
         <?php if (!$price->deleted): ?>
         <img alt="delete" id="delete_price_<?php echo $price->id; ?>" name="delete" src="<?php echo base_url('application/views/template/images/trash.png'); ?>" style="cursor:pointer;" />
         <?php else: ?>
@@ -112,8 +128,3 @@ foreach($prices as $price): ?>
     </div>
 </div>
 <?php endforeach; ?>
-<?php else: ?>
-<div class="first" style="text-align:center;">
-    <?php echo lang('error_no_entries'); ?>
-</div>
-<?php endif; ?>

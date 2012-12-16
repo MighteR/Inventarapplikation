@@ -22,12 +22,14 @@ $(document).ready(function(){
     });
     
     $('#submit').click(function(){
-                $('#loader').dialog({
-                closeOnEscape: false,
-                dialogClass: 'loader',
-                height: 50,
-                resizable: false,
-                width: 50
+        clearErrors();
+        
+        $('#loader').dialog({
+            closeOnEscape: false,
+            dialogClass: 'loader',
+            height: 50,
+            resizable: false,
+            width: 50
         });
         
 
@@ -42,21 +44,24 @@ $(document).ready(function(){
                 'id': $('#search_category').val(),
                 'set_due_date': $('#set_due_date_db').val()
             },
-            success: function(data){
-                
+            success: function(data){   
                 if(data.verify){
                     window.open('<?php echo base_url('application/third_party/excel/output'); ?>/' + data.filename);
-
                 }else{
-                    $('#error_class_due_date').parent().prepend('<div id="notice_due_date" class="notice">' + '<?php echo lang('error_due_date'); ?>' + '</div>');
-                    $('#error_class_due_date').addClass('text_left_error');
-                    $('#set_due_date').addClass('formular_error');
+                    if(data.error.due_date){
+                        $('#error_class_due_date').parent().prepend('<div id="notice_due_date" class="notice">' + data.error.due_date + '</div>');
+                        $('#error_class_due_date').addClass('text_left_error');
+                        $('#set_due_date').addClass('formular_error');
+                    }
+                    if(data.error.category){
+                        $('#error_class_category').parent().prepend('<div id="notice_category" class="notice">' + data.error.category + '</div>');
+                        $('#error_class_category').addClass('text_left_error');
+                    }
+                    
+                    if(data.error.excel){
+                        alert(data.error.excel);
+                    }
                 }
-            },
-            error:function(a,b,c){
-                alert('error');
-                alert(a.status);
-                document.write(a.responseText);
             }
         });
     });
@@ -115,13 +120,22 @@ $(document).ready(function(){
     });
     
     $('#reset').click(function(){
+        clearErrors();
+        
+        $('#set_due_date').val('');
+        $('#set_due_date_db').val('');
+        
         var inventory_category = <?php echo $inventory_category; ?>;
+        if(!jQuery.isEmptyObject(inventory_category)) $("#search_category").select2("data", inventory_category);
+    });
+    
+    function clearErrors(){
         $('#notice_due_date').remove();
         $('#error_class_due_date').removeClass('text_left_error');
         $('#set_due_date').removeClass('formular_error');
-        $('#set_due_date').val('');
-        if(!jQuery.isEmptyObject(inventory_category)) $("#search_category").select2("data", inventory_category);
-    });
+        $('#notice_error_').remove();
+        $('#error_class_category').removeClass('text_left_error');
+    }
 });
 //]]>
 </script>
@@ -138,7 +152,7 @@ $(document).ready(function(){
     </div>
 </div>
 <div class="second">
-    <div class="text_left">
+    <div id="error_class_category" class="text_left">
         <?php echo lang('title_category','categories'); ?><span class="important">*</span>
     </div>
     <div class="text_right">

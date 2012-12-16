@@ -20,7 +20,7 @@ class MY_Controller extends CI_Controller {
             $this->config->set_item('language', $this->input->cookie('language'));
             $this->lang->load('template', $this->input->cookie('language'));            
         }else{
-            $this->lang->load('template', 'english');
+            $this->lang->load('template', 'german');
         }
         
         $this->template->write('title',$this->lang->line('title'));

@@ -27,5 +27,4 @@ $lang['question_delete_product'] = 'Wollen Sie diesd Ptofukz wirklich löschen?'
 $lang['error_product_locked_by'] = 'Dieses Produkt ist gesperrt durch ';
 $lang['title_reactivate_product'] = 'Produkt reaktivieren';
 $lang['question_rectivate_product'] = 'Sie möchten dieses Produkt reaktivieren, sind sie sicher?';
-
 ?>

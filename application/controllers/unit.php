@@ -67,10 +67,11 @@ class Unit extends MY_Controller {
                     $this->load->library('messages');
                     $this->messages->get_message('error',$this->lang->line('error_unit_locked_by').$this->lock_model->get_info());
                 }else{
+                    $this->lock_model->create();
+                    
                     if(empty($_POST)){
                         $data['changed'] = 'false';
                         
-                        $this->lock_model->create();
                         
                         $data_query = $unit_query->row_array();
 

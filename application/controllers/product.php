@@ -184,6 +184,8 @@ class Product extends MY_Controller {
                     $this->load->library('messages');
                     $this->messages->get_message('error',$this->lang->line('error_product_locked_by').$this->lock_model->get_info());
                 }else{
+                    $this->lock_model->create();
+                    
                     $data['actual_date']    = date('d.m.Y');
                     $data['actual_date_db'] = date('Ymd');
                     
@@ -248,9 +250,7 @@ class Product extends MY_Controller {
                         
                         $data['old_categories_list']     = json_encode(array());
                         
-                        $this->lock_model->create();
-                        
-                         $query = $this->product_model->get_categories_by_product($id);
+                        $query = $this->product_model->get_categories_by_product($id);
 
                         if($query->num_rows() > 0){
                             $old_categories = array();

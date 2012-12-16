@@ -5,23 +5,23 @@
 $(document).ready(function(){
     $('input:submit, input:reset').button();
     
-    $(window).bind('unload', function(e){
-        $.ajax({
-            url: '<?php echo base_url('lock/delete'); ?>',
-            type: 'POST',
-            async: false,
-            data: {
-                'type' : 'user',
-                'id'   : '<?php echo $id; ?>'
-            }
-        });
-    });
-    
     var changed     = <?php echo $changed; ?>;
     var sMessage    ='<?php echo lang('notice_unsaved_data') ?>';
 
     $(window).bind('beforeunload', function(e){
-        if (changed) return sMessage;
+        if (changed){
+            return sMessage;
+        }else{
+            $.ajax({
+                url: '<?php echo base_url('lock/delete'); ?>',
+                type: 'POST',
+                async: false,
+                data: {
+                    'type' : 'user',
+                    'id'   : '<?php echo $id; ?>'
+                }
+            });
+        }
     });
     
     $(document).keypress(function(e){ 

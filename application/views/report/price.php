@@ -36,7 +36,7 @@ $(document).ready(function(){
     });
     
     $('#reset').click(function(){
-        
+
     });
     
     $('#form').submit(function(){
@@ -262,11 +262,21 @@ $(document).ready(function(){
     }
     
     function price_list(){
+        clearErrors();
+        
+        $('#loader').dialog({
+                closeOnEscape: false,
+                dialogClass: 'loader',
+                height: 50,
+                resizable: false,
+                width: 50
+        });
+        
         $.ajax({
             complete: function(html){
                 $('#loader').dialog('close');
             },
-            url: '<?php echo base_url('report/price_list'); ?>',
+            url: '<?php echo base_url('report/price_index'); ?>',
             type: 'POST',
             dataType: 'json',
             data: {
@@ -299,6 +309,9 @@ $(document).ready(function(){
                         alert(data.error.trend);
                     }
                 }
+            },
+            error: function(a,b,c){
+                document.write(a.responseText);
             }
         });
     }
@@ -349,7 +362,7 @@ $(document).ready(function(){
         <?php echo lang('title_product','set_product'); ?><span class="important">*</span>
     </div>
     <div class="text_right">
-        <input name="product" id="product" style="width:300px;" type="hidden" value=" "/>
+        <input name="product" id="product" style="width:300px;" type="hidden" value=""/>
     </div>
 </div>
 <div class="first">
