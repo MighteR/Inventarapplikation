@@ -12,18 +12,13 @@ class Unit_model extends CI_Model {
         $this->db->insert('units', $data);
     }
     
-    public function delete($id){
-        $data['deleted'] = 1;
-        $data['modifier'] = $this->session->userdata('id');
-        $data['modification_timestamp'] = date('Y-m-d H:i:s');
-
-        $this->db->update('units', $data, array('id' => $id));
-    }
-    
-    public function get_unit_by_id($id){
+    public function get_unit_by_id($id, $deleted = FALSE){
         $query = "SELECT * FROM units
-                    WHERE   id = ".$this->db->escape($id)." AND
-                            deleted = 0";
+                    WHERE   id = ".$this->db->escape($id);
+        
+        if(!$deleted){
+            $query .= " AND deleted = 0";
+        }
         
         return $this->db->query($query);
     }
@@ -88,8 +83,55 @@ class Unit_model extends CI_Model {
     public function update($id,$data){
         $data['modifier'] = $this->session->userdata('id');
         $data['modification_timestamp'] = date('Y-m-d H:i:s');
+        
+        $this->config->load('database_options');
+        
+        $this->db->trans_strict(FALSE);
+        $this->db->trans_start();
+
+        if(!$this->config->item('changelog_trigger')){
+            $old_query  = $this->get_unit_by_id($id, TRUE);
+            $old_data   = $old_query->row_array();
+        }
 
         $this->db->update('units', $data, array('id' => $id));
+        
+        if(!$this->config->item('changelog_trigger')){
+            $this->load->model('changelog_model');
+            
+            $changelog_type = 'unit';
+
+            $changelog_data = array();
+            $changelog_data['id']           = $id;
+            $changelog_data['user_id']      = $data['modifier'];
+            $changelog_data['timestamp']    = $data['modification_timestamp'];
+
+            if(isset($data['name']) AND $data['name'] != $old_data['name']){
+                $changelog_data['field']    = 'name';
+                $changelog_data['from']     = $old_data['name'];
+                $changelog_data['to']       = $data['name'];
+
+                $this->changelog_model->create($changelog_type, $changelog_data);
+            }
+            
+            if(isset($data['package_type']) AND $data['package_type'] != $old_data['package_type']){
+                $changelog_data['field']    = 'package_type';
+                $changelog_data['from']     = $old_data['admin'];
+                $changelog_data['to']       = $data['admin'];
+
+                $this->changelog_model->create($changelog_type, $changelog_data);
+            }
+            
+            if(isset($data['deleted']) AND $data['deleted'] != $old_data['deleted']){
+                $changelog_data['field']    = 'deleted_user';
+                $changelog_data['from']     = $old_data['deleted'];
+                $changelog_data['to']       = $data['deleted'];
+
+                $this->changelog_model->create($changelog_type, $changelog_data);
+            }
+        }
+        
+        $this->db->trans_complete();
     }
 }
 ?>

@@ -190,7 +190,10 @@ class Category extends MY_Controller {
             if($this->input->is_ajax_request() AND !empty($_POST)){
                 $this->load->model('category_model');
                 
-                $this->category_model->delete($this->input->post('id'));
+                $model_data = array();
+                $model_data['deleted'] = 1;
+                
+                $this->category_model->update($this->input->post('id'), $model_data);
             }
         }
     }

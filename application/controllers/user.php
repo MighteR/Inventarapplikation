@@ -69,7 +69,10 @@ class User extends MY_Controller {
             if($this->input->is_ajax_request() AND !empty($_POST)){
                 $this->load->model('user_model');
                 
-                $this->user_model->delete($this->input->post('id'));
+                $model_data = array();
+                $model_data['deleted'] = 1;
+                
+                $this->user_model->update($this->input->post('id'), $model_data);
             }
         }
     }
@@ -240,6 +243,10 @@ class User extends MY_Controller {
             $this->form_validation->set_rules('password', 'lang:title_password', 'required');
 
             if($this->form_validation->run()){
+                $this->load->model('user_model');
+                
+                 $this->user_model->update_last_login($this->session->userdata('id'));
+                
                 $this->load->library('messages');
                 $this->messages->get_message('info',$this->lang->line('info_user_logged_in'), $this->session->userdata('url'));
             }else{
@@ -293,6 +300,7 @@ class User extends MY_Controller {
                 $this->session->set_userdata('id',$user->id);
                 $this->session->set_userdata('username',$user->username);
                 $this->session->set_userdata('admin',$user->admin);
+                $this->session->set_userdata('last_login', $user->last_login);
 
                 return TRUE;
             }else{

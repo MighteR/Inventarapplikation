@@ -21,14 +21,6 @@ class Category_model extends CI_Model {
         $this->db->insert('categories', $data);
     }
     
-    public function delete($id){
-        $data['deleted'] = 1;
-        $data['modifier'] = $this->session->userdata('id');
-        $data['modification_timestamp'] = date('Y-m-d H:i:s');
-
-        $this->db->update('categories', $data, array('id' => $id));
-    }
-    
     public function get_all_categories($parent = FALSE){
         $query = "SELECT id, name
                     FROM categories
@@ -42,7 +34,7 @@ class Category_model extends CI_Model {
         return $this->db->query($query);
     }
     
-    public function get_category_by_id($id){
+    public function get_category_by_id($id, $deleted = FALSE){
         /*$query = "SELECT categories.*,
                          parent.id AS 'parent_id',
                          parent.name AS 'parent_name'
@@ -51,10 +43,13 @@ class Category_model extends CI_Model {
                         parent.id = categories.parent_category
                     WHERE   categories.id = ".$this->db->escape($id)." AND
                             categories.deleted = 0";*/
-        $query = "SELECT categories.*
+        $query = "SELECT *
                     FROM categories
-                    WHERE   categories.id = ".$this->db->escape($id)." AND
-                            categories.deleted = 0";
+                    WHERE   id = ".$this->db->escape($id);
+        
+        if(!$deleted){
+            $query .= " AND deleted = 0";
+        }
 
         return $this->db->query($query);
     }
@@ -167,8 +162,55 @@ class Category_model extends CI_Model {
                 $data['parent_category'] = $parent_category->id;
             }
         }*/
+        
+        $this->config->load('database_options');
+        
+        $this->db->trans_strict(FALSE);
+        $this->db->trans_start();
+
+        if(!$this->config->item('changelog_trigger')){
+            $old_query  = $this->get_category_by_id($id, TRUE);
+            $old_data   = $old_query->row_array();
+        }
 
         $this->db->update('categories', $data, array('id' => $id));
+        
+        if(!$this->config->item('changelog_trigger')){
+            $this->load->model('changelog_model');
+            
+            $changelog_type = 'category';
+
+            $changelog_data = array();
+            $changelog_data['id']           = $id;
+            $changelog_data['user_id']      = $data['modifier'];
+            $changelog_data['timestamp']    = $data['modification_timestamp'];
+
+            if(isset($data['name']) AND $data['name'] != $old_data['name']){
+                $changelog_data['field']    = 'name';
+                $changelog_data['from']     = $old_data['name'];
+                $changelog_data['to']       = $data['name'];
+
+                $this->changelog_model->create($changelog_type, $changelog_data);
+            }
+            
+            if(isset($data['general_report']) AND $data['general_report'] != $old_data['general_report']){
+                $changelog_data['field']    = 'inventory_relevant';
+                $changelog_data['from']     = $old_data['admin'];
+                $changelog_data['to']       = $data['admin'];
+
+                $this->changelog_model->create($changelog_type, $changelog_data);
+            }
+            
+            if(isset($data['deleted']) AND $data['deleted'] != $old_data['deleted']){
+                $changelog_data['field']    = 'deleted_user';
+                $changelog_data['from']     = $old_data['deleted'];
+                $changelog_data['to']       = $data['deleted'];
+
+                $this->changelog_model->create($changelog_type, $changelog_data);
+            }
+        }
+        
+        $this->db->trans_complete();
     }
 }
 

@@ -272,6 +272,7 @@ $(document).ready(function(){
         <input name="categories" id="categories" style="width:300px;" type="hidden" value="<?php echo set_value('categories',$old_categories); ?>"/>
     </div>
 </div>
+<?php if(!empty($old_package_type)): ?>
 <div class="second">
     <div style="float:left;width:25%;">
     <?php echo form_error('package_type'); ?>
@@ -323,6 +324,9 @@ $(document).ready(function(){
     </div>
 </div>    
 <div class="first">
+<?php else: ?>
+<div class="second">
+<?php endif; ?>
     <div class="text_left">
         &nbsp;
     </div>

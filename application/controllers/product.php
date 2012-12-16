@@ -147,7 +147,10 @@ class Product extends MY_Controller {
             if($this->input->is_ajax_request() AND !empty($_POST)){
                 $this->load->model('product_model');
                 
-                $this->product_model->delete($this->input->post('id'));
+                $model_data = array();
+                $model_data['deleted'] = 1;
+                
+                $this->product_model->update($this->input->post('id'), $model_data);
             }
         }
     }
@@ -200,7 +203,7 @@ class Product extends MY_Controller {
 
                     $query = $this->product_model->get_last_product_information($id);
 
-                    $last_unit_update = '';
+                    $last_unit_update = '0000-00-00 00:00:00';
                     $old_unit_price = 0;
                     $old_unit_quantity = 0;
 
@@ -220,7 +223,7 @@ class Product extends MY_Controller {
 
                     $query = $this->product_model->get_last_package_information($id);
 
-                    $last_package_update = '';
+                    $last_package_update = '0000-00-00 00:00:00';
                     $old_package_quantity = 0;
                     $old_package_price = 0;
 
@@ -338,6 +341,8 @@ class Product extends MY_Controller {
                         $model_data['old_package_price']    = $old_package_price;
                         $model_data['old_package_quantity'] = $old_package_quantity;
                         $model_data['old_package']          = $old_package;
+                        $model_data['old_unit_update_date'] = $last_unit_update;
+                        $model_data['old_package_update_date'] = $last_package_update;
 
                         $this->product_model->update($id,$model_data);
 
