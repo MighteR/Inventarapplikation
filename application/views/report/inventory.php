@@ -48,7 +48,9 @@ $(document).ready(function(){
                     window.open('<?php echo base_url('application/third_party/excel/output'); ?>/' + data.filename);
 
                 }else{
-                    alert('ERROR');
+                    $('#error_class_due_date').parent().prepend('<div id="notice_due_date" class="notice">' + '<?php echo lang('error_due_date'); ?>' + '</div>');
+                    $('#error_class_due_date').addClass('text_left_error');
+                    $('#set_due_date').addClass('formular_error');
                 }
             },
             error:function(a,b,c){
@@ -114,7 +116,10 @@ $(document).ready(function(){
     
     $('#reset').click(function(){
         var inventory_category = <?php echo $inventory_category; ?>;
-
+        $('#notice_due_date').remove();
+        $('#error_class_due_date').removeClass('text_left_error');
+        $('#set_due_date').removeClass('formular_error');
+        $('#set_due_date').val('');
         if(!jQuery.isEmptyObject(inventory_category)) $("#search_category").select2("data", inventory_category);
     });
 });
@@ -124,7 +129,7 @@ $(document).ready(function(){
     <span><?php echo lang('title_generate_report'); ?></span>
 </div>
 <div class="first">
-    <div class="text_left">
+    <div id="error_class_due_date" class="text_left">
         <?php echo lang('title_due_date','set_due_date'); ?><span class="important">*</span>
     </div>
     <div class="text_right">
