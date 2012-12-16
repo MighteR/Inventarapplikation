@@ -38,15 +38,11 @@ $(document).ready(function(){
     </div>
     <div id="content">
         <div id="main_content">
-            <?php echo $content ?>
+            <?php echo $content; ?>
+        </div>
     </div>
     <div id="footer">
-        <div id="footer_left">Version <?php echo $version; ?></div>
-        <div id="footer_right">
-            <?php echo anchor('language/set/english', 'English')?>
-            &nbsp;|&nbsp;
-            <?php echo anchor('language/set/german', 'Deutsch')?>
-        </div>
+        <?php echo $footer; ?>
     </div>
     <div style="clear:both" />
 </div>

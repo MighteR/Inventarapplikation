@@ -62,7 +62,7 @@ $template['default']['regions'] = array(
     'title_loader',
     'menu',
     'content',
-    'version'
+    'footer'
 );
 $template['default']['parser'] = 'parser';
 $template['default']['parser_method'] = 'parse';

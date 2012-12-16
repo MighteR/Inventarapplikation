@@ -21,6 +21,10 @@ class Changelog_model extends CI_Model {
         
         return $this->db->query($query);
     }
+    
+    public function create($type, $data){
+        $this->db->insert($type.'_logs', $data);
+    }
 }
 
 /* End of file lock_model.php */

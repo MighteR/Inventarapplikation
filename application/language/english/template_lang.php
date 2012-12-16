@@ -18,6 +18,8 @@ $lang['title_creator'] = 'Created by';
 $lang['title_creation_timestamp'] = 'Created on';
 $lang['title_modifier'] = 'Last Modification by';
 $lang['title_modification_timestamp'] = 'Last Modification on';
+$lang['title_last_login'] = 'Last Login on';
+$lang['title_hello'] = 'Hello';
 
 //Loader
 $lang['title_loader'] = 'Loading';

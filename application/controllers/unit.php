@@ -129,7 +129,10 @@ class Unit extends MY_Controller {
             if($this->input->is_ajax_request() AND !empty($_POST)){
                 $this->load->model('unit_model');
                 
-                $this->unit_model->delete($this->input->post('id'));
+                $model_data = array();
+                $model_data['deleted'] = 1;
+                
+                $this->unit_model->update($this->input->post('id'), $model_data);
             }
         }
         
