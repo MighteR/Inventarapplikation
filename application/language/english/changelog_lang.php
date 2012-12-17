@@ -26,4 +26,6 @@ $lang['title_deleted_category'] = 'Category deleted';
 $lang['title_reactivated_category'] = 'Category reactivated';
 $lang['title_inventory_relevant'] = 'Inventory Relevant';
 $lang['title_package_type'] = 'Package Type';
+$lang['title_product_category_removed'] = 'Category removed';
+$lang['title_product_category_added'] = 'Category added';
 ?>

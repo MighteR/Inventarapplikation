@@ -15,6 +15,7 @@ class MY_Controller extends CI_Controller {
         }
 
         $data['logged_in']  = $this->session->userdata('id');
+        $data['admin']      = $this->session->userdata('admin');
         
         if($this->input->cookie('language')){
             $this->config->set_item('language', $this->input->cookie('language'));

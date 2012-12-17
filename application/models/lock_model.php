@@ -51,7 +51,12 @@ class Lock_model extends CI_Model {
         $this->db->insert($this->type.$this->table_suffix, $data);
     }
     
-    public function remove($type,$id){
+    public function remove($type = NULL, $id = NULL){
+        if($type == NULL){
+            $type   = $this->type;
+            $id     = $this->id;
+        }
+        
         $this->db->delete($type.$this->table_suffix, array('id' => $id));
     }
     

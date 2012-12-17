@@ -345,7 +345,9 @@ class Product extends MY_Controller {
                         $model_data['old_package_update_date'] = $last_package_update;
 
                         $this->product_model->update($id,$model_data);
-
+                        
+                        $this->lock_model->remove();
+                        
                         $this->load->library('messages');
                         $this->messages->get_message('info',$this->lang->line('info_product_modified'),'product');
                     }else{

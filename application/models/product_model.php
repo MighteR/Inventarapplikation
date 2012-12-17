@@ -208,8 +208,8 @@ class Product_model extends CI_Model {
                     
                     if(!$this->config->item('changelog_trigger')){
                         $changelog_data['field']    = 'product_category_removed';
-                        $changelog_data['from']     = $category->id;
-                        $changelog_data['to']       = '';
+                        $changelog_data['from']     = $category->name;
+                        $changelog_data['to']       = ' ';
 
                         $this->changelog_model->create($changelog_type, $changelog_data);
                      }
@@ -217,7 +217,9 @@ class Product_model extends CI_Model {
             }
 
             $product_categories = array();
-            $product_categories['product_id'] = $id;        
+            $product_categories['product_id'] = $id; 
+            
+            $this->load->model('category_model');
 
             for($i = 0; $i < count($categories); $i++){
                 if(!in_array($categories[$i],$old_categories)){
@@ -226,9 +228,12 @@ class Product_model extends CI_Model {
                     $this->db->insert('product_categories', $product_categories);
                     
                     if(!$this->config->item('changelog_trigger')){
+                        $categories_query   = $this->category_model->get_category_by_id($categories[$i]);
+                        $category_old       = $categories_query->row();
+                        
                         $changelog_data['field']    = 'product_category_added';
-                        $changelog_data['from']     = '';
-                        $changelog_data['to']       = $categories[$i];
+                        $changelog_data['from']     = ' ';
+                        $changelog_data['to']       = $category_old->name;
 
                         $this->changelog_model->create($changelog_type, $changelog_data);
                      }

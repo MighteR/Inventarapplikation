@@ -116,8 +116,8 @@ class Unit_model extends CI_Model {
             
             if(isset($data['package_type']) AND $data['package_type'] != $old_data['package_type']){
                 $changelog_data['field']    = 'package_type';
-                $changelog_data['from']     = $old_data['admin'];
-                $changelog_data['to']       = $data['admin'];
+                $changelog_data['from']     = $old_data['package_type'];
+                $changelog_data['to']       = $data['package_type'];
 
                 $this->changelog_model->create($changelog_type, $changelog_data);
             }

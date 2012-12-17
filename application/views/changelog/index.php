@@ -53,10 +53,10 @@ foreach($logs as $log):
                     <?php echo lang('title_'.$log->field); ?>
                 </div>
                 <div style="float:left;width:30%;">
-                    <?php echo $log->from; ?>
+                    <?php echo $log->from; ?>&nbsp;
                 </div>
                 <div style="float:left;">
-                    <?php echo $log->to; ?>
+                    <?php echo $log->to; ?>&nbsp;
                 </div>
                 <?php else: 
                     $field = str_replace('deleted_','',$log->field);

@@ -96,6 +96,8 @@ class Unit extends MY_Controller {
                         $model_data['package_type'] = $this->input->post('package_type');
 
                         $this->unit_model->update($id,$model_data);
+                        
+                        $this->lock_model->remove();
 
                         $this->load->library('messages');
                         $this->messages->get_message('info',$this->lang->line('info_unit_modified'),'unit');

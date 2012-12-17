@@ -151,6 +151,8 @@ class Category extends MY_Controller {
                         $model_data['general_report']  = $this->input->post('general_report');
 
                         $this->category_model->update($id,$model_data);
+                        
+                        $this->lock_model->remove();
 
                         $this->load->library('messages');
                         $this->messages->get_message('info',$this->lang->line('info_category_modified'),'category');

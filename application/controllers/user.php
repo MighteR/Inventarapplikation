@@ -18,7 +18,7 @@ class User extends MY_Controller {
             
             if(!empty($_POST)){
                 $data['changed'] = 'true';
-             }
+            }
 
             $this->form_validation->set_rules('username', 'lang:title_username', 'required|trim');
             $this->form_validation->set_rules('password', 'lang:title_password', 'required');
@@ -111,7 +111,6 @@ class User extends MY_Controller {
                     if(empty($_POST)){
                         $data['changed'] = 'false';
                         
-                        
                         $data_user = $user_query->row_array();
 
                         $data['old_username']   = $data_user['username'];
@@ -141,6 +140,8 @@ class User extends MY_Controller {
                         $model_data['admin'] = $this->input->post('admin');
 
                         $this->user_model->update($id,$model_data);
+                        
+                        $this->lock_model->remove();
 
                         $this->load->library('messages');
                         $this->messages->get_message('info',$this->lang->line('info_user_modified'),'user');

@@ -5,6 +5,7 @@
         <!--Home!-->
         <li><a href="<?php echo base_url(); ?>"><?php echo lang('menu_home'); ?></a></li>
         
+        <?php if($logged_in): ?>
         <!--Inventory!-->
         <li><a href="<?php echo base_url('inventory'); ?>"><?php echo lang('menu_inventory'); ?></a></li>
         
@@ -16,6 +17,7 @@
             </ul>
         </li>
         
+        <?php if($admin): ?>
         <!--Admin!-->
         <li><a href="#"><?php echo lang('menu_admin'); ?></a>
             <ul>
@@ -25,6 +27,8 @@
                 <li><a href="<?php echo base_url('product'); ?>"><?php echo lang('menu_admin_product'); ?></a></li>
             </ul>        
         </li>
+        <?php endif; ?>
+        <?php endif; ?>
         
         <!--Help!-->
         <li><a href="#"><?php echo lang('menu_help'); ?></a>
