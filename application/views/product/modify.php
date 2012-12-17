@@ -281,6 +281,7 @@ $(document).ready(function(){
         </div>
         <div class="text_right">
             <?php echo $old_package_type; ?>
+<input name="package_type" type="hidden" value="<?php echo $old_package_type; ?>"/>
         </div>
     </div>
     <div style="float:left;width:20%;">

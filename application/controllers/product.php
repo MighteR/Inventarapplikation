@@ -321,7 +321,7 @@ class Product extends MY_Controller {
                     $this->form_validation->set_rules('name', 'lang:title_product_name', 'required|trim');
                     $this->form_validation->set_rules('categories', 'lang:title_categories', 'required|trim|callback_categories_check');
                     $this->form_validation->set_rules('unit_price', 'lang:title_price_per_unit', 'required|trim|greater_than[0]');
-                    $this->form_validation->set_rules('package_price', 'lang:title_price_per_package', 'trim|greater_than[0]');
+                    $this->form_validation->set_rules('package_price', 'lang:title_price_per_package', 'trim|greater_than[0]|callback_package_price_check');
                     $this->form_validation->set_rules('unit_quantity', 'lang:title_quantity', 'required|trim|greater_than[-1]');
                     $this->form_validation->set_rules('package_quantity', 'lang:title_quantity', 'trim|greater_than[-1]');
                     $this->form_validation->set_rules('unit_update_date', 'lang:title_price_update', 'trim|callback_date_check[unit_update_date]');
