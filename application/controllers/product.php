@@ -7,8 +7,6 @@ class Product extends MY_Controller {
     }
     
      public function create(){
-        $this->session->set_userdata('url',  uri_string());
-        
         if($this->session->userdata('admin')){
             $this->load->library('form_validation');
             $this->load->helper('form');
@@ -155,6 +153,23 @@ class Product extends MY_Controller {
         }
     }
     
+    public function delete_price(){
+        if($this->session->userdata('admin')){
+            if($this->input->is_ajax_request() AND !empty($_POST)){
+                $this->load->model('product_model');
+                
+                $model_data = array();
+                $model_data['deleted'] = 1;
+                
+                $type = $this->input->post('type');
+                
+                if($type == 'product' OR $type == 'package_type'){
+                    $this->product_model->update_price($this->input->post('id'), $this->input->post('timestamp'),$this->input->post('creation_timestamp'), $type, $model_data);
+                }
+            }
+        }
+    }
+    
     public function reactivate(){
         if($this->session->userdata('admin')){
             if($this->input->is_ajax_request() AND !empty($_POST)){
@@ -167,10 +182,25 @@ class Product extends MY_Controller {
             }
         }
     }
+    
+    public function reactivate_price(){
+        if($this->session->userdata('admin')){
+            if($this->input->is_ajax_request() AND !empty($_POST)){
+                $this->load->model('product_model');
+                
+                $model_data = array();
+                $model_data['deleted'] = 0;
+                
+                $type = $this->input->post('type');
+                
+                if($type == 'product' OR $type == 'package_type'){
+                    $this->product_model->update_price($this->input->post('id'), $this->input->post('timestamp'),$this->input->post('creation_timestamp'), $type, $model_data);
+                }
+            }
+        }
+    }
      
      public function modify($id){
-        $this->session->set_userdata('url',  uri_string());
-        
         if($this->session->userdata('admin')){
             $this->load->model('product_model');
             
@@ -422,8 +452,6 @@ class Product extends MY_Controller {
      }
      
     public function index(){
-      $this->session->set_userdata('url',  uri_string());
-
       if($this->session->userdata('admin')){
           $this->load->helper('form');
 

@@ -8,8 +8,6 @@ class Unit extends MY_Controller {
     }
    
     public function create(){
-        $this->session->set_userdata('url',  uri_string());
-        
         if($this->session->userdata('admin')){
             $this->load->library('form_validation');
             $this->load->helper('form');
@@ -53,8 +51,6 @@ class Unit extends MY_Controller {
     
     public function modify($id){
         if($this->session->userdata('admin')){
-            $this->session->set_userdata('url', uri_string());
-
             $this->load->model('unit_model');
             
             $unit_query = $this->unit_model->get_unit_by_id($id);
@@ -193,8 +189,6 @@ class Unit extends MY_Controller {
     }
     
     public function index(){
-        $this->session->set_userdata('url',  uri_string());
-        
         if($this->session->userdata('admin')){
             $this->load->helper('form');
             

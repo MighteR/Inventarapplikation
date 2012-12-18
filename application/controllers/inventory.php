@@ -8,8 +8,6 @@ class Inventory extends MY_Controller {
     }
     
     public function index(){
-        $this->session->set_userdata('url',  uri_string());   
-        
         $this->lang->load('category', $this->session->userdata('language'));
         
         $inventory_category['id'] = 0;
@@ -48,8 +46,6 @@ class Inventory extends MY_Controller {
     }
     
     public function update($category){
-        $this->session->set_userdata('url',  uri_string());
-        
         $this->lang->load('product', $this->session->userdata('language'));
         
         $this->load->model('product_model');

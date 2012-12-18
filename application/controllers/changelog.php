@@ -8,7 +8,7 @@ class Changelog extends MY_Controller {
     }
     
     public function index(){
-        //if($this->input->is_ajax_request() AND !empty($_POST)){
+        if($this->input->is_ajax_request() AND !empty($_POST)){
             $p_id   = $this->input->post('id');
             $p_type = $this->input->post('type');
             
@@ -25,9 +25,9 @@ class Changelog extends MY_Controller {
             }
             
             return $this->load->view('changelog/index',$data);
-        //}
+        }
     }
 }
 
 /* End of file category.php */
-/* Location: ./application/controllers/category.php */
+/* Location: ./application/controllers/changelog.php */

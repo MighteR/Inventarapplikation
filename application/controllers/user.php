@@ -8,8 +8,6 @@ class User extends MY_Controller {
     }
     
     public function create(){
-        $this->session->set_userdata('url',  uri_string());
-        
         if($this->session->userdata('admin')){     
             $this->load->library('form_validation');
             $this->load->helper('form');
@@ -92,8 +90,6 @@ class User extends MY_Controller {
     
     public function modify($id){
         if($this->session->userdata('admin')){
-            $this->session->set_userdata('url',  uri_string());
-
             $this->load->model('user_model');
             
             $user_query = $this->user_model->get_user_by_id($id);
@@ -181,8 +177,6 @@ class User extends MY_Controller {
     }
     
     public function index(){
-        $this->session->set_userdata('url',  uri_string());
-        
         if($this->session->userdata('admin')){
             $this->load->helper('form');
             

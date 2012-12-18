@@ -2,9 +2,13 @@
 //<![CDATA[ 
 $(document).ready(function(){
     $("img[name='delete']").click(function(){
-        var id = $(this).attr('id').split('_').pop();
-
-        var pricename = $('#price_' + id).text();
+        var info = $(this).attr('id').split('_');
+        
+        var id = info[3];
+        var product = info[2];
+        var type = $('#type_' + id).val();
+        var timestamp = $('#timestamp_' + id).val();
+        var creation_timestamp = $('#creation_timestamp_' + id).val();
 
         $('#yesno').text('<?php echo lang('question_delete_price'); ?>');
 
@@ -12,15 +16,20 @@ $(document).ready(function(){
             closeOnEscape: false,
             modal: true,
             resizable: false,
-            title: '<?php echo lang('title_delete_price'); ?>: ' + pricename,
+            title: '<?php echo lang('title_delete_price'); ?>',
             buttons: {
                 '<?php echo lang('title_yes'); ?>': function(){
                     $.ajax({
                         url: '<?php echo base_url('product/delete_price'); ?>',
                         type: 'POST',
-                        data: { 'id' : id },
+                        data: {
+                            'id'                : product,
+                            'type'              : type,
+                            'timestamp'         : timestamp,
+                            'creation_timestamp' : creation_timestamp
+                        },
                         success: function(){
-                            search_price();
+                            price_list();
                         }
                     });
                     $('#yesno').dialog('destroy');
@@ -33,9 +42,13 @@ $(document).ready(function(){
     });
     
     $("img[name='reactivate']").click(function(){
-        var id = $(this).attr('id').split('_').pop();
-
-        var pricename = $('#price_' + id).text();
+        var info = $(this).attr('id').split('_');
+        
+        var id = info[3];
+        var product = info[2];
+        var type = $('#type_' + id).val();
+        var timestamp = $('#timestamp_' + id).val();
+        var creation_timestamp = $('#creation_timestamp_' + id).val();
 
         $('#yesno').text('<?php echo lang('question_rectivate_price'); ?>');
 
@@ -43,15 +56,20 @@ $(document).ready(function(){
             closeOnEscape: false,
             modal: true,
             resizable: false,
-            title: '<?php echo lang('title_reactivate_price'); ?>: ' + pricename,
+            title: '<?php echo lang('title_reactivate_price'); ?>',
             buttons: {
                 '<?php echo lang('title_yes'); ?>': function(){
                     $.ajax({
                         url: '<?php echo base_url('product/reactivate_price'); ?>',
                         type: 'POST',
-                        data: { 'id' : id },
+                        data: {
+                            'id'                : product,
+                            'type'              : type,
+                            'timestamp'         : timestamp,
+                            'creation_timestamp' : creation_timestamp
+                        },
                         success: function(){
-                            search_price();
+                            price_list();
                         }
                     });
                     $('#yesno').dialog('destroy');
@@ -95,6 +113,9 @@ $(document).ready(function(){
 <?php $c = 0;
 foreach($prices as $price): ?>
 <div class="<?php echo ($c++ % 2) ? 'second' : 'first'; ?> list">
+    <input name="type" id="type_<?php echo $c; ?>" type="hidden" value="<?php echo ($price->type == 'product') ? 'product' : 'package_type'; ?>" />
+    <input name="timestamp" id="timestamp_<?php echo $c; ?>" type="hidden" value="<?php echo $price->timestamp; ?>" />
+    <input name="creation_timestamp" id="creation_timestamp_<?php echo $c; ?>" type="hidden" value="<?php echo $price->creation_timestamp; ?>" />
     <div style="float:left; width:10%;">
         <span id="price_<?php echo $price->id; ?>"><?php echo lang('title_'.$price->type); ?></span>            
     </div>
@@ -121,9 +142,9 @@ foreach($prices as $price): ?>
     </div>
     <div style="float:right;padding-right: 5px;">
         <?php if (!$price->deleted): ?>
-        <img alt="delete" id="delete_price_<?php echo $price->id; ?>" name="delete" src="<?php echo base_url('application/views/template/images/trash.png'); ?>" style="cursor:pointer;" />
+        <img alt="delete" id="delete_price_<?php echo $price->id.'_'.$c; ?>" name="delete" src="<?php echo base_url('application/views/template/images/trash.png'); ?>" style="cursor:pointer;" />
         <?php else: ?>
-        <img alt="reactivate" id="reactivate_price_<?php echo $price->id; ?>" name="reactivate" src="<?php echo base_url('application/views/template/images/reactivate.png'); ?>" style="cursor:pointer;" />
+        <img alt="reactivate" id="reactivate_price_<?php echo $price->id.'_'.$c; ?>" name="reactivate" src="<?php echo base_url('application/views/template/images/reactivate.png'); ?>" style="cursor:pointer;" />
         <?php endif; ?>
     </div>
 </div>

@@ -7,9 +7,10 @@ class MY_Controller extends CI_Controller {
         
         $url_exception[] = 'user/login';
         $url_exception[] = 'user/logout';
+        $url_exception[] = 'help';
         
         if(!$this->session->userdata('id') AND !in_array(uri_string(),$url_exception)){
-            $this->session->set_userdata('login_url', uri_string());
+            $this->session->set_userdata('url', uri_string());
             
             redirect('/user/login', 'refresh');
         }

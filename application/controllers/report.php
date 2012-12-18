@@ -8,8 +8,6 @@ class Report extends MY_Controller {
     }
     
     public function inventory(){
-        $this->session->set_userdata('url',  uri_string());
-        
         $this->lang->load('category', $this->session->userdata('language'));
         $this->lang->load('inventory', $this->session->userdata('language'));
 
@@ -200,8 +198,6 @@ class Report extends MY_Controller {
     }
     
     public function price(){
-        $this->session->set_userdata('url',  uri_string());
-        
         if($this->session->userdata('admin')){
             $this->load->library('form_validation');
             $this->load->helper('form');
@@ -305,19 +301,15 @@ class Report extends MY_Controller {
     }
     
     function price_index(){
-       if(true){
-       //if($this->input->is_ajax_request() AND !empty($_POST)){
+       if($this->input->is_ajax_request() AND !empty($_POST)){
             $this->load->model('product_model');
             $this->load->helper('number_helper');
             
             $this->lang->load('product', $this->session->userdata('language'));
-            
-            $p_id           = 18;//$this->input->post('id');
-            $p_date_from    = '20121201';//$this->input->post('date_from');
-            $p_date_to      = '20121231';//$this->input->post('date_to');
-            /*$p_id           = $this->input->post('id');
+
+            $p_id           = $this->input->post('id');
             $p_date_from    = $this->input->post('date_from');
-            $p_date_to      = $this->input->post('date_to');*/
+            $p_date_to      = $this->input->post('date_to');
 
             $verify = true;
             $result = array();
@@ -356,7 +348,7 @@ class Report extends MY_Controller {
             }
             
             if($verify){
-                $product_data = $product_query->row();
+                //$product_data = $product_query->row();
                 
                 $query = $this->product_model->get_product_prices($p_id, $p_date_from, $p_date_to);
    

@@ -28,4 +28,8 @@ $lang['title_inventory_relevant'] = 'Inventar Relevant';
 $lang['title_package_type'] = 'Verpackungstyp';
 $lang['title_product_category_removed'] = 'Kategorie entfernt';
 $lang['title_product_category_added'] = 'Kategorie hinzugefügt';
+$lang['title_deleted_product_price'] = 'Produktpreis gelöscht';
+$lang['title_reactivated_product_price'] = 'Produktpreis reaktiviert';
+$lang['title_deleted_package_type_price'] = 'Verpackungspreis gelöscht';
+$lang['title_reactivated_package_type_price'] = 'Verpackungspreis reaktiviert';
 ?>

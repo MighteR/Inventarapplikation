@@ -260,78 +260,78 @@ $(document).ready(function(){
             }
         });
     }
-    
-    function price_list(){
-        clearErrors();
-        
-        $('#loader').dialog({
-                closeOnEscape: false,
-                dialogClass: 'loader',
-                height: 50,
-                resizable: false,
-                width: 50
-        });
-        
-        $.ajax({
-            complete: function(html){
-                $('#loader').dialog('close');
-            },
-            url: '<?php echo base_url('report/price_index'); ?>',
-            type: 'POST',
-            dataType: 'json',
-            data: {
-                'id': $('#product').val(),
-                'date_from': $('#date_from_db').val(),
-                'date_to': $('#date_to_db').val()
-            },
-            success: function(data){
-                if(data.verify){
-                    $('#price_data').html(data.output);
-                }else{
-                    if(data.error.date_from){
-                        $('#error_class_date_from').parent().prepend('<div id="notice_date_from" class="notice">' + data.error.date_from + '</div>');
-                        $('#error_class_date_from').addClass('text_left_error');
-                        $('#date_from').addClass('formular_error');
-                    }
-
-                    if(data.error.date_to){
-                        $('#error_class_date_to').parent().prepend('<div id="notice_date_to" class="notice">' + data.error.date_to + '</div>');
-                        $('#error_class_date_to').addClass('text_left_error');
-                        $('#date_to').addClass('formular_error');
-                    }
-                    
-                    if(data.error.product){
-                        $('#error_class_product').parent().prepend('<div id="notice_product" class="notice">' + data.error.product + '</div>');
-                        $('#error_class_product').addClass('text_left_error');
-                    }
-                    
-                    if(data.error.trend){
-                        alert(data.error.trend);
-                    }
-                }
-            },
-            error: function(a,b,c){
-                document.write(a.responseText);
-            }
-        });
-    }
-    
-    function reset(){
-        clearErrors();
-    }
-    
-    function clearErrors(){
-        $('#price_data').html('');
-        $('#notice_date_from').remove();
-        $('#error_class_date_from').removeClass('text_left_error');
-        $('#date_from').removeClass('formular_error');
-        $('#notice_date_to').remove();
-        $('#error_class_date_to').removeClass('text_left_error');
-        $('#date_to').removeClass('formular_error');
-        $('#notice_product').remove();
-        $('#error_class_product').removeClass('text_left_error');
-    }
 });
+
+function price_list(){
+    clearErrors();
+
+    $('#loader').dialog({
+        closeOnEscape: false,
+        dialogClass: 'loader',
+        height: 50,
+        resizable: false,
+        width: 50
+    });
+
+    $.ajax({
+        complete: function(html){
+            $('#loader').dialog('close');
+        },
+        url: '<?php echo base_url('report/price_index'); ?>',
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            'id': $('#product').val(),
+            'date_from': $('#date_from_db').val(),
+            'date_to': $('#date_to_db').val()
+        },
+        success: function(data){
+            if(data.verify){
+                $('#price_data').html(data.output);
+            }else{
+                if(data.error.date_from){
+                    $('#error_class_date_from').parent().prepend('<div id="notice_date_from" class="notice">' + data.error.date_from + '</div>');
+                    $('#error_class_date_from').addClass('text_left_error');
+                    $('#date_from').addClass('formular_error');
+                }
+
+                if(data.error.date_to){
+                    $('#error_class_date_to').parent().prepend('<div id="notice_date_to" class="notice">' + data.error.date_to + '</div>');
+                    $('#error_class_date_to').addClass('text_left_error');
+                    $('#date_to').addClass('formular_error');
+                }
+
+                if(data.error.product){
+                    $('#error_class_product').parent().prepend('<div id="notice_product" class="notice">' + data.error.product + '</div>');
+                    $('#error_class_product').addClass('text_left_error');
+                }
+
+                if(data.error.trend){
+                    alert(data.error.trend);
+                }
+            }
+        },
+        error: function(a,b,c){
+            document.write(a.responseText);
+        }
+    });
+}
+
+function reset(){
+    clearErrors();
+}
+
+function clearErrors(){
+    $('#price_data').html('');
+    $('#notice_date_from').remove();
+    $('#error_class_date_from').removeClass('text_left_error');
+    $('#date_from').removeClass('formular_error');
+    $('#notice_date_to').remove();
+    $('#error_class_date_to').removeClass('text_left_error');
+    $('#date_to').removeClass('formular_error');
+    $('#notice_product').remove();
+    $('#error_class_product').removeClass('text_left_error');
+}
 //]]>
 </script>
 <div id="content_title">

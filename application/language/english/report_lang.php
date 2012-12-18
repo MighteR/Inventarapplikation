@@ -14,4 +14,7 @@ $lang['error_no_category_found'] = 'You have to enter an existing category';
 $lang['title_search_product'] = 'Search for product';
 $lang['title_package_type'] = 'Package Type';
 $lang['title_price'] = 'Price';
+$lang['title_delete_price'] = 'Delete Price';
+$lang['question_delete_price'] = 'Are you sure you want to delete this price?';
+$lang['title_reactivate_price'] = 'Reactivate Price';
 ?>

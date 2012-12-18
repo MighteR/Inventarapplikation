@@ -28,4 +28,8 @@ $lang['title_inventory_relevant'] = 'Inventory Relevant';
 $lang['title_package_type'] = 'Package Type';
 $lang['title_product_category_removed'] = 'Category removed';
 $lang['title_product_category_added'] = 'Category added';
+$lang['title_deleted_product_price'] = 'Product Price deleted';
+$lang['title_reactivated_product_price'] = 'Product Price reactivated';
+$lang['title_deleted_package_type_price'] = 'Package Type Price deleted';
+$lang['title_reactivated_package_type_price'] = 'Package Type Price reactivated';
 ?>

@@ -14,4 +14,7 @@ $lang['error_no_category_found'] = 'Sie müssen ein existierendes Kategorie ausw
 $lang['title_search_product'] = 'Suche nach einem Produkt';
 $lang['title_package_type'] = 'Verpackungstyp';
 $lang['title_price'] = 'Preis';
+$lang['title_delete_price'] = 'Preis löschen';
+$lang['question_delete_price'] = 'Wollen Sie diesen Preis wirklich löschen?';
+$lang['title_reactivate_price'] = 'Preis reaktivieren';
 ?>

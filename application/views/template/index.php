@@ -11,7 +11,7 @@
 <link href="<?php echo base_url('application/views/template/css/css.css'); ?>" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="<?php echo base_url('application/views/template/js/jquery-1.8.2.min.js'); ?>"></script>
 <script type='text/javascript' src="<?php echo base_url('application/views/template/js/jquery.hoverIntent.minified.js'); ?>"></script>
-<script type='text/javascript' src="<?php echo base_url('application/views/template/js/jquery.dcmegamenu.1.3.3.js'); ?>"></script>
+<script type='text/javascript' src="<?php echo base_url('application/views/template/js/jquery.dcmegamenu.1.3.3.min.js'); ?>"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	$('#menu-content').dcMegaMenu({

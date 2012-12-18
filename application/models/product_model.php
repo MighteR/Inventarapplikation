@@ -244,6 +244,51 @@ class Product_model extends CI_Model {
         $this->db->trans_complete();
     }
     
+    public function update_price($product,$timestamp,$creation_timestamp,$type,$data){
+        $data['modifier'] = $this->session->userdata('id');
+        $data['modification_timestamp'] = date('Y-m-d H:i:s');
+        
+        $this->config->load('database_options');
+        
+        $this->db->trans_strict(FALSE);
+        $this->db->trans_start();
+        
+        if(!$this->config->item('changelog_trigger')){
+            $query = "SELECT deleted
+                        FROM ".$type."_prices
+                        WHERE   product_id = ".$this->db->escape($product)." AND
+                                timestamp  = ".$this->db->escape($timestamp)." AND
+                                creation_timestamp = ".$this->db->escape($creation_timestamp);
+            $old_query  = $this->db->query($query);
+            $old_data   = $old_query->row_array();
+        }
+
+        $this->db->update($type.'_prices', $data, array('product_id' => $product,
+                                                        'timestamp' => $timestamp,
+                                                        'creation_timestamp' => $creation_timestamp));
+        
+        if(!$this->config->item('changelog_trigger')){
+            $this->load->model('changelog_model');
+            
+            $changelog_type = 'product';
+
+            $changelog_data = array();
+            $changelog_data['id']           = $product;
+            $changelog_data['user_id']      = $data['modifier'];
+            $changelog_data['timestamp']    = $data['modification_timestamp'];
+
+            if(isset($data['deleted']) AND $data['deleted'] != $old_data['deleted']){
+                $changelog_data['field']    = 'deleted_'.$type.'_price';
+                $changelog_data['from']     = $old_data['deleted'];
+                $changelog_data['to']       = $data['deleted'];
+
+                $this->changelog_model->create($changelog_type, $changelog_data);
+            }
+        }
+        
+        $this->db->trans_complete();
+    }
+    
     public function insert_product_price($data){
         if(empty($data['creator'])){
             $data['creator'] = $this->session->userdata('id');
