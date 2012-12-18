@@ -36,7 +36,7 @@ $(document).ready(function(){
     });
     
     $('#reset').click(function(){
-
+        reset();
     });
     
     $('#form').submit(function(){
@@ -162,12 +162,12 @@ $(document).ready(function(){
                     }
 
                     seriesOptions[counter++] = {
-                        name: 'Unit Preis',
+                        name: '<?php echo lang('title_product_price'); ?>',
                         data: unit_price
                     };
 
                     seriesOptions[counter++] = {
-                        name: 'Unit Quantity',
+                        name: '<?php echo lang('title_product_quantity'); ?>',
                         data: unit_quantity,
                         yAxis: 1
                     };
@@ -189,12 +189,12 @@ $(document).ready(function(){
                         }
 
                         seriesOptions[counter++] = {
-                            name: 'Package Preis',
+                            name: '<?php echo lang('title_package_price'); ?>',
                             data: package_price
                         };
 
                         seriesOptions[counter++] = {
-                            name: 'Package Quantity',
+                            name: '<?php echo lang('title_package_quantity'); ?>',
                             data: package_quantity,
                             yAxis: 1
                         };
@@ -210,7 +210,7 @@ $(document).ready(function(){
                             enabled: false
                         },
                         title: {
-                            text: 'Preisentwicklung'
+                            text: '<?php echo lang('title_price_trend'); ?>'
                         },
                         navigator: {
                             top: 500
@@ -220,13 +220,13 @@ $(document).ready(function(){
                         },
                         yAxis: [{
                             title: {
-                                text: 'Preis'
+                                text: '<?php echo lang('title_price'); ?>'
                             },
                             height: 200,
                             lineWidth: 2
                         }, {
                             title: {
-                                text: 'Quantität'
+                                text: '<?php echo lang('title_quantity'); ?>'
                             },
                             top: 300,
                             height: 200,
@@ -310,15 +310,17 @@ function price_list(){
                     alert(data.error.trend);
                 }
             }
-        },
-        error: function(a,b,c){
-            document.write(a.responseText);
         }
     });
 }
 
 function reset(){
     clearErrors();
+    
+    $('#date_from').val('');
+    $('#date_from_db').val('');
+    $('#date_to').val('');
+    $('#date_to_db').val('');    
 }
 
 function clearErrors(){
@@ -370,8 +372,8 @@ function clearErrors(){
         &nbsp;
     </div>
     <div class="text_right">
-        <button name="list" type="button" id="list" ><?php echo lang('title_submit'); ?></button>
-        <button name="trend" type="button" id="trend" ><img alt="excel" name="excel" src="<?php echo base_url('application/views/template/images/reactivate.png'); ?>" />&nbsp;<?php echo lang('title_submit'); ?></button>
+        <button name="list" type="button" id="list" ><?php echo lang('title_price_list'); ?></button>
+        <button name="trend" type="button" id="trend" ><?php echo lang('title_graphic'); ?></button>
         <button name="reset" type="button" id="reset" ><?php echo lang('title_reset'); ?></button>
     </div>
 </div>

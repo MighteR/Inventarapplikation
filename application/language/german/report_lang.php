@@ -17,4 +17,10 @@ $lang['title_price'] = 'Preis';
 $lang['title_delete_price'] = 'Preis löschen';
 $lang['question_delete_price'] = 'Wollen Sie diesen Preis wirklich löschen?';
 $lang['title_reactivate_price'] = 'Preis reaktivieren';
+$lang['title_product_price'] = 'Produktpreis';
+$lang['title_product_quantity'] = 'Produktquantität';
+$lang['title_package_price'] = 'Verpackungspreis';
+$lang['title_package_quantity'] = 'Verpackungsquantität';
+$lang['title_graphic'] = 'Grafik';
+$lang['title_price_list'] = 'Preisliste';
 ?>
