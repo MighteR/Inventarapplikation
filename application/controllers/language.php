@@ -1,5 +1,14 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/*******************************************************************************
+ * Version: 1.0
+ * 
+ * 
+ * 
+ * Version  Developer   Description
+ * 1.0                  Standard release
+*******************************************************************************/
+
 class Language extends CI_Controller {
     public function set($language) {
         if(!empty($language)){

@@ -1,5 +1,14 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/*******************************************************************************
+ * Version: 1.0
+ * 
+ * 
+ * 
+ * Version  Developer   Description
+ * 1.0                  Standard release
+*******************************************************************************/
+
 class Product_model extends CI_Model {
     public function __construct() {
         parent::__construct();
@@ -636,3 +645,7 @@ class Product_model extends CI_Model {
         return $this->db->query($query);
     }
 }
+
+/* End of file product_model.php */
+/* Location: ./application/models/product_model.php */
+?>

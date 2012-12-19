@@ -1,5 +1,14 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/*******************************************************************************
+ * Version: 1.0
+ * 
+ * 
+ * 
+ * Version  Developer   Description
+ * 1.0                  Standard release
+*******************************************************************************/
+
 class Inventory extends MY_Controller {
     public function __construct() {
         parent::__construct();
@@ -250,5 +259,5 @@ class Inventory extends MY_Controller {
     }
 }
 
-/* End of file category.php */
-/* Location: ./application/controllers/category.php */
+/* End of file inventory.php */
+/* Location: ./application/controllers/inventory.php */

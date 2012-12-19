@@ -1,5 +1,14 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/*******************************************************************************
+ * Version: 1.0
+ * 
+ * 
+ * 
+ * Version  Developer   Description
+ * 1.0                  Standard release
+*******************************************************************************/
+
 class Changelog extends MY_Controller {
     public function __construct() {
         parent::__construct();
@@ -29,5 +38,5 @@ class Changelog extends MY_Controller {
     }
 }
 
-/* End of file category.php */
+/* End of file changelog.php */
 /* Location: ./application/controllers/changelog.php */

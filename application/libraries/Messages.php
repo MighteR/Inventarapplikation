@@ -1,4 +1,14 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+/*******************************************************************************
+ * Version: 1.0
+ * 
+ * 
+ * 
+ * Version  Developer   Description
+ * 1.0                  Standard release
+*******************************************************************************/
+
 
 class Messages{
     var $CI;
@@ -24,4 +34,7 @@ class Messages{
         $this->CI->template->write_view('content','template/messages/'.$type,$data);
     }
 }
+
+/* End of file Messages.php */
+/* Location: ./application/libraries/Messages.php */
 ?>

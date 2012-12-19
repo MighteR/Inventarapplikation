@@ -1,5 +1,14 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/*******************************************************************************
+ * Version: 1.0
+ * 
+ * 
+ * 
+ * Version  Developer   Description
+ * 1.0                  Standard release
+*******************************************************************************/
+
 class Unit_model extends CI_Model {
     public function __construct() {
         parent::__construct();
@@ -134,4 +143,7 @@ class Unit_model extends CI_Model {
         $this->db->trans_complete();
     }
 }
+
+/* End of file unit_model.php */
+/* Location: ./application/models/unit_model.php */
 ?>

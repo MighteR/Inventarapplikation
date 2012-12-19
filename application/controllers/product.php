@@ -1,4 +1,14 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+/*******************************************************************************
+ * Version: 1.0
+ * 
+ * 
+ * 
+ * Version  Developer   Description
+ * 1.0                  Standard release
+*******************************************************************************/
+
 class Product extends MY_Controller {
     public function __construct() {
         parent::__construct();
@@ -609,4 +619,7 @@ class Product extends MY_Controller {
         }
     }
 }
+
+/* End of file product.php */
+/* Location: ./application/controllers/product.php */
 ?>

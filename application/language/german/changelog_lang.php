@@ -1,9 +1,19 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+/*******************************************************************************
+ * Version: 1.0
+ * 
+ * 
+ * 
+ * Version  Developer   Description
+ * 1.0                  Standard release
+*******************************************************************************/
+
+//Title
 $lang['title_by'] = 'durch';
 $lang['title_field'] = 'Feld';
 $lang['title_from'] = 'Von';
 $lang['title_to'] = 'Nach';
-
 $lang['title_unit_price'] = 'Einheit Preis';
 $lang['title_unit_quantity'] = 'Einheit Quantität';
 $lang['title_unit_timestamp'] = 'Letzte Einheit Änderung';
@@ -32,4 +42,7 @@ $lang['title_deleted_product_price'] = 'Produktpreis gelöscht';
 $lang['title_reactivated_product_price'] = 'Produktpreis reaktiviert';
 $lang['title_deleted_package_type_price'] = 'Verpackungspreis gelöscht';
 $lang['title_reactivated_package_type_price'] = 'Verpackungspreis reaktiviert';
+
+/* End of file changelog_lang.php */
+/* Location: ./application/language/german/changelog_lang.php */
 ?>

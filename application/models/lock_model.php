@@ -1,5 +1,14 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/*******************************************************************************
+ * Version: 1.0
+ * 
+ * 
+ * 
+ * Version  Developer   Description
+ * 1.0                  Standard release
+*******************************************************************************/
+
 class Lock_model extends CI_Model {
     var $id             = '';
     var $table_suffix   = '_locks';
@@ -67,3 +76,4 @@ class Lock_model extends CI_Model {
 
 /* End of file lock_model.php */
 /* Location: ./application/models/lock_model.php */
+?>

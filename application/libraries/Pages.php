@@ -1,4 +1,14 @@
-<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+/*******************************************************************************
+ * Version: 1.0
+ * 
+ * 
+ * 
+ * Version  Developer   Description
+ * 1.0                  Standard release
+*******************************************************************************/
+
 class Pages{
     var $CI;
     var $begin;
@@ -104,6 +114,9 @@ class Pages{
     function get_limit(){
         return(array('begin' => $this->begin,
                      'limit' => $this->limit));
-	}
+    }
 }
+
+/* End of file Pages.php */
+/* Location: ./application/libraries/Pages.php */
 ?>

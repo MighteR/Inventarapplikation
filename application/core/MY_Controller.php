@@ -1,10 +1,20 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/*******************************************************************************
+ * Version: 1.0
+ * 
+ * 
+ * 
+ * Version  Developer   Description
+ * 1.0                  Standard release
+*******************************************************************************/
+
 class MY_Controller extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
         
+        //Define urls which should not be forwarded
         $url_exception[] = 'user/login';
         $url_exception[] = 'user/logout';
         $url_exception[] = 'help';
@@ -33,7 +43,7 @@ class MY_Controller extends CI_Controller {
         $this->template->write_view('menu','template/menu',$data);
         
         $data_footer['logged_in']   = $data['logged_in'];
-        $data_footer['version']     = '0.9';
+        $data_footer['version']     = '1.0';
         
         $data_footer['username']    = $this->session->userdata('username');
         $data_footer['last_login']  = $this->session->userdata('last_login');
